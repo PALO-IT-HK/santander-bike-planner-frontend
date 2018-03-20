@@ -1,0 +1,121 @@
+version: 2
+
+defaults: &defaults
+  working_directory: /tmp/santander-bike-planner
+  docker:
+    - image: circleci/node:8-browsers
+      environment:
+        NODE_ENV: circleci
+        YARN_CACHE_FOLDER: /tmp/yarn-cache
+
+jobs:
+  build_and_unit_test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-module-cache-{{ checksum "package-lock.json" }}
+      - run: npm install
+      - run: npm test
+      - save_cache:
+          key: node-module-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+  e2e_test:
+    <<: *defaults
+    environment:
+      E2E_BASE_URL: https://santander-dev.example.com
+    steps:
+      - checkout
+      # - run: bash bin/circleci-install-java.sh
+      - restore_cache:
+          key: node-module-cache-{{ checksum "package-lock.json" }}
+      - deploy:
+          command: yarn build
+      # - run: yarn webdriver-update
+      # - run:
+      #     command: yarn webdriver-start
+      #     background: true
+      # - run: bash bin/wait-for-e2e-ready.sh $E2E_BASE_URL
+      # - run: yarn e2e
+
+  # deploy_to_production:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+  #     - run: bash bin/circleci-check-env-variable.sh
+  #     - run: bash bin/circleci-upgrade-yarn.sh
+  #     - restore_cache:
+  #         key: node-module-cache-{{ checksum "package-lock.json" }}
+  #     - deploy:
+  #         command: yarn run build.prod && yarn run deploy.prod
+
+  # deployment_test_on_production:
+  #   <<: *defaults
+  #   environment:
+  #     E2E_BASE_URL: https://santandar-demo.example.com
+  #     PROTRACTOR_TAGS: "@deploytest"
+  #   steps:
+  #     - checkout
+  #     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+  #     - run: bash bin/circleci-check-env-variable.sh
+  #     - run: bash bin/circleci-upgrade-yarn.sh
+  #     - run: bash bin/circleci-install-java.sh
+  #     - restore_cache:
+  #         key: node-module-cache-{{ checksum "package-lock.json" }}
+  #     - run: yarn webdriver-update
+  #     - run:
+  #         command: yarn webdriver-start
+  #         background: true
+  #     - run: bash bin/wait-for-e2e-ready.sh $E2E_BASE_URL
+  #     - run: yarn e2e
+
+# for workflow jobs that only triggered during tags, you must ignore all
+#   branch builds for that job
+# for details: https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
+workflows:
+  version: 2
+  build_test_and_deploy:
+    jobs:
+      - build_and_unit_test:
+          filters:
+            tags:
+              only: /.*/
+      - e2e_test:
+          requires:
+            - build_and_unit_test
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+            tags:
+              only: /.*/
+      # - approve_to_production:
+      #     type: approval
+      #     requires:
+      #       - build_and_unit_test
+      #       - e2e_test
+      #     filters:
+      #       branches:
+      #         ignore: /.*/
+      #       tags:
+      #         only: /v.*-prod.*/
+      # - deploy_to_production:
+      #     requires:
+      #       - approve_to_production
+      #     filters:
+      #       branches:
+      #         ignore: /.*/
+      #       tags:
+      #         only: /v.*-prod.*/
+      # - deployment_test_on_production:
+      #     requires:
+      #       - deploy_to_production
+      #     filters:
+      #       branches:
+      #         ignore: /.*/
+      #       tags:
+      #         only: /v.*-prod.*/
