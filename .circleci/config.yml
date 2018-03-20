@@ -6,7 +6,6 @@ defaults: &defaults
     - image: circleci/node:8-browsers
       environment:
         NODE_ENV: circleci
-        YARN_CACHE_FOLDER: /tmp/yarn-cache
 
 jobs:
   build_and_unit_test:
@@ -14,11 +13,11 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: node-module-cache-{{ checksum "package-lock.json" }}
+          key: node-module-cache-{{ checksum "package.json" }}
       - run: npm install
       - run: npm test
       - save_cache:
-          key: node-module-cache-{{ checksum "package-lock.json" }}
+          key: node-module-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
 
@@ -30,7 +29,7 @@ jobs:
       - checkout
       # - run: bash bin/circleci-install-java.sh
       - restore_cache:
-          key: node-module-cache-{{ checksum "package-lock.json" }}
+          key: node-module-cache-{{ checksum "package.json" }}
       - deploy:
           command: yarn build
       # - run: yarn webdriver-update
@@ -48,7 +47,7 @@ jobs:
   #     - run: bash bin/circleci-check-env-variable.sh
   #     - run: bash bin/circleci-upgrade-yarn.sh
   #     - restore_cache:
-  #         key: node-module-cache-{{ checksum "package-lock.json" }}
+  #         key: node-module-cache-{{ checksum "package.json" }}
   #     - deploy:
   #         command: yarn run build.prod && yarn run deploy.prod
 
@@ -64,7 +63,7 @@ jobs:
   #     - run: bash bin/circleci-upgrade-yarn.sh
   #     - run: bash bin/circleci-install-java.sh
   #     - restore_cache:
-  #         key: node-module-cache-{{ checksum "package-lock.json" }}
+  #         key: node-module-cache-{{ checksum "package.json" }}
   #     - run: yarn webdriver-update
   #     - run:
   #         command: yarn webdriver-start
