@@ -1,0 +1,15 @@
+<div>
+  <ngui-map center="Quarry Bay, Hong Kong"
+    [mapTypeControl]="false"
+    [fullscreenControl]="false"
+    [streetViewControl]="false"
+    (mapClick)="onMapClick($event)">
+    <marker *ngIf="pos" [position]="pos"
+      (mouseover)="onMarkerOver($event)"
+      (mouseout)="onMarkerOut($event)"></marker>
+    <info-window id="bikepoint-info">
+      <app-bikepoint-info [lat]="hoverMarker.lat" [lng]="hoverMarker.lng"></app-bikepoint-info>
+    </info-window>
+  </ngui-map>
+  {{ pos | json }}
+</div>
