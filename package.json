@@ -5,7 +5,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-dev": "ng serve --ssl true --ssl-key 'local-wildcard.palo-it-hk.com.key' --ssl-cert 'local-wildcard.palo-it-hk.com.pem' --public-host 'bike-planner-demo.local.palo-it-hk.com' --port 443",
     "build": "ng build --prod",
+    "build-dev": "ng build --aot --prod --environment=dev",
+    "build-prod": "ng build --aot --prod --environment=prod",
+    "deploy-dev": "s3-website deploy -f .s3-website-dev.json",
+    "deploy-prod": "s3-website deploy -f .s3-website-prod.json",
     "test": "ng test --code-coverage --single-run",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -43,6 +48,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "s3-website": "^3.3.0",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "~2.5.3"

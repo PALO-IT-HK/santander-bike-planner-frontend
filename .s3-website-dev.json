@@ -1,0 +1,12 @@
+{
+  "index": "index.html",
+  "region": "ap-southeast-1",
+  "uploadDir": "dist/",
+  "prefix": "",
+  "exclude": [],
+  "corsConfiguration": [],
+  "enableCloudfront": true,
+  "retries": 20,
+  "domain": "bike-rental-demo.ci.palo-it-hk.com",
+  "configFile": ".s3-website-dev.json"
+}
