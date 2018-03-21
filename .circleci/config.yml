@@ -24,50 +24,45 @@ jobs:
   e2e_test:
     <<: *defaults
     environment:
-      E2E_BASE_URL: https://bike-rental-demo.ci.palo-it-hk.com
+      E2E_BASE_URL: https://d17cs6igjofk6p.cloudfront.net
+      # E2E_BASE_URL: https://bike-rental-demo.ci.palo-it-hk.com
     steps:
       - checkout
-      # - run: bash bin/circleci-install-java.sh
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
       - deploy:
           command: npm run build-dev && npm run deploy-dev
-      # - run: npm run webdriver-update
-      # - run:
-      #     command: npm run webdriver-start
-      #     background: true
-      # - run: bash bin/wait-for-e2e-ready.sh $E2E_BASE_URL
-      # - run: npm run e2e
+      - run: npm run webdriver-update
+      - run:
+          command: npm run webdriver-start
+          background: true
+      - run: bash bin/wait-for-e2e-ready.sh $E2E_BASE_URL
+      - run: npm run e2e
 
-  # deploy_to_production:
-  #   <<: *defaults
-  #   steps:
-  #     - checkout
-  #     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-  #     - run: bash bin/circleci-check-env-variable.sh
-  #     - restore_cache:
-  #         key: node-module-cache-{{ checksum "package.json" }}
-  #     - deploy:
-  #         command: npm run build.prod && npm run deploy.prod
+  deploy_to_production:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-module-cache-{{ checksum "package.json" }}
+      - deploy:
+          command: npm run build-prod && npm run deploy-prod
 
-  # deployment_test_on_production:
-  #   <<: *defaults
-  #   environment:
-  #     E2E_BASE_URL: https://bike-rental-demo.palo-it-hk.com
-  #     PROTRACTOR_TAGS: "@deploytest"
-  #   steps:
-  #     - checkout
-  #     - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-  #     - run: bash bin/circleci-check-env-variable.sh
-  #     - run: bash bin/circleci-install-java.sh
-  #     - restore_cache:
-  #         key: node-module-cache-{{ checksum "package.json" }}
-  #     - run: npm run webdriver-update
-  #     - run:
-  #         command: npm run webdriver-start
-  #         background: true
-  #     - run: bash bin/wait-for-e2e-ready.sh $E2E_BASE_URL
-  #     - run: npm run e2e
+  deployment_test_on_production:
+    <<: *defaults
+    environment:
+      E2E_BASE_URL: https://d3m464urvtvslr.cloudfront.net
+      # E2E_BASE_URL: https://bike-rental-demo.palo-it-hk.com
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-module-cache-{{ checksum "package.json" }}
+      - run: npm run webdriver-update
+      - run:
+          command: npm run webdriver-start
+          background: true
+      - run: bash bin/wait-for-e2e-ready.sh $E2E_BASE_URL
+      - run: npm run smoke-test
 
 # for workflow jobs that only triggered during tags, you must ignore all
 #   branch builds for that job
@@ -90,29 +85,29 @@ workflows:
                 - master
             tags:
               only: /.*/
-      # - approve_to_production:
-      #     type: approval
-      #     requires:
-      #       - build_and_unit_test
-      #       - e2e_test
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /v.*-prod.*/
-      # - deploy_to_production:
-      #     requires:
-      #       - approve_to_production
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /v.*-prod.*/
-      # - deployment_test_on_production:
-      #     requires:
-      #       - deploy_to_production
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /v.*-prod.*/
+      - approve_to_production:
+          type: approval
+          requires:
+            - build_and_unit_test
+            - e2e_test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v.*-prod.*/
+      - deploy_to_production:
+          requires:
+            - approve_to_production
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v.*-prod.*/
+      - deployment_test_on_production:
+          requires:
+            - deploy_to_production
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v.*-prod.*/

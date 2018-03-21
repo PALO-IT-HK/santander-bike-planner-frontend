@@ -13,7 +13,10 @@
     "deploy-prod": "s3-website deploy -f .s3-website-prod.json",
     "test": "ng test --code-coverage --single-run",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "webdriver-start": "webdriver-manager start",
+    "webdriver-update": "webdriver-manager update",
+    "e2e": "protractor ./protractor.conf.js",
+    "smoke-test": "protractor ./protractor-smoketest.conf.js"
   },
   "private": true,
   "dependencies": {
