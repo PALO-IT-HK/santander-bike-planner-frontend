@@ -1,0 +1,14 @@
+<ngui-map [center]="mapCenter$ | async"
+  [mapTypeControl]="false"
+  [fullscreenControl]="false"
+  [streetViewControl]="false"
+  (mapClick)="onMapClick($event)"
+  (bounds_changed)="onMapDragend($event)">
+  <div class="bikepointsMarkers">
+    <marker *ngFor="let bikepoint of (bikepoints$ | async)"
+      [position]="bikepoint" (mouseover)="onBikepointMarkerOver($event, bikepoint)" (mouseout)="onBikepointMarkerOut($event)"></marker>
+  </div>
+  <info-window [id]="infoWindowId">
+    <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
+  </info-window>
+</ngui-map>

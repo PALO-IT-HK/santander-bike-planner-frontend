@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { environment } from '../../environments/environment';
+import { StoreModule } from '@ngrx/store';
 
 // Map Module from ngui
 import { NguiMapModule } from '@ngui/map';
 
-import { MapComponent } from './map/map.component';
-import { BikepointInfoComponent } from './bikepoint-info/bikepoint-info.component';
+import { environment } from '../../environments/environment';
+
+import { JourneyMapReducer } from './journey-map.reducer';
+
+// Dump Components
+import { BikepointInfoComponent } from './components';
+
+// Smart Components
+import { MapComponent } from './containers';
 
 @NgModule({
   imports: [
@@ -15,6 +21,8 @@ import { BikepointInfoComponent } from './bikepoint-info/bikepoint-info.componen
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?key=${environment.googleMapsAPIKey}`
     }),
+
+    StoreModule.forFeature(JourneyMapReducer.name, JourneyMapReducer.reducer),
   ],
   declarations: [
     MapComponent,

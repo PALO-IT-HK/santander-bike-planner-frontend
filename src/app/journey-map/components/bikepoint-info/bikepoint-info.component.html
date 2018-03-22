@@ -1,0 +1,5 @@
+<div class="bikepoint-info">
+  <div class="name">{{ info?.commonName }}</div>
+  <div *ngIf="info?.occupancy"></div>
+  <div *ngIf="!info?.occupancy">Loading occupancy data</div>
+</div>
