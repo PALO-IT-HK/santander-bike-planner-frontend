@@ -7,8 +7,13 @@ describe('santander-bike-planner App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should be able to display map', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getMap()).toEqual('app-map');
+  });
+
+  it('should find markers on map', () => {
+    page.navigateTo();
+    expect(page.getMarkers().first().getTagName()).toEqual('marker');
   });
 });

@@ -5,7 +5,11 @@ export class AppPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getMap() {
+    return element(by.css('app-root app-map')).getTagName();
+  }
+
+  getMarkers() {
+    return element.all(by.css('app-root app-map ngui-map div.bikepointsMarkers marker'));
   }
 }
