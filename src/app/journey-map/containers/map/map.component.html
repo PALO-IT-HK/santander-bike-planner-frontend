@@ -3,6 +3,7 @@
   [fullscreenControl]="false"
   [streetViewControl]="false"
   (mapClick)="onMapClick($event)"
+  (mapDragend)="onMapDragend($event)"
   (bounds_changed)="onBoundsChanged($event)">
   <div class="bikepointsMarkers">
     <marker *ngFor="let bikepoint of (bikepoints$ | async)"

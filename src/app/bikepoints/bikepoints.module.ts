@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+
+import { BikePointsService } from './services';
 
 /**
  *  Bikepoint module is used for grouping up services required to access
@@ -7,8 +9,10 @@ import { CommonModule } from '@angular/common';
  */
 @NgModule({
   imports: [
-    CommonModule
+    HttpClientModule,
   ],
-  declarations: []
+  providers: [
+    BikePointsService,
+  ]
 })
 export class BikepointsModule { }

@@ -9,7 +9,10 @@ exports.config = {
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    'chromeOptions': {
+      'args': ['--ignore-certificate-errors']
+    }
   },
   seleniumAddress: process.env.SELENIUM_ADDRESS || 'http://127.0.0.1:4444/wd/hub',
   baseUrl: process.env.E2E_BASE_URL || 'https://localhost:443',

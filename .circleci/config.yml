@@ -25,6 +25,8 @@ jobs:
     <<: *defaults
     environment:
       E2E_BASE_URL: https://d17cs6igjofk6p.cloudfront.net
+      API_IP: 54.251.159.118
+      API_URL: api.ci.palo-it-hk.com
       # E2E_BASE_URL: https://bike-rental-demo.ci.palo-it-hk.com
     steps:
       - checkout
@@ -32,6 +34,7 @@ jobs:
           key: node-module-cache-{{ checksum "package.json" }}
       - deploy:
           command: npm run build-dev && npm run deploy-dev
+      - run: echo $API_IP $API_URL | sudo tee -a /etc/hosts
       - run: npm run webdriver-update
       - run:
           command: npm run webdriver-start
@@ -52,11 +55,14 @@ jobs:
     <<: *defaults
     environment:
       E2E_BASE_URL: https://d3m464urvtvslr.cloudfront.net
+      API_IP: 54.251.159.118
+      API_URL: api.ci.palo-it-hk.com
       # E2E_BASE_URL: https://bike-rental-demo.palo-it-hk.com
     steps:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
+      - run: echo $API_IP $API_URL | sudo tee -a /etc/hosts
       - run: npm run webdriver-update
       - run:
           command: npm run webdriver-start
