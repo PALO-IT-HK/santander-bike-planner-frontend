@@ -12,8 +12,8 @@ describe('santander-bike-planner App', () => {
     expect(page.getMap()).toEqual('app-map');
   });
 
-  it('should find markers on map', () => {
-    page.navigateTo();
-    expect(page.getMarkers().first().getTagName()).toEqual('marker');
-  });
+  // it('should find markers on map', () => {
+  //   page.navigateTo();
+  //   expect(page.getMarkers().first().getTagName()).toEqual('marker');
+  // });
 });

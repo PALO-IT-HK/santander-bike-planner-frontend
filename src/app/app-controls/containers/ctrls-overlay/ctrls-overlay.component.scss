@@ -1,0 +1,111 @@
+:host {
+  pointer-events: none;
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(rgba(18, 5, 58, 1), rgba(0,0,0,0) 200px)
+}
+
+section.wrapper {
+  height: 100vh;
+
+  span.container {
+    display: inline-flex;
+    flex-direction: column;
+    pointer-events: auto;
+    vertical-align: middle;
+
+    mat-icon.direction-connector {
+      color: rgb(64,64,64);
+      position: relative;
+      height: 0px;
+      margin-left: 40px;
+      top: -18px;
+    }
+
+    div.header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      align-content: center;
+      height: 60px;
+
+      button.cancel-button {
+        margin-left: 32px;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        min-width: 60px;
+        width: 60px;
+        padding: 0px;
+      }
+    }
+
+    button.my-location {
+      position: relative;
+      top: -2px;
+      color: rgb(240,240,240);
+    }
+
+    button.loc-icon {
+      position: relative;
+      top: -2px;
+      color: rgb(64,64,64);
+
+      &.active {
+        color: rgb(48, 32, 128);
+      }
+    }
+
+    div.search-field-wrapper {
+      margin-left: 32px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    mat-form-field.map-search-box {
+      width: 200px;
+    }
+
+    &.sidenav {
+      background-color: rgb(252,252,252);
+      height: 100vh;
+
+      @media (max-width: 599px) {
+        width: 100vw;
+      }
+
+      div.search-field-wrapper {
+        span.field-pills-wrapper {
+          background-color: rgb(240, 248, 255);
+        }
+        margin-right: 60px;
+      }
+
+      mat-form-field.map-search-box {
+        width: 240px;
+      }
+    }
+  }
+
+  span.field-pills-wrapper {
+    margin-left: 16px;
+    background-color: rgba(255,255,255,0.8);
+    padding: 0px 6px 0px 24px;
+    border-radius: 36px;
+
+
+    button.search {
+      position: relative;
+      top: -1px;
+      left: 1px;
+      color: rgb(64,64,64);
+    }
+  }
+}

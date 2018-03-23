@@ -16,24 +16,31 @@ export class JourneyMapEffects {
   mapBoundaryUpdate$: Observable<Action> = this.actions$
     .ofType(JourneyMapActions.UPDATE_MAP_BOUNDARY)
     .debounceTime(1000)
-    .switchMap((action: JourneyMapActions.UpdateMapBoundaryAction) => {
-      return this.bpServices.listBikePointsByBounds(action.payload.ne, action.payload.sw);
-    })
-    .switchMap((result: Array<any>) => {
-      const bikepoints: BikePoint[] = result.map((bp): BikePoint => ({
-        commonName: bp.commonName,
-        id: bp.TerminalName,
-        lat: bp.lat,
-        lng: bp.lon,
-        occupancy: {
-          total: bp.NbDocks,
-          bike: bp.NbBikes,
-          vacant: bp.NbEmptyDocks,
-        }
-      }));
-      return [
-        new JourneyMapActions.PopulateBikepointsAction(bikepoints),
-      ];
+    // Check if we are displaying bikepoint
+    .combineLatest(this.store.select(JourneyMapReducer.selectors.displayBikepoints))
+    .switchMap(([action, display]: [JourneyMapActions.UpdateMapBoundaryAction, boolean]) => {
+      // Update bikepoints only if the map is displaying them.
+      if (!display) {
+        return [];
+      }
+
+      return this.bpServices.listBikePointsByBounds(action.payload.ne, action.payload.sw)
+        .switchMap((result: Array<any>) => {
+          const bikepoints: BikePoint[] = result.map((bp): BikePoint => ({
+            commonName: bp.commonName,
+            id: bp.TerminalName,
+            lat: bp.lat,
+            lng: bp.lon,
+            occupancy: {
+              total: bp.NbDocks,
+              bike: bp.NbBikes,
+              vacant: bp.NbEmptyDocks,
+            }
+          }));
+          return [
+            new JourneyMapActions.PopulateBikepointsAction(bikepoints),
+          ];
+        });
     });
 
   constructor(

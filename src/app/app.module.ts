@@ -18,6 +18,7 @@ import { RootReducer } from './reducers';
 import './operators'; // Observable operators
 
 import { JourneyMapModule } from './journey-map';
+import { AppControlsModule } from './app-controls';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -50,7 +51,11 @@ import { AppComponent } from './app.component';
      */
     EffectsModule.forRoot([]),
 
+    /**
+     * Application modules
+     */
     JourneyMapModule,
+    AppControlsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

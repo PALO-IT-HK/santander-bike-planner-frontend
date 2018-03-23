@@ -24,7 +24,7 @@ import { MapComponent } from './containers';
     CommonModule,
     BikepointsModule,
     NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?key=${environment.googleMapsAPIKey}`
+      apiUrl: `https://maps.google.com/maps/api/js?libraries=places&key=${environment.googleMapsAPIKey}`
     }),
 
     StoreModule.forFeature(JourneyMapReducer.name, JourneyMapReducer.reducer),

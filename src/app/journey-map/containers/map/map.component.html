@@ -1,11 +1,13 @@
-<ngui-map [center]="mapCenter$ | async"
+<ngui-map [center]="mapCenter"
   [mapTypeControl]="false"
   [fullscreenControl]="false"
   [streetViewControl]="false"
+  geoFallbackCenter="51.476892649684764, 0"
   (mapClick)="onMapClick($event)"
   (mapDragend)="onMapDragend($event)"
+  (center_changed)="onCenterChanged($event)"
   (bounds_changed)="onBoundsChanged($event)">
-  <div class="bikepointsMarkers">
+  <div class="bikepointsMarkers" *ngIf="displayBikePoints$ | async">
     <marker *ngFor="let bikepoint of (bikepoints$ | async)"
       [position]="bikepoint" (mouseover)="onBikepointMarkerOver($event, bikepoint)" (mouseout)="onBikepointMarkerOut($event)"></marker>
   </div>

@@ -5,3 +5,19 @@
 body {
  margin: 0;
 }
+
+mat-form-field.pill-input {
+  margin: 7px 0px 6px;
+
+  div.mat-form-field-underline {
+    display: none;
+  }
+
+  div.mat-form-field-wrapper {
+    padding-bottom: 0px;
+  }
+
+  div.mat-form-field-infix {
+    border-top: 0px;
+  }
+}

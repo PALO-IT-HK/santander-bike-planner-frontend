@@ -1,0 +1,36 @@
+<section class="wrapper">
+  <span class="container" [ngClass]="{'sidenav': fullMode}">
+    <div class="header">
+      <button mat-button (click)="switchMode(false)" class="cancel-button" *ngIf="fullMode">
+        Cancel
+      </button>
+    </div>
+    <div class="from-search search-field-wrapper">
+      <button mat-icon-button class="my-location" *ngIf="!fullMode" (click)="gotoCurrentLoc()">
+        <mat-icon>my_location</mat-icon>
+      </button>
+      <button mat-icon-button class="loc-icon" [disableRipple]="true" *ngIf="fullMode">
+        <mat-icon>location_on</mat-icon>
+      </button>
+      <span class="field-pills-wrapper">
+        <mat-form-field class="map-search-box pill-input" floatLabel="never">
+          <input matInput placeholder="Where from?" type="text" [formControl]="fromField">
+        </mat-form-field>
+        <button mat-icon-button class="search" *ngIf="!fullMode" (click)="switchMode(true)">
+          <mat-icon>directions</mat-icon>
+        </button>
+      </span>
+    </div>
+    <mat-icon class="direction-connector" *ngIf="fullMode">more_vert</mat-icon>
+    <div class="to-search search-field-wrapper" *ngIf="fullMode">
+      <button mat-icon-button class="loc-icon" [disableRipple]="true">
+        <mat-icon>location_on</mat-icon>
+      </button>
+      <span class="field-pills-wrapper">
+        <mat-form-field class="map-search-box pill-input" floatLabel="never">
+          <input matInput placeholder="Where to?" type="text" [formControl]="toField">
+        </mat-form-field>
+      </span>
+    </div>
+  </span>
+</section>

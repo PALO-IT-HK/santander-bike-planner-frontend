@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Store } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
 
 import { LatLong, Location, BikePoint } from '../../../models';
 
@@ -13,20 +16,42 @@ import { JourneyMapReducer } from '../../journey-map.reducer';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
-  mapCenter$: Observable<string> = this.store.select(JourneyMapReducer.selectors.mapCenter);
+export class MapComponent implements OnInit, OnDestroy {
+  subscriptions: Subscription[] = [];
+
+  mapCenter = '';
   bikepointInfoWindow$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.bikepointInfoWindow);
   bikepoints$: Observable<BikePoint[]> = this.store.select(JourneyMapReducer.selectors.bikepoints);
+  displayBikePoints$: Observable<boolean> = this.store.select(JourneyMapReducer.selectors.displayBikepoints);
 
   // ID for Google Map Info Window
   infoWindowId = 'bikepoint-info';
 
   constructor(
     private store: Store<JourneyMapReducer.State>,
+    private actions$: Actions,
   ) { }
 
   ngOnInit() {
+    this.subscriptions.push(
+      this.store.select(JourneyMapReducer.selectors.mapCenter).subscribe((center) => {
+        this.mapCenter = center;
+      }),
+      // this.actions$.ofType(JourneyMapActions.GOTO_CURRENT_LOCATION)
+      // .filter((action: JourneyMapActions.GotoCurrentLocationAction) => action.payload)
+      // .subscribe((action: JourneyMapActions.GotoCurrentLocationAction) => {
+      //   // On goto current location action, update mapCenter
+      //   this.store.select(JourneyMapReducer.selectors.mapCenter).subscribe((center) => {
+      //     this.mapCenter = center;
+      //   }).unsubscribe();
+      //   this.store.dispatch(new JourneyMapActions.GotoCurrentLocationAction(false));
+      // }),
+    );
     this.store.dispatch(new JourneyMapActions.PopulateBikepointsAction([]));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
   }
 
   /**
@@ -37,6 +62,14 @@ export class MapComponent implements OnInit {
       lat: $event.latLng.lat(),
       lng: $event.latLng.lng(),
     });
+  }
+
+  onCenterChanged($event) {
+    /**
+     * Reset center position in observable such that we can reposition to current
+     * position next time even if the current position is not changed
+     */
+    // this.mapCenter = ''; // disabled due to exceptions
   }
 
   onBoundsChanged($event) {
@@ -60,7 +93,6 @@ export class MapComponent implements OnInit {
   }
 
   onMapDragend($event) {
-    this.store.dispatch(new JourneyMapActions.PopulateBikepointsAction([]));
   }
 
   /**

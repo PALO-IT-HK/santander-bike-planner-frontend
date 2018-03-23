@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { BikepointsModule } from '../../../bikepoints';
 
@@ -17,7 +18,8 @@ describe('MapComponent', () => {
         BikepointsModule,
         StoreModule.forRoot({
           journeyMap: JourneyMapReducer.reducer
-        })
+        }),
+        EffectsModule.forRoot([]),
       ],
       declarations: [ MapComponent ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -35,10 +37,7 @@ describe('MapComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('mapCenter observable should contain initial data', (done) => {
-    component.mapCenter$.subscribe((data) => {
-      expect(data).toEqual(JourneyMapReducer.initialState.mapCenter);
-      done();
-    });
+  it('mapCenter observable should contain initial data', () => {
+    expect(component.mapCenter).toEqual(JourneyMapReducer.initialState.mapCenter);
   });
 });

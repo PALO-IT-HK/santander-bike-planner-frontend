@@ -33,4 +33,13 @@ export class BikePointsService {
       params
     });
   }
+
+  public searchBikepoint(input) {
+    const params: HttpParams = new HttpParams()
+      .set('query', input);
+
+    return this.http.get(`${environment.apiBase}/bikepoint/search`, {
+      params
+    });
+  }
 }
