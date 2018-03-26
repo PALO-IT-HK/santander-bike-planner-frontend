@@ -10,17 +10,32 @@ import { AppControlReducer } from './app-controls.reducer';
 import { BikePointsService } from '../bikepoints';
 import { AppState } from './models';
 import { BikePoint } from '../models';
+import { JourneyMapActions } from '../journey-map/journey-map.action';
 
 @Injectable()
 export class AppControlEffects {
+  @Effect()
+  appState$: Observable<Action> = this.actions$
+    .ofType(AppControlActions.SET_APP_STATE)
+    .switchMap((action: AppControlActions.SetAppStateAction) => {
+      switch (action.payload) {
+        case AppState.CONFIRM_JOURNEY:
+        case AppState.IN_JOURNEY:
+          return [new JourneyMapActions.PopulateBikepointsAction([])];
+        default:
+          return [];
+      }
+    });
+
   @Effect()
   searchBikepoint$: Observable<Action> = this.actions$
     .ofType(AppControlActions.SEARCH_BIKEPOINT)
     .switchMap((action: AppControlActions.SearchBikepointAction) =>
       this.bpService.searchBikepoint(action.payload))
-    .switchMap((result) => {
-      console.log(result);
-      return [];
+    .switchMap((result: BikePoint[]) => {
+      return [
+        new AppControlActions.UpdateBikepointSearchResultAction(result)
+      ];
     });
 
   @Effect()
@@ -31,16 +46,20 @@ export class AppControlEffects {
     .switchMap(([action, toLoc]: [
       AppControlActions.SelectFromBikepointAction,
       BikePoint | null
-    ]) => [
-      new AppControlActions.SetFromFieldAction(action.payload.commonName),
-      new AppControlActions.SetAppStateAction(
-        /**
-         *  If `to` bikepoint is set, set state to proceed to confirm journey
-         *  If not, proceed to `to input`
-         */
-        toLoc ? AppState.CONFIRM_JOURNEY : AppState.TO_INPUT
-      ),
-    ]);
+    ]) => {
+      return [
+        new AppControlActions.UpdateBikepointSearchResultAction([]),
+        new AppControlActions.UpdatePlaceSearchResultAction([]),
+        new AppControlActions.SetFromFieldAction(action.payload.commonName),
+        new AppControlActions.SetAppStateAction(
+          /**
+           *  If `to` bikepoint is set, set state to proceed to confirm journey
+           *  If not, proceed to `to input`
+           */
+          toLoc ? AppState.CONFIRM_JOURNEY : AppState.TO_INPUT
+        ),
+      ];
+    });
 
   @Effect()
   toLoc$: Observable<Action> = this.actions$
@@ -50,16 +69,20 @@ export class AppControlEffects {
     .switchMap(([action, fromLoc]: [
       AppControlActions.SelectToBikepointAction,
       BikePoint | null
-    ]) => [
-      new AppControlActions.SetToFieldAction(action.payload.commonName),
-      new AppControlActions.SetAppStateAction(
-        /**
-         *  If `from` bikepoint is set, set state to proceed to confirm journey
-         *  If not, proceed to `from input`
-         */
-        fromLoc ? AppState.CONFIRM_JOURNEY : AppState.FROM_INPUT
-      ),
-    ]);
+    ]) => {
+      return [
+        new AppControlActions.UpdateBikepointSearchResultAction([]),
+        new AppControlActions.UpdatePlaceSearchResultAction([]),
+        new AppControlActions.SetToFieldAction(action.payload.commonName),
+        new AppControlActions.SetAppStateAction(
+          /**
+           *  If `from` bikepoint is set, set state to proceed to confirm journey
+           *  If not, proceed to `from input`
+           */
+          fromLoc ? AppState.CONFIRM_JOURNEY : AppState.FROM_INPUT
+        ),
+      ];
+    });
 
   constructor(
     private actions$: Actions,

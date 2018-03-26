@@ -1,0 +1,9 @@
+<div class="bikepoints-search-result-wrapper">
+  <div class="bikepoint-search-entry" *ngFor="let bikepoint of bikepoints" (click)="selectBikepoint(bikepoint)">
+    <mat-icon class="entry-avatar">place</mat-icon>
+    <div class="entry-text">
+      <span class="bikepoint-name">{{ bikepoint.commonName }}</span>
+      <span class="occupancy">Occupancy information is unavailable.</span>
+    </div>
+  </div>
+</div>

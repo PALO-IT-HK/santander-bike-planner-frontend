@@ -9,21 +9,39 @@
     justify-content: space-around;
     padding: 24px 24px;
 
+    @media (max-width: 599px) {
+      padding: 12px 24px;
+    }
+
     div.detail {
       display: flex;
       flex-direction: column;
       align-items: stretch;
 
+      @media (max-width: 599px) {
+        flex: 1;
+      }
+
       span.start-journey {
         margin-bottom: 8px;
         font-size: 18px;
         font-weight: 600;
+        text-align: center;
+
+        @media (max-width: 599px) {
+          display: none;
+        }
       }
 
       span.time-needed {
         display: flex;
         flex-direction: row;
         align-items: center;
+        text-align: center;
+
+        @media (max-width: 599px) {
+          flex: 1;
+        }
 
         mat-icon {
           height: 16px;
@@ -32,7 +50,9 @@
         }
 
         span.time-text {
+          margin-left: 8px;
           font-size: 14px;
+          text-transform: uppercase;
         }
       }
     }
@@ -40,6 +60,25 @@
     button.confirm-btn {
       background-color: rgb(252, 252, 252);
       color: rgb(230, 51, 41);
+
+      @media (max-width: 599px) {
+        color: rgb(252, 252, 252);
+        background-color: rgb(230, 51, 41);
+        position: absolute;
+        bottom: 64px;
+      }
+    }
+
+    span.mobile-start-journey {
+      display: none;
+
+      @media (max-width: 599px) {
+        display: inherit;
+        position: absolute;
+        bottom: 30px;
+        font-size: 18px;
+        font-weight: 600;
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
 <div>
   <app-map [appState]="appState$ | async"></app-map>
-  <app-ctrls-overlay [appState]="appState$ | async"></app-ctrls-overlay>
+  <app-ctrls-overlay [appState]="appState$ | async" [ngClass]="{'invert-gradient': (appState$ | async) === 'Confirm Journey' }"></app-ctrls-overlay>
 </div>

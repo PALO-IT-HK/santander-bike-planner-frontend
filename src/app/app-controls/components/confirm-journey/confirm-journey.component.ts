@@ -7,6 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ConfirmJourneyComponent implements OnInit {
   @Input() duration: number;
+  @Output() confirm = new EventEmitter();
 
   constructor() { }
 
@@ -14,4 +15,7 @@ export class ConfirmJourneyComponent implements OnInit {
     this.duration = 12;
   }
 
+  confirmJourney($event) {
+    this.confirm.emit($event);
+  }
 }

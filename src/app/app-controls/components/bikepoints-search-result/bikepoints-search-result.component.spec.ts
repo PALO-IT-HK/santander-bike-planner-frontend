@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BikepointsSearchResultComponent } from './bikepoints-search-result.component';
@@ -8,7 +9,8 @@ describe('BikepointsSearchResultComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BikepointsSearchResultComponent ]
+      declarations: [ BikepointsSearchResultComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   }));

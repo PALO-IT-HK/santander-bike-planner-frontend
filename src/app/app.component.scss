@@ -1,0 +1,9 @@
+app-ctrls-overlay {
+  background: linear-gradient(rgba(18, 5, 58, 1), rgba(0,0,0,0) 200px);
+
+  @media (max-width: 599px) {
+    &.invert-gradient {
+      background: linear-gradient(to top, rgba(18, 5, 58, 1), rgba(0,0,0,0) 200px);
+    }
+  }
+}

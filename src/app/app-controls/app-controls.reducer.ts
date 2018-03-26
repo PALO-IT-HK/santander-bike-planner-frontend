@@ -58,7 +58,11 @@ export namespace AppControlReducer {
     bikepointSearchResults: createSelector(
       selectState,
       (state: State) => state.bikepointSearchResults
-    )
+    ),
+    haveSearchResults: createSelector(
+      selectState,
+      (state: State) => state.placeSearchResults.length > 0 || state.bikepointSearchResults.length > 0
+    ),
   };
 
   export function reducer(

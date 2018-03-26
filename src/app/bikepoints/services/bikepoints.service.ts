@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { LatLong } from '../../models';
+import { LatLong, BikePoint } from '../../models';
 
 @Injectable()
 export class BikePointsService {
@@ -31,7 +31,17 @@ export class BikePointsService {
 
     return this.http.get(`${environment.apiBase}/bike/point`, {
       params
-    });
+    }).map((result: any[]): BikePoint[] => result.map((bp): BikePoint => ({
+      commonName: bp.commonName,
+      id: bp.TerminalName,
+      lat: bp.lat,
+      lng: bp.lon,
+      occupancy: {
+        total: bp.NbDocks,
+        bike: bp.NbBikes,
+        vacant: bp.NbEmptyDocks,
+      }
+    })));
   }
 
   public searchBikepoint(input) {
@@ -40,6 +50,12 @@ export class BikePointsService {
 
     return this.http.get(`${environment.apiBase}/bikepoint/search`, {
       params
-    });
+    }).map((result: any[]): BikePoint[] => result.map((entry): BikePoint => ({
+      commonName: entry.commonName,
+      id: entry.id,
+      lat: entry.lat,
+      lng: entry.lon,
+      // Search endpoint does not return bikepoint occupancy
+    })));
   }
 }

@@ -6,7 +6,8 @@
       <span class="time-text">{{ duration }} mins ride</span>
     </span>
   </div>
-  <button class="confirm-btn" mat-fab>
+  <button class="confirm-btn" mat-fab (click)="confirmJourney($event)">
     <mat-icon>directions_bike</mat-icon>
   </button>
+  <span class="mobile-start-journey">Start Journey</span>
 </div>

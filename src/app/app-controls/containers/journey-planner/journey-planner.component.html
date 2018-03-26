@@ -1,32 +1,40 @@
-<span class="journey-planner-container">
-  <div class="header">
-    <button mat-button class="cancel-button" (click)="closePlanner()">
-      Cancel
-    </button>
+<span class="journey-planner-container" [ngClass]="{'confirm-state': appState === 'Confirm Journey'}">
+  <div class="planner-wrapper">
+    <div class="header">
+      <button mat-button class="cancel-button" (click)="closePlanner()">
+        Cancel
+      </button>
+    </div>
+    <div class="from-search search-field-wrapper">
+      <button mat-icon-button class="loc-icon" [disableRipple]="true" [ngClass]="{'active': appState === 'From Input'}">
+        <mat-icon>location_on</mat-icon>
+      </button>
+      <span class="field-pills-wrapper">
+        <mat-form-field class="map-search-box pill-input" floatLabel="never">
+          <input matInput placeholder="Where from?" type="text" [formControl]="fromField" (focus)="fromFieldOnFocus()" (blur)="fieldOnBlur()">
+        </mat-form-field>
+      </span>
+    </div>
+    <mat-icon class="direction-connector">more_vert</mat-icon>
+    <div class="to-search search-field-wrapper">
+      <button mat-icon-button class="loc-icon" [disableRipple]="true" [ngClass]="{'active': appState === 'To Input'}">
+        <mat-icon>location_on</mat-icon>
+      </button>
+      <span class="field-pills-wrapper">
+        <mat-form-field class="map-search-box pill-input" floatLabel="never">
+          <input matInput placeholder="Where to?" type="text" [formControl]="toField" (focus)="toFieldOnFocus()" (blur)="fieldOnBlur()">
+        </mat-form-field>
+      </span>
+    </div>
   </div>
-  <div class="from-search search-field-wrapper">
-    <button mat-icon-button class="loc-icon" [disableRipple]="true" [ngClass]="{'active': appState === 'From Input'}">
-      <mat-icon>location_on</mat-icon>
-    </button>
-    <span class="field-pills-wrapper">
-      <mat-form-field class="map-search-box pill-input" floatLabel="never">
-        <input matInput placeholder="Where from?" type="text" [formControl]="fromField" (focus)="fromFieldOnFocus()">
-      </mat-form-field>
-    </span>
+  <div class="search-results-wrapper" *ngIf="(haveSearchResults$ | async)">
+    <!-- Place search result -->
+    <!-- Bikepoints search result -->
+    <app-bikepoints-search-result [bikepoints]="bikeSearchResults$ | async"
+      *ngIf="(bikeSearchResults$ | async)?.length > 0"
+      (select)="selectBikePoint($event)"
+      ></app-bikepoints-search-result>
   </div>
-  <mat-icon class="direction-connector">more_vert</mat-icon>
-  <div class="to-search search-field-wrapper">
-    <button mat-icon-button class="loc-icon" [disableRipple]="true" [ngClass]="{'active': appState === 'To Input'}">
-      <mat-icon>location_on</mat-icon>
-    </button>
-    <span class="field-pills-wrapper">
-      <mat-form-field class="map-search-box pill-input" floatLabel="never">
-        <input matInput placeholder="Where to?" type="text" [formControl]="toField" (focus)="toFieldOnFocus()">
-      </mat-form-field>
-    </span>
-  </div>
-  <!-- Place search result -->
-  <!-- Bikepoints search result -->
   <!-- Confirm Journey-->
-  <app-confirm-journey *ngIf="appState === 'Confirm Journey'"></app-confirm-journey>
+  <app-confirm-journey *ngIf="appState === 'Confirm Journey'" (confirm)="confirmJourney()"></app-confirm-journey>
 </span>

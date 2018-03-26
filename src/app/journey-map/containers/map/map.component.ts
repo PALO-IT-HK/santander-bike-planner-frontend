@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,6 +12,7 @@ import { AppState, AppControlActions, AppControlReducer } from '../../../app-con
 import { JourneyMapActions } from '../../journey-map.action';
 import { JourneyMapReducer } from '../../journey-map.reducer';
 import { RootReducer } from '../../../reducers';
+import { NguiMapComponent } from '@ngui/map';
 
 @Component({
   selector: 'app-map',
@@ -22,22 +23,25 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() appState: AppState;
   @Input() fromLoc: BikePoint;
   @Input() toLoc: BikePoint;
+  @ViewChild(NguiMapComponent) nguiMapComponent: NguiMapComponent;
 
   subscriptions: Subscription[] = [];
 
+  /**
+   * Work around for custom map marker with info window
+   * See: https://github.com/ng2-ui/map/issues/154
+   */
+  customMapMarkers: {
+    [index: string]: any,
+  } = {};
+
+  infoWindowOffset = {
+    height: -54,
+    width: 0,
+  };
+
   bikepointInfoWindow$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.bikepointInfoWindow);
   bikepoints$: Observable<BikePoint[]> = this.store.select(JourneyMapReducer.selectors.bikepoints);
-  displayBikePoints$: Observable<boolean> =
-    this.store.select(AppControlReducer.selectors.appState).map((state: AppState) => {
-      switch (state) {
-        case AppState.NORMAL:
-        case AppState.FROM_INPUT:
-        case AppState.TO_INPUT:
-          return true;
-        default:
-          return false;
-      }
-    });
 
   mapCenter = '';
 
@@ -109,8 +113,15 @@ export class MapComponent implements OnInit, OnDestroy {
   onBikepointMarkerOver($event, bikepoint: BikePoint) {
     const targetMarker = $event.target;
     this.store.dispatch(new JourneyMapActions.SetBikepointInfoAction(bikepoint));
-    // TODO: add in sideeffect store to populate bikepoint occupancy if occupancy is not found for current info window
     targetMarker.nguiMapComponent.openInfoWindow(this.infoWindowId, targetMarker);
+  }
+
+  /**
+   * Event handler for Custom Bikepoint marker hover and click actions
+   */
+  onBikepointCustomMarkerOver(bikepoint: BikePoint, index) {
+    this.store.dispatch(new JourneyMapActions.SetBikepointInfoAction(bikepoint));
+    this.nguiMapComponent.openInfoWindow(this.infoWindowId, this.customMapMarkers[index]);
   }
 
   onBikepointMarkerOut($event) {
@@ -119,9 +130,11 @@ export class MapComponent implements OnInit, OnDestroy {
     // targetMarker.nguiMapComponent.closeInfoWindow(this.infoWindowId);
   }
 
+  onBikepointMarkerInit(customMarker, index) {
+    this.customMapMarkers[index] = customMarker;
+  }
+
   onBikepointMarkerClick($event, bikepoint: BikePoint) {
-    console.log(this.appState);
-    console.log(bikepoint);
     switch (this.appState) {
       /**
        * If we are at `normal` app state or in `from input` state, clicking on

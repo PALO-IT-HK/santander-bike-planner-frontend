@@ -7,14 +7,20 @@
   (mapDragend)="onMapDragend($event)"
   (center_changed)="onCenterChanged($event)"
   (bounds_changed)="onBoundsChanged($event)">
-  <div class="bikepointsMarkers" *ngIf="displayBikePoints$ | async">
-    <marker *ngFor="let bikepoint of (bikepoints$ | async)"
+  <div class="bikepointsMarkers">
+    <!-- <marker *ngFor="let bikepoint of (bikepoints$ | async)"
       [position]="bikepoint"
       (mouseover)="onBikepointMarkerOver($event, bikepoint)"
-      (mouseout)="onBikepointMarkerOut($event)"
-      (click)="onBikepointMarkerClick($event, bikepoint)"></marker>
+      (click)="onBikepointMarkerClick($event, bikepoint)"></marker> -->
+    <custom-marker *ngFor="let bikepoint of (bikepoints$ | async); let i = index"
+      [position]="[bikepoint.lat, bikepoint.lng]"
+      (initialized$)="onBikepointMarkerInit($event, i)"
+      (mouseenter)="onBikepointCustomMarkerOver(bikepoint, i)"
+      (click)="onBikepointMarkerClick($event, bikepoint)">
+      <app-bikepoint-marker [bikepoint]="bikepoint"></app-bikepoint-marker>
+    </custom-marker>
   </div>
-  <info-window [id]="infoWindowId">
+  <info-window [id]="infoWindowId" [pixelOffset]="infoWindowOffset">
     <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
   </info-window>
 </ngui-map>

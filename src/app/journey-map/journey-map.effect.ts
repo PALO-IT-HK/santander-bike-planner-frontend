@@ -5,7 +5,9 @@ import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { BikePoint } from '../models';
+import { RootReducer } from '../reducers';
 import { BikePointsService } from '../bikepoints';
+import { AppControlReducer, AppState } from '../app-controls';
 
 import { JourneyMapActions } from './journey-map.action';
 import { JourneyMapReducer } from './journey-map.reducer';
@@ -15,37 +17,29 @@ export class JourneyMapEffects {
   @Effect()
   mapBoundaryUpdate$: Observable<Action> = this.actions$
     .ofType(JourneyMapActions.UPDATE_MAP_BOUNDARY)
-    .debounceTime(1000)
     // Check if we are displaying bikepoint
-    .combineLatest(this.store.select(JourneyMapReducer.selectors.displayBikepoints))
-    .switchMap(([action, display]: [JourneyMapActions.UpdateMapBoundaryAction, boolean]) => {
+    .debounceTime(1000)
+    .combineLatest(this.store.select(AppControlReducer.selectors.appState))
+    .switchMap(([action, appState]: [JourneyMapActions.UpdateMapBoundaryAction, AppState]) => {
       // Update bikepoints only if the map is displaying them.
-      if (!display) {
-        return [];
+      switch (appState) {
+        case AppState.NORMAL:
+        case AppState.FROM_INPUT:
+        case AppState.TO_INPUT:
+          return this.bpServices.listBikePointsByBounds(action.payload.ne, action.payload.sw)
+            .switchMap((result: BikePoint[]) => {
+              return [
+                new JourneyMapActions.PopulateBikepointsAction(result),
+              ];
+            });
+        default:
+          return [];
       }
-
-      return this.bpServices.listBikePointsByBounds(action.payload.ne, action.payload.sw)
-        .switchMap((result: Array<any>) => {
-          const bikepoints: BikePoint[] = result.map((bp): BikePoint => ({
-            commonName: bp.commonName,
-            id: bp.TerminalName,
-            lat: bp.lat,
-            lng: bp.lon,
-            occupancy: {
-              total: bp.NbDocks,
-              bike: bp.NbBikes,
-              vacant: bp.NbEmptyDocks,
-            }
-          }));
-          return [
-            new JourneyMapActions.PopulateBikepointsAction(bikepoints),
-          ];
-        });
     });
 
   constructor(
     private actions$: Actions,
-    private store: Store<JourneyMapReducer.State>,
+    private store: Store<RootReducer.State>,
     private bpServices: BikePointsService,
   ) { }
 }

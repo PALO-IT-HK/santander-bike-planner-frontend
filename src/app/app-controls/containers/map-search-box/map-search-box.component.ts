@@ -38,6 +38,7 @@ export class MapSearchBoxComponent implements OnInit, OnDestroy {
       /* On field change, search for bikepoints and places */
       this.searchField.valueChanges.debounceTime(2000).subscribe((value) => {
         if (value) {
+          this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT));
           this.store.dispatch(new AppControlActions.SearchBikepointAction(value));
           this.store.dispatch(new AppControlActions.SearchPlaceAction(value));
         }

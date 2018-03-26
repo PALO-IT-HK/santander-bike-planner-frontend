@@ -1,0 +1,5 @@
+<div class="bike-marker" [ngClass]="{'for-hire': bikepoint.occupancy.bike >= bikepoint.occupancy.vacant,
+  'for-park': bikepoint.occupancy.bike < bikepoint.occupancy.vacant}">
+  <div class="marker-row"><mat-icon>directions_bike</mat-icon><span class="occupancy">{{ bikepoint?.occupancy?.bike }}</span></div>
+  <div class="marker-row"><mat-icon>local_parking</mat-icon><span class="occupancy">{{ bikepoint?.occupancy?.vacant }}</span></div>
+</div>
