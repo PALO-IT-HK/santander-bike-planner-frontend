@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { FormControl } from '@angular/forms';
@@ -9,8 +9,9 @@ import { RootReducer } from '../../../reducers';
 import { JourneyMapActions } from '../../../journey-map/journey-map.action';
 
 import { PlaceService } from '../../services';
-import { AppControlActions } from '../../app-control.action';
-import { AppControlReducer } from '../../app-control.reducer';
+import { AppState } from '../../models';
+import { AppControlActions } from '../../app-controls.action';
+import { AppControlReducer } from '../../app-controls.reducer';
 
 @Component({
   selector: 'app-ctrls-overlay',
@@ -18,6 +19,7 @@ import { AppControlReducer } from '../../app-control.reducer';
   styleUrls: ['./ctrls-overlay.component.scss']
 })
 export class CtrlsOverlayComponent implements OnInit, OnDestroy {
+  @Input() appState: AppState;
   subscriptions: Subscription[] = [];
 
   fullMode = false;
@@ -34,9 +36,23 @@ export class CtrlsOverlayComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.fromField.valueChanges.debounceTime(200).subscribe((value) => {
         this.store.dispatch(new AppControlActions.SetFromFieldAction(value));
+        this.store.dispatch(new AppControlActions.SelectFromBikepointAction(null));
       }),
       this.toField.valueChanges.debounceTime(200).subscribe((value) => {
         this.store.dispatch(new AppControlActions.SetToFieldAction(value));
+        this.store.dispatch(new AppControlActions.SelectToBikepointAction(null));
+      }),
+      this.fromField.valueChanges.debounceTime(2000).subscribe((value) => {
+        if (value) {
+          this.store.dispatch(new AppControlActions.SearchBikepointAction(value));
+          this.store.dispatch(new AppControlActions.SearchPlaceAction(value));
+        }
+      }),
+      this.toField.valueChanges.debounceTime(2000).subscribe((value) => {
+        if (value) {
+          this.store.dispatch(new AppControlActions.SearchBikepointAction(value));
+          this.store.dispatch(new AppControlActions.SearchPlaceAction(value));
+        }
       }),
       this.store.select(AppControlReducer.selectors.fromField).subscribe((value) => {
         this.fromField.setValue(value, {
@@ -62,12 +78,20 @@ export class CtrlsOverlayComponent implements OnInit, OnDestroy {
   gotoCurrentLoc() {
     this.placeService.getCurrentLocation().subscribe((loc: any) => {
       this.store.dispatch(new JourneyMapActions.SetMapCenterAction(`${loc.location.lat}, ${loc.location.lng}`));
-      // this.store.dispatch(new JourneyMapActions.GotoCurrentLocationAction(true));
     });
-    // this.store.dispatch(new JourneyMapActions.SetMapCenterAction(''));
-    // return navigator.geolocation.getCurrentPosition((position) => {
-    //   console.log(position);
-    //   this.store.dispatch(new JourneyMapActions.SetMapCenterAction(`[${position.coords.latitude}, ${position.coords.longitude}]`));
-    // });
+  }
+
+  /**
+   * When the from-field have focus, switch the app to `From_Input` mode
+   */
+  fromFieldOnFocus() {
+    this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT));
+  }
+
+  /**
+   * When the to-field have focus, switch the app to `To_Input` mode
+   */
+  toFieldOnFocus() {
+    this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));
   }
 }

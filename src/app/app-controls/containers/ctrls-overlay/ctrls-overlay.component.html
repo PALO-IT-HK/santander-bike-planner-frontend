@@ -14,7 +14,8 @@
       </button>
       <span class="field-pills-wrapper">
         <mat-form-field class="map-search-box pill-input" floatLabel="never">
-          <input matInput placeholder="Where from?" type="text" [formControl]="fromField">
+          <input matInput placeholder="Where from?" type="text" [formControl]="fromField"
+            (focus)="fromFieldOnFocus()">
         </mat-form-field>
         <button mat-icon-button class="search" *ngIf="!fullMode" (click)="switchMode(true)">
           <mat-icon>directions</mat-icon>
@@ -28,7 +29,8 @@
       </button>
       <span class="field-pills-wrapper">
         <mat-form-field class="map-search-box pill-input" floatLabel="never">
-          <input matInput placeholder="Where to?" type="text" [formControl]="toField">
+          <input matInput placeholder="Where to?" type="text" [formControl]="toField"
+            (focus)="toFieldOnFocus()">
         </mat-form-field>
       </span>
     </div>

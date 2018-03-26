@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+import { Observable } from 'rxjs/Observable';
+
+import { AppControlActions, AppState, AppControlReducer } from './app-controls';
+import { RootReducer } from './reducers';
+import { BikePoint } from './models';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +13,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  appState$: Observable<AppState> = this.store.select(AppControlReducer.selectors.appState);
+  fromBikepoint$: Observable<BikePoint> = this.store.select(AppControlReducer.selectors.fromLoc);
+  toBikepoint$: Observable<BikePoint> = this.store.select(AppControlReducer.selectors.toLoc);
+
+  constructor(
+    private store: Store<RootReducer.State>,
+  ) { }
 }

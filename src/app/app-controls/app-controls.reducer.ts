@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { AppControlActions } from './app-control.action';
+import { AppControlActions } from './app-controls.action';
 
 import { BikePoint } from '../models';
 
@@ -68,6 +68,16 @@ export namespace AppControlReducer {
         return {
           ...state,
           toField: action.payload,
+        };
+      case AppControlActions.SELECT_FROM_BIKEPOINT:
+        return {
+          ...state,
+          fromLoc: action.payload,
+        };
+      case AppControlActions.SELECT_TO_BIKEPOINT:
+        return {
+          ...state,
+          toLoc: action.payload,
         };
       default:
         return state;

@@ -4,10 +4,15 @@ import { AppComponent } from './app.component';
 import { JourneyMapModule } from './journey-map';
 
 import './operators'; // Observable operators
+import { StoreModule } from '@ngrx/store';
+import { RootReducer } from './reducers';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        StoreModule.forRoot(RootReducer.reducers),
+      ],
       declarations: [
         AppComponent
       ],

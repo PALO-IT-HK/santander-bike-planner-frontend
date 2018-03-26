@@ -8,7 +8,7 @@ import { RootReducer } from '../../../reducers';
 
 import { PlaceService } from '../../services';
 import { PlaceServiceMock } from '../../services/place.service.mock';
-import { AppControlReducer } from '../../app-control.reducer';
+import { AppControlReducer } from '../../app-controls.reducer';
 
 describe('CtrlsOverlayComponent', () => {
   let component: CtrlsOverlayComponent;

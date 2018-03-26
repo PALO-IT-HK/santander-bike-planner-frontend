@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 
 import { LatLong, Location, BikePoint } from '../../../models';
+import { AppState, AppControlActions } from '../../../app-controls';
 
 import { JourneyMapActions } from '../../journey-map.action';
 import { JourneyMapReducer } from '../../journey-map.reducer';
@@ -17,12 +18,17 @@ import { JourneyMapReducer } from '../../journey-map.reducer';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnDestroy {
+  @Input() appState: AppState;
+  @Input() fromLoc: BikePoint;
+  @Input() toLoc: BikePoint;
+
   subscriptions: Subscription[] = [];
 
-  mapCenter = '';
   bikepointInfoWindow$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.bikepointInfoWindow);
   bikepoints$: Observable<BikePoint[]> = this.store.select(JourneyMapReducer.selectors.bikepoints);
   displayBikePoints$: Observable<boolean> = this.store.select(JourneyMapReducer.selectors.displayBikepoints);
+
+  mapCenter = '';
 
   // ID for Google Map Info Window
   infoWindowId = 'bikepoint-info';
@@ -37,15 +43,6 @@ export class MapComponent implements OnInit, OnDestroy {
       this.store.select(JourneyMapReducer.selectors.mapCenter).subscribe((center) => {
         this.mapCenter = center;
       }),
-      // this.actions$.ofType(JourneyMapActions.GOTO_CURRENT_LOCATION)
-      // .filter((action: JourneyMapActions.GotoCurrentLocationAction) => action.payload)
-      // .subscribe((action: JourneyMapActions.GotoCurrentLocationAction) => {
-      //   // On goto current location action, update mapCenter
-      //   this.store.select(JourneyMapReducer.selectors.mapCenter).subscribe((center) => {
-      //     this.mapCenter = center;
-      //   }).unsubscribe();
-      //   this.store.dispatch(new JourneyMapActions.GotoCurrentLocationAction(false));
-      // }),
     );
     this.store.dispatch(new JourneyMapActions.PopulateBikepointsAction([]));
   }
@@ -96,7 +93,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Event handler for Bikepoint marker hover actions
+   * Event handler for Bikepoint marker hover and click actions
    */
   onBikepointMarkerOver($event, bikepoint: BikePoint) {
     const targetMarker = $event.target;
@@ -109,5 +106,36 @@ export class MapComponent implements OnInit, OnDestroy {
     // const targetMarker = $event.target;
     // this.store.dispatch(new JourneyMapActions.SetBikepointInfoAction(null));
     // targetMarker.nguiMapComponent.closeInfoWindow(this.infoWindowId);
+  }
+
+  onBikepointMarkerClick($event, bikepoint: BikePoint) {
+    console.log(this.appState);
+    console.log(bikepoint);
+    switch (this.appState) {
+      /**
+       * If we are at `normal` app state or in `from input` state, clicking on
+       * bikepoint marker would means that we are going to use that as `From`
+       * point
+       */
+      case AppState.NORMAL:
+      case AppState.FROM_INPUT:
+        this.store.dispatch(new AppControlActions.SelectFromBikepointAction(bikepoint));
+        return this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));
+      /**
+       * If we are at `to input` state, clicking on bikepoint marker would means
+       * that we are going to use that as `To` point
+       */
+      case AppState.TO_INPUT:
+        this.store.dispatch(new AppControlActions.SelectToBikepointAction(bikepoint));
+        return;
+      /**
+       * Bikepoint marker should not even visible or available for selection if
+       * we are confirming a journey or in a journey.
+       */
+      case AppState.CONFIRM_JOURNEY:
+      case AppState.IN_JOURNEY:
+      default:
+        return;
+    }
   }
 }

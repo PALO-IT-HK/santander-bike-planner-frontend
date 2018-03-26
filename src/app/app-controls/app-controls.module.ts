@@ -7,8 +7,8 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { MaterialModule } from '../material.module';
 
-import { AppControlReducer } from './app-control.reducer';
-import { AppControlEffects } from './app-control.effect';
+import { AppControlReducer } from './app-controls.reducer';
+import { AppControlEffects } from './app-controls.effect';
 
 import { PlaceService } from './services';
 import { CtrlsOverlayComponent } from './containers';
