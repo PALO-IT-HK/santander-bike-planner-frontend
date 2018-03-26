@@ -1,0 +1,71 @@
+span.journey-planner-container {
+  display: inline-flex;
+  flex-direction: column;
+  pointer-events: auto;
+  vertical-align: middle;
+  background-color: rgb(252,252,252);
+  min-width: 420px;
+
+  @media (max-width: 599px) {
+    width: 100vw;
+  }
+
+  mat-icon.direction-connector {
+    color: rgb(64,64,64);
+    position: relative;
+    height: 0px;
+    margin-left: 40px;
+    top: -18px;
+  }
+
+  div.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    height: 60px;
+
+    button.cancel-button {
+      margin-left: 32px;
+      font-size: 12px;
+      height: 24px;
+      line-height: 24px;
+      min-width: 60px;
+      width: 60px;
+      padding: 0px;
+    }
+  }
+
+  div.search-field-wrapper {
+    margin-left: 32px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    button.loc-icon {
+      position: relative;
+      top: -2px;
+      color: rgb(64,64,64);
+
+      &.active {
+        color: rgb(64, 32, 196);
+      }
+    }
+
+    span.field-pills-wrapper {
+      margin-left: 16px;
+      background-color: rgb(240, 248, 255);
+      padding: 0px 6px 0px 24px;
+      border-radius: 36px;
+
+      mat-form-field.map-search-box {
+        width: 240px;
+      }
+    }
+  }
+
+  div.to-search {
+    margin-bottom: 32px;
+  }
+}

@@ -9,27 +9,10 @@ import { AppControlActions } from './app-controls.action';
 import { AppControlReducer } from './app-controls.reducer';
 import { BikePointsService } from '../bikepoints';
 import { AppState } from './models';
+import { BikePoint } from '../models';
 
 @Injectable()
 export class AppControlEffects {
-  // @Effect()
-  // fromFieldUpdate$: Observable<Action> = this.actions$
-  //   .ofType(AppControlActions.SET_FROM_FIELD)
-  //   .do(() => this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT)))
-  //   .debounceTime(2000)
-  //   .switchMap((action: AppControlActions.SetFromFieldAction) => {
-  //     return [];
-  //   });
-
-  // @Effect()
-  // toFieldUpdate$: Observable<Action> = this.actions$
-  //   .ofType(AppControlActions.SET_TO_FIELD)
-  //   .do(() => this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT)))
-  //   .debounceTime(2000)
-  //   .switchMap((action: AppControlActions.SetToFieldAction) => {
-  //     return [];
-  //   });
-
   @Effect()
   searchBikepoint$: Observable<Action> = this.actions$
     .ofType(AppControlActions.SEARCH_BIKEPOINT)
@@ -44,16 +27,38 @@ export class AppControlEffects {
   fromLoc$: Observable<Action> = this.actions$
     .ofType(AppControlActions.SELECT_FROM_BIKEPOINT)
     .filter((action: AppControlActions.SelectFromBikepointAction) => Boolean(action.payload))
-    .switchMap((action: AppControlActions.SelectFromBikepointAction) => [
+    .withLatestFrom(this.store.select(AppControlReducer.selectors.toLoc))
+    .switchMap(([action, toLoc]: [
+      AppControlActions.SelectFromBikepointAction,
+      BikePoint | null
+    ]) => [
       new AppControlActions.SetFromFieldAction(action.payload.commonName),
+      new AppControlActions.SetAppStateAction(
+        /**
+         *  If `to` bikepoint is set, set state to proceed to confirm journey
+         *  If not, proceed to `to input`
+         */
+        toLoc ? AppState.CONFIRM_JOURNEY : AppState.TO_INPUT
+      ),
     ]);
 
   @Effect()
   toLoc$: Observable<Action> = this.actions$
     .ofType(AppControlActions.SELECT_TO_BIKEPOINT)
     .filter((action: AppControlActions.SelectToBikepointAction) => Boolean(action.payload))
-    .switchMap((action: AppControlActions.SelectToBikepointAction) => [
+    .withLatestFrom(this.store.select(AppControlReducer.selectors.fromLoc))
+    .switchMap(([action, fromLoc]: [
+      AppControlActions.SelectToBikepointAction,
+      BikePoint | null
+    ]) => [
       new AppControlActions.SetToFieldAction(action.payload.commonName),
+      new AppControlActions.SetAppStateAction(
+        /**
+         *  If `from` bikepoint is set, set state to proceed to confirm journey
+         *  If not, proceed to `from input`
+         */
+        fromLoc ? AppState.CONFIRM_JOURNEY : AppState.FROM_INPUT
+      ),
     ]);
 
   constructor(

@@ -6,11 +6,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 
-import { LatLong, Location, BikePoint } from '../../../models';
-import { AppState, AppControlActions } from '../../../app-controls';
+import { LatLong, MapLocation, BikePoint } from '../../../models';
+import { AppState, AppControlActions, AppControlReducer } from '../../../app-controls';
 
 import { JourneyMapActions } from '../../journey-map.action';
 import { JourneyMapReducer } from '../../journey-map.reducer';
+import { RootReducer } from '../../../reducers';
 
 @Component({
   selector: 'app-map',
@@ -26,7 +27,17 @@ export class MapComponent implements OnInit, OnDestroy {
 
   bikepointInfoWindow$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.bikepointInfoWindow);
   bikepoints$: Observable<BikePoint[]> = this.store.select(JourneyMapReducer.selectors.bikepoints);
-  displayBikePoints$: Observable<boolean> = this.store.select(JourneyMapReducer.selectors.displayBikepoints);
+  displayBikePoints$: Observable<boolean> =
+    this.store.select(AppControlReducer.selectors.appState).map((state: AppState) => {
+      switch (state) {
+        case AppState.NORMAL:
+        case AppState.FROM_INPUT:
+        case AppState.TO_INPUT:
+          return true;
+        default:
+          return false;
+      }
+    });
 
   mapCenter = '';
 
@@ -34,7 +45,7 @@ export class MapComponent implements OnInit, OnDestroy {
   infoWindowId = 'bikepoint-info';
 
   constructor(
-    private store: Store<JourneyMapReducer.State>,
+    private store: Store<RootReducer.State>,
     private actions$: Actions,
   ) { }
 
@@ -120,14 +131,14 @@ export class MapComponent implements OnInit, OnDestroy {
       case AppState.NORMAL:
       case AppState.FROM_INPUT:
         this.store.dispatch(new AppControlActions.SelectFromBikepointAction(bikepoint));
-        return this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));
+        break;
       /**
        * If we are at `to input` state, clicking on bikepoint marker would means
        * that we are going to use that as `To` point
        */
       case AppState.TO_INPUT:
         this.store.dispatch(new AppControlActions.SelectToBikepointAction(bikepoint));
-        return;
+        break;
       /**
        * Bikepoint marker should not even visible or available for selection if
        * we are confirming a journey or in a journey.

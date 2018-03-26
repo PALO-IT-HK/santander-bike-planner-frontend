@@ -1,0 +1,45 @@
+:host {
+  background-color: rgb(230, 51, 41);
+  color: rgb(252, 252, 252);
+
+  div.confirm-journey {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 24px 24px;
+
+    div.detail {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+
+      span.start-journey {
+        margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      span.time-needed {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        mat-icon {
+          height: 16px;
+          width: 16px;
+          font-size: 16px;
+        }
+
+        span.time-text {
+          font-size: 14px;
+        }
+      }
+    }
+
+    button.confirm-btn {
+      background-color: rgb(252, 252, 252);
+      color: rgb(230, 51, 41);
+    }
+  }
+}

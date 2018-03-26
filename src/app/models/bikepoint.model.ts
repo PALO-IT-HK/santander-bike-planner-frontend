@@ -1,6 +1,6 @@
-import { Location } from './location.model';
+import { MapLocation } from './location.model';
 
-export interface BikePoint extends Location {
+export interface BikePoint extends MapLocation {
   id: string;
   occupancy?: BikePointOccupancy;
 }

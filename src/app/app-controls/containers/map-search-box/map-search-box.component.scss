@@ -1,0 +1,39 @@
+span.search-container {
+  display: inline-flex;
+  flex-direction: column;
+  pointer-events: auto;
+  vertical-align: middle;
+  padding-top: 60px;
+
+  div.search-field-wrapper {
+    margin-left: 32px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    button.my-location {
+      position: relative;
+      top: -2px;
+      color: rgb(240,240,240);
+    }
+
+    span.field-pills-wrapper {
+      margin-left: 16px;
+      background-color: rgba(255,255,255,0.8);
+      padding: 0px 6px 0px 24px;
+      border-radius: 36px;
+
+      mat-form-field.map-search-box {
+        width: 200px;
+      }
+
+      button.plan-journey {
+        position: relative;
+        top: -1px;
+        left: 1px;
+        color: rgb(64,64,64);
+      }
+    }
+  }
+}

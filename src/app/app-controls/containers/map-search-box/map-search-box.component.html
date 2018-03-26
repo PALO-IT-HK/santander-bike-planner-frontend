@@ -1,0 +1,15 @@
+<span class="search-container">
+  <div class="from-search search-field-wrapper">
+    <button mat-icon-button class="my-location" (click)="gotoCurrentLoc()">
+      <mat-icon>my_location</mat-icon>
+    </button>
+    <span class="field-pills-wrapper">
+      <mat-form-field class="map-search-box pill-input" floatLabel="never">
+        <input matInput placeholder="Where from?" type="text" [formControl]="searchField">
+      </mat-form-field>
+      <button mat-icon-button class="plan-journey" (click)="planJourney()">
+        <mat-icon>directions</mat-icon>
+      </button>
+    </span>
+  </div>
+</span>

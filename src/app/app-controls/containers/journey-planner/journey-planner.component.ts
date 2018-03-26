@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
-
 import { FormControl } from '@angular/forms';
 
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { RootReducer } from '../../../reducers';
@@ -14,15 +14,15 @@ import { AppControlActions } from '../../app-controls.action';
 import { AppControlReducer } from '../../app-controls.reducer';
 
 @Component({
-  selector: 'app-ctrls-overlay',
-  templateUrl: './ctrls-overlay.component.html',
-  styleUrls: ['./ctrls-overlay.component.scss']
+  selector: 'app-journey-planner',
+  templateUrl: './journey-planner.component.html',
+  styleUrls: ['./journey-planner.component.scss']
 })
-export class CtrlsOverlayComponent implements OnInit, OnDestroy {
+export class JourneyPlannerComponent implements OnInit, OnDestroy {
   @Input() appState: AppState;
-  subscriptions: Subscription[] = [];
+  haveSearchResults$: Observable<boolean>;
 
-  fullMode = false;
+  subscriptions: Subscription[] = [];
 
   fromField = new FormControl('');
   toField = new FormControl('');
@@ -71,25 +71,27 @@ export class CtrlsOverlayComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
   }
 
-  switchMode(mode) {
-    this.fullMode = mode;
+  closePlanner() {
+    this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.NORMAL));
+    this.store.dispatch(new AppControlActions.SelectFromBikepointAction(null));
+    this.store.dispatch(new AppControlActions.SelectToBikepointAction(null));
+    this.store.dispatch(new AppControlActions.SetFromFieldAction(''));
+    this.store.dispatch(new AppControlActions.SetToFieldAction(''));
   }
 
-  gotoCurrentLoc() {
-    this.placeService.getCurrentLocation().subscribe((loc: any) => {
-      this.store.dispatch(new JourneyMapActions.SetMapCenterAction(`${loc.location.lat}, ${loc.location.lng}`));
-    });
+  confirmJourney() {
+    this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.IN_JOURNEY));
   }
 
   /**
-   * When the from-field have focus, switch the app to `From_Input` mode
+   * When the from-field have focus, make sure the app is in `From_Input` mode
    */
   fromFieldOnFocus() {
     this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT));
   }
 
   /**
-   * When the to-field have focus, switch the app to `To_Input` mode
+   * When the to-field have focus, make sure the app is in `To_Input` mode
    */
   toFieldOnFocus() {
     this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));

@@ -11,7 +11,10 @@ import { AppControlReducer } from './app-controls.reducer';
 import { AppControlEffects } from './app-controls.effect';
 
 import { PlaceService } from './services';
-import { CtrlsOverlayComponent } from './containers';
+import { CtrlsOverlayComponent } from './components';
+import { JourneyPlannerComponent, MapSearchBoxComponent } from './containers';
+import { BikepointsSearchResultComponent } from './containers/bikepoints-search-result/bikepoints-search-result.component';
+import { ConfirmJourneyComponent } from './components/confirm-journey/confirm-journey.component';
 
 /**
  *  AppControl module is for overall app workflow
@@ -29,7 +32,11 @@ import { CtrlsOverlayComponent } from './containers';
     ]),
   ],
   declarations: [
-    CtrlsOverlayComponent
+    CtrlsOverlayComponent,
+    JourneyPlannerComponent,
+    MapSearchBoxComponent,
+    BikepointsSearchResultComponent,
+    ConfirmJourneyComponent
   ],
   providers: [
     PlaceService,

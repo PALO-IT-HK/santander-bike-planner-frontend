@@ -1,4 +1,4 @@
-export interface Location extends LatLong {
+export interface MapLocation extends LatLong {
   commonName: string;
 }
 

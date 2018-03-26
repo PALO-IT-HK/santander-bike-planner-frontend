@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { AppControlActions } from './app-controls.action';
 
-import { BikePoint } from '../models';
+import { BikePoint, MapLocation } from '../models';
 
 import { AppState } from './models';
 
@@ -16,6 +16,8 @@ export namespace AppControlReducer {
     toField: string;
     fromLoc: BikePoint | null;
     toLoc: BikePoint | null;
+    placeSearchResults: MapLocation[];
+    bikepointSearchResults: BikePoint[];
   }
 
   export const initialState: State = {
@@ -24,6 +26,8 @@ export namespace AppControlReducer {
     toField: '',
     fromLoc: null,
     toLoc: null,
+    placeSearchResults: [],
+    bikepointSearchResults: [],
   };
 
   export const selectors = {
@@ -47,6 +51,14 @@ export namespace AppControlReducer {
       selectState,
       (state: State) => state.toLoc
     ),
+    placeSearchResults: createSelector(
+      selectState,
+      (state: State) => state.placeSearchResults
+    ),
+    bikepointSearchResults: createSelector(
+      selectState,
+      (state: State) => state.bikepointSearchResults
+    )
   };
 
   export function reducer(
@@ -78,6 +90,16 @@ export namespace AppControlReducer {
         return {
           ...state,
           toLoc: action.payload,
+        };
+      case AppControlActions.UPDATE_BIKEPOINT_SEARCH_RESULT:
+        return {
+          ...state,
+          bikepointSearchResults: action.payload
+        };
+      case AppControlActions.UPDATE_PLACE_SEARCH_RESULT:
+        return {
+          ...state,
+          placeSearchResults: action.payload
         };
       default:
         return state;

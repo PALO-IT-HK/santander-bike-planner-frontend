@@ -12,8 +12,7 @@
       [position]="bikepoint"
       (mouseover)="onBikepointMarkerOver($event, bikepoint)"
       (mouseout)="onBikepointMarkerOut($event)"
-      (click)="onBikepointMarkerClick($event, bikepoint)"
-      ></marker>
+      (click)="onBikepointMarkerClick($event, bikepoint)"></marker>
   </div>
   <info-window [id]="infoWindowId">
     <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>

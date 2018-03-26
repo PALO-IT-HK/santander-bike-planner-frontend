@@ -7,6 +7,7 @@ import { BikepointsModule } from '../../../bikepoints';
 
 import { JourneyMapReducer } from '../../journey-map.reducer';
 import { MapComponent } from './map.component';
+import { AppControlReducer } from '../../../app-controls';
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -17,7 +18,8 @@ describe('MapComponent', () => {
       imports: [
         BikepointsModule,
         StoreModule.forRoot({
-          journeyMap: JourneyMapReducer.reducer
+          journeyMap: JourneyMapReducer.reducer,
+          appCtrl: AppControlReducer.reducer,
         }),
         EffectsModule.forRoot([]),
       ],
