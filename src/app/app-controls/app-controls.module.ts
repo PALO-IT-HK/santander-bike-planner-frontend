@@ -10,16 +10,12 @@ import { MaterialModule } from '../material.module';
 import { AppControlReducer } from './app-controls.reducer';
 import { AppControlEffects } from './app-controls.effect';
 
-import {
-  CtrlsOverlayComponent,
-  ConfirmJourneyComponent,
-  BikepointsSearchResultComponent,
-  PlaceSearchResultComponent,
-} from './components';
-import {
-  JourneyPlannerComponent,
-  MapSearchBoxComponent,
-} from './containers';
+import { ConfirmJourneyComponent } from './components/confirm-journey/confirm-journey.component';
+import { BikepointsSearchResultComponent } from './components/bikepoints-search-result/bikepoints-search-result.component';
+import { PlaceSearchResultComponent } from './components/place-search-result/place-search-result.component';
+import { CtrlsOverlayComponent } from './components/ctrls-overlay/ctrls-overlay.component';
+import { JourneyPanelComponent } from './containers/journey-panel/journey-panel.component';
+import { MapSearchBoxComponent } from './containers/map-search-box/map-search-box.component';
 
 /**
  *  AppControl module is for overall app workflow
@@ -27,7 +23,6 @@ import {
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule,
     ReactiveFormsModule,
     MaterialModule,
 
@@ -37,16 +32,15 @@ import {
     ]),
   ],
   declarations: [
-    CtrlsOverlayComponent,
-    JourneyPlannerComponent,
-    MapSearchBoxComponent,
-    BikepointsSearchResultComponent,
     ConfirmJourneyComponent,
-    PlaceSearchResultComponent
+    BikepointsSearchResultComponent,
+    PlaceSearchResultComponent,
+    JourneyPanelComponent,
+    MapSearchBoxComponent,
+    CtrlsOverlayComponent,
   ],
-  providers: [],
   exports: [
-    CtrlsOverlayComponent
+    CtrlsOverlayComponent,
   ],
 })
 export class AppControlsModule { }

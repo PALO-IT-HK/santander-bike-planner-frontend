@@ -1,22 +1,28 @@
 import { Action } from '@ngrx/store';
 
-import { AppState, BikePoint, MapLocation } from '../models';
+import { AppState, BikePoint, MapLocation, Journey } from '../models';
 
 export namespace AppControlActions {
   export const SET_APP_STATE = '[AppCtrl] Set State';
+  export const RESET_APP_STATE = '[AppCtrl] Reset State';
   export const SET_FROM_FIELD = '[AppCtrl] Set From Field';
   export const SET_TO_FIELD = '[AppCtrl] Set To Field';
-  export const SELECT_FROM_BIKEPOINT = '[AppCtrl] From Bike point';
-  export const SELECT_TO_BIKEPOINT = '[AppCtrl] To Bike point';
   export const SEARCH_PLACE = '[AppCtrl] Search Place';
   export const UPDATE_PLACE_SEARCH_RESULT = '[AppCtrl] Update Place Search Result';
   export const SEARCH_BIKEPOINT = '[AppCtrl] Search Bikepoint';
   export const UPDATE_BIKEPOINT_SEARCH_RESULT = '[AppCtrl] Update Bikepoint Search Result';
+  export const QUERY_JOURNEY = '[AppCtrl] Query Journey';
 
   export class SetAppStateAction implements Action {
     readonly type = SET_APP_STATE;
 
     constructor(public payload: AppState) { }
+  }
+
+  export class ResetAppStateAction implements Action {
+    readonly type = RESET_APP_STATE;
+
+    constructor(public payload?: any) { }
   }
 
   export class SetFromFieldAction implements Action {
@@ -29,18 +35,6 @@ export namespace AppControlActions {
     readonly type = SET_TO_FIELD;
 
     constructor(public payload: string) { }
-  }
-
-  export class SelectFromBikepointAction implements Action {
-    readonly type = SELECT_FROM_BIKEPOINT;
-
-    constructor(public payload: BikePoint) { }
-  }
-
-  export class SelectToBikepointAction implements Action {
-    readonly type = SELECT_TO_BIKEPOINT;
-
-    constructor(public payload: BikePoint) { }
   }
 
   export class SearchPlaceAction implements Action {
@@ -67,16 +61,24 @@ export namespace AppControlActions {
     constructor(public payload: BikePoint[]) { }
   }
 
+  export class QueryJourneyAction implements Action {
+    readonly type = QUERY_JOURNEY;
+
+    constructor(public payload: {
+      start: BikePoint,
+      end: BikePoint
+    }) {}
+  }
 
   export type Actions
     = SetAppStateAction
+    | ResetAppStateAction
     | SetFromFieldAction
     | SetToFieldAction
-    | SelectFromBikepointAction
-    | SelectToBikepointAction
     | SearchPlaceAction
     | UpdatePlaceSearchResultAction
     | SearchBikepointAction
     | UpdateBikepointSearchResultAction
+    | QueryJourneyAction
     ;
 }

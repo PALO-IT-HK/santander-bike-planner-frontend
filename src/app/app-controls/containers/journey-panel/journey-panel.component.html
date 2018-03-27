@@ -1,7 +1,7 @@
 <span class="journey-planner-container" [ngClass]="{'confirm-state': appState === 'Confirm Journey'}">
   <div class="planner-wrapper">
     <div class="header">
-      <button mat-button class="cancel-button" (click)="closePlanner()">
+      <button mat-button class="cancel-button" (click)="closePanel()">
         Cancel
       </button>
     </div>
@@ -36,5 +36,7 @@
       ></app-bikepoints-search-result>
   </div>
   <!-- Confirm Journey-->
-  <app-confirm-journey *ngIf="appState === 'Confirm Journey'" (confirm)="confirmJourney()"></app-confirm-journey>
+  <app-confirm-journey *ngIf="appState === 'Confirm Journey'"
+    [duration]="journey?.duration"
+    (confirm)="confirmJourney()"></app-confirm-journey>
 </span>

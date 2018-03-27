@@ -6,7 +6,7 @@ import { MapSearchBoxComponent } from './map-search-box.component';
 import { StoreModule } from '@ngrx/store';
 import { RootReducer } from '../../../reducers';
 
-import { PlaceService } from '../../../bikepoints';
+import { PlaceService } from '../../../bikepoints/services/place.service';
 import { PlaceServiceMock } from '../../../bikepoints/services/place.service.mock';
 import { AppControlReducer } from '../../app-controls.reducer';
 

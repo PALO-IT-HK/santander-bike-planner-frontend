@@ -2,5 +2,7 @@
   <app-map-search-box *ngSwitchCase="'Normal'"></app-map-search-box>
   <!-- TODO: Component for showing journey information-->
   <span class="placeholder" *ngSwitchCase="'In Journey'"></span>
-  <app-journey-planner *ngSwitchDefault [appState]="appState"></app-journey-planner>
+  <app-journey-panel *ngSwitchDefault
+    [journey]="journey"
+    [appState]="appState"></app-journey-panel>
 </section>

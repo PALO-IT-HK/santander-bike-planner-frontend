@@ -2,7 +2,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { AppControlActions } from './app-controls.action';
 
-import { AppState, BikePoint, MapLocation } from '../models';
+import { AppState, BikePoint, MapLocation, Journey } from '../models';
+import { RootReducer } from '../reducers';
 
 export namespace AppControlReducer {
   export const name = 'appCtrl';
@@ -12,8 +13,6 @@ export namespace AppControlReducer {
     appState: AppState;
     fromField: string;
     toField: string;
-    fromLoc: BikePoint | null;
-    toLoc: BikePoint | null;
     placeSearchResults: MapLocation[];
     bikepointSearchResults: BikePoint[];
   }
@@ -22,8 +21,6 @@ export namespace AppControlReducer {
     appState: AppState.NORMAL,
     fromField: '',
     toField: '',
-    fromLoc: null,
-    toLoc: null,
     placeSearchResults: [],
     bikepointSearchResults: [],
   };
@@ -41,13 +38,9 @@ export namespace AppControlReducer {
       selectState,
       (state: State) => state.toField
     ),
-    fromLoc: createSelector(
+    haveSearchResults: createSelector(
       selectState,
-      (state: State) => state.fromLoc
-    ),
-    toLoc: createSelector(
-      selectState,
-      (state: State) => state.toLoc
+      (state: State) => state.placeSearchResults.length > 0 || state.bikepointSearchResults.length > 0
     ),
     placeSearchResults: createSelector(
       selectState,
@@ -56,10 +49,6 @@ export namespace AppControlReducer {
     bikepointSearchResults: createSelector(
       selectState,
       (state: State) => state.bikepointSearchResults
-    ),
-    haveSearchResults: createSelector(
-      selectState,
-      (state: State) => state.placeSearchResults.length > 0 || state.bikepointSearchResults.length > 0
     ),
   };
 
@@ -73,6 +62,15 @@ export namespace AppControlReducer {
           ...state,
           appState: action.payload,
         };
+      case AppControlActions.RESET_APP_STATE:
+        return {
+          ...state,
+          appState: AppState.NORMAL,
+          fromLoc: null,
+          toLoc: null,
+          fromField: '',
+          toField: '',
+        };
       case AppControlActions.SET_FROM_FIELD:
         return {
           ...state,
@@ -82,16 +80,6 @@ export namespace AppControlReducer {
         return {
           ...state,
           toField: action.payload,
-        };
-      case AppControlActions.SELECT_FROM_BIKEPOINT:
-        return {
-          ...state,
-          fromLoc: action.payload,
-        };
-      case AppControlActions.SELECT_TO_BIKEPOINT:
-        return {
-          ...state,
-          toLoc: action.payload,
         };
       case AppControlActions.UPDATE_BIKEPOINT_SEARCH_RESULT:
         return {

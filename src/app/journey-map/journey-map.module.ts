@@ -11,24 +11,17 @@ import { environment } from '../../environments/environment';
 import { MaterialModule } from '../material.module';
 import { BikepointsModule } from '../bikepoints/bikepoints.module';
 
-import { JourneyMapEffects, JourneyMapReducer } from './index';
+import { JourneyMapEffects } from './journey-map.effect';
+import { JourneyMapReducer } from './journey-map.reducer';
 
-// Dump Components
-import {
-  BikepointInfoComponent,
-  BikepointMarkerComponent
-} from './components';
-
-// Smart Components
-import {
-  MapComponent
-} from './containers';
+import { JourneyMapComponentsModule } from './components/components.module';
+import { JourneyMapComponent } from './containers/journey-map/journey-map.component';
 
 @NgModule({
   imports: [
     CommonModule,
     BikepointsModule,
-    MaterialModule,
+    JourneyMapComponentsModule,
     NguiMapModule.forRoot({
       apiUrl: `https://maps.google.com/maps/api/js?libraries=places&key=${environment.googleMapsAPIKey}`
     }),
@@ -39,12 +32,10 @@ import {
     ]),
   ],
   declarations: [
-    MapComponent,
-    BikepointInfoComponent,
-    BikepointMarkerComponent
+    JourneyMapComponent,
   ],
   exports: [
-    MapComponent
+    JourneyMapComponent,
   ],
 })
 export class JourneyMapModule { }

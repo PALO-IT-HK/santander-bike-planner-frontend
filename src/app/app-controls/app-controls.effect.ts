@@ -6,9 +6,13 @@ import { Observable } from 'rxjs/Observable';
 
 import { AppControlActions } from './app-controls.action';
 import { AppControlReducer } from './app-controls.reducer';
-import { BikePointsService, PlaceService } from '../bikepoints';
 import { AppState, BikePoint } from '../models';
 import { JourneyMapActions } from '../journey-map/journey-map.action';
+
+import { PlaceService } from '../bikepoints/services/place.service';
+import { BikePointsService } from '../bikepoints/services/bikepoints.service';
+import { JourneyService } from '../bikepoints/services/journey.service';
+import { JourneyMapReducer } from '../journey-map/journey-map.reducer';
 
 @Injectable()
 export class AppControlEffects {
@@ -22,15 +26,34 @@ export class AppControlEffects {
   @Effect()
   appState$: Observable<Action> = this.actions$
     .ofType(AppControlActions.SET_APP_STATE)
-    .switchMap((action: AppControlActions.SetAppStateAction) => {
+    .do((action: AppControlActions.SetAppStateAction) => {
       switch (action.payload) {
         case AppState.CONFIRM_JOURNEY:
         case AppState.IN_JOURNEY:
-          return [new JourneyMapActions.PopulateBikepointsAction([])];
+          this.journeyStore.dispatch(new JourneyMapActions.PopulateBikepointsAction([]));
+          this.journeyStore.dispatch(new JourneyMapActions.ToggleAutoFetchBikePointAction(false));
+          break;
         default:
-          return [];
+          this.journeyStore.dispatch(new JourneyMapActions.ToggleAutoFetchBikePointAction(true));
+          this.journeyStore.dispatch(new JourneyMapActions.SetJourneyAction(null));
       }
-    });
+    })
+    .switchMap(() => []);
+
+  @Effect()
+  confirmJourney$: Observable<Action> = this.actions$
+    .ofType(AppControlActions.SET_APP_STATE)
+    .filter((action: AppControlActions.SetAppStateAction) => action.payload === AppState.CONFIRM_JOURNEY)
+    .withLatestFrom(
+      this.journeyStore.select(JourneyMapReducer.selectors.fromLoc),
+      this.journeyStore.select(JourneyMapReducer.selectors.toLoc),
+    )
+    .switchMap(([action, fromLoc, toLoc]) => [
+      new AppControlActions.QueryJourneyAction({
+        start: fromLoc,
+        end: toLoc,
+      }),
+    ]);
 
   /**
    * When SEARCH_BIKEPOINT action is dispatched, do appropriate searching and
@@ -52,11 +75,11 @@ export class AppControlEffects {
    */
   @Effect()
   fromLoc$: Observable<Action> = this.actions$
-    .ofType(AppControlActions.SELECT_FROM_BIKEPOINT)
-    .filter((action: AppControlActions.SelectFromBikepointAction) => Boolean(action.payload))
-    .withLatestFrom(this.store.select(AppControlReducer.selectors.toLoc))
+    .ofType(JourneyMapActions.SELECT_FROM_BIKEPOINT)
+    .filter((action: JourneyMapActions.SelectFromBikepointAction) => Boolean(action.payload))
+    .withLatestFrom(this.journeyStore.select(JourneyMapReducer.selectors.toLoc))
     .switchMap(([action, toLoc]: [
-      AppControlActions.SelectFromBikepointAction,
+      JourneyMapActions.SelectFromBikepointAction,
       BikePoint | null
     ]) => {
       return [
@@ -81,11 +104,11 @@ export class AppControlEffects {
    */
   @Effect()
   toLoc$: Observable<Action> = this.actions$
-    .ofType(AppControlActions.SELECT_TO_BIKEPOINT)
-    .filter((action: AppControlActions.SelectToBikepointAction) => Boolean(action.payload))
-    .withLatestFrom(this.store.select(AppControlReducer.selectors.fromLoc))
+    .ofType(JourneyMapActions.SELECT_TO_BIKEPOINT)
+    .filter((action: JourneyMapActions.SelectToBikepointAction) => Boolean(action.payload))
+    .withLatestFrom(this.journeyStore.select(JourneyMapReducer.selectors.fromLoc))
     .switchMap(([action, fromLoc]: [
-      AppControlActions.SelectToBikepointAction,
+      JourneyMapActions.SelectToBikepointAction,
       BikePoint | null
     ]) => {
       return [
@@ -105,10 +128,27 @@ export class AppControlEffects {
       ];
     });
 
+  /**
+   * Handle journey query action
+   */
+  @Effect()
+  obtainJourney$: Observable<Action> = this.actions$
+    .ofType(AppControlActions.QUERY_JOURNEY)
+    .switchMap((action: AppControlActions.QueryJourneyAction) => this.journeyService.getJourney(
+      action.payload.start,
+      action.payload.end,
+    ))
+    .switchMap((result) => {
+      return [
+        new JourneyMapActions.SetJourneyAction(result)
+      ];
+    });
+
   constructor(
     private actions$: Actions,
-    private store: Store<AppControlReducer.State>,
+    private journeyStore: Store<JourneyMapReducer.State>,
     private placeService: PlaceService,
     private bpService: BikePointsService,
+    private journeyService: JourneyService,
   ) { }
 }

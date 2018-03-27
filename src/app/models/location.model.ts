@@ -6,3 +6,8 @@ export interface LatLong {
 export interface MapLocation extends LatLong {
   commonName: string;
 }
+
+export interface MapBoundary {
+  ne: LatLong;
+  sw: LatLong;
+}

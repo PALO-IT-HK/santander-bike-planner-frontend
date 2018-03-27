@@ -6,10 +6,11 @@ import { Observable } from 'rxjs/Observable';
 
 import { AppState, BikePoint } from '../models';
 import { RootReducer } from '../reducers';
-import { AppControlReducer } from '../app-controls';
-import { BikePointsService } from '../bikepoints';
+import { AppControlReducer } from '../app-controls/app-controls.reducer';
+import { BikePointsService } from '../bikepoints/services/bikepoints.service';
 
 import { JourneyMapActions } from './journey-map.action';
+import { JourneyMapReducer } from './journey-map.reducer';
 
 @Injectable()
 export class JourneyMapEffects {
@@ -18,27 +19,35 @@ export class JourneyMapEffects {
     .ofType(JourneyMapActions.UPDATE_MAP_BOUNDARY)
     // Check if we are displaying bikepoint
     .debounceTime(1000)
-    .combineLatest(this.store.select(AppControlReducer.selectors.appState))
-    .switchMap(([action, appState]: [JourneyMapActions.UpdateMapBoundaryAction, AppState]) => {
-      // Update bikepoints only if the map is displaying them.
-      switch (appState) {
-        case AppState.NORMAL:
-        case AppState.FROM_INPUT:
-        case AppState.TO_INPUT:
-          return this.bpServices.listBikePointsByBounds(action.payload.ne, action.payload.sw)
-            .switchMap((result: BikePoint[]) => {
-              return [
-                new JourneyMapActions.PopulateBikepointsAction(result),
-              ];
-            });
-        default:
-          return [];
+    .combineLatest(this.store.select(JourneyMapReducer.selectors.autofetchBikepoints))
+    .switchMap(([action, autofetch]: [JourneyMapActions.UpdateMapBoundaryAction, boolean]) => {
+      // Update bikepoints only if autofetch is set
+      if (autofetch) {
+        return [new JourneyMapActions.FetchBikepointsAction(action.payload)];
       }
+      return [];
     });
+
+  @Effect()
+  fetchBikepointBoundary$: Observable<Action> = this.actions$
+    .ofType(JourneyMapActions.FETCH_BIKEPOINTS)
+    .switchMap((action: JourneyMapActions.FetchBikepointsAction) =>
+      this.bpServices.listBikePointsByBounds(action.payload.ne, action.payload.sw))
+    .switchMap((result: BikePoint[]) => {
+      return [new JourneyMapActions.PopulateBikepointsAction(result)];
+    });
+
+  // @Effect()
+  // resetMapState$: Observable<Action> = this.actions$
+  //   .ofType(JourneyMapActions.RESET_MAP_STATE_ACTION)
+  //   .withLatestFrom(this.store.select(JourneyMapReducer.selectors.mapBoundary))
+  //   .switchMap(([action, mapBoundary]) => {
+  //     return [new JourneyMapActions.FetchBikepointsAction(mapBoundary)];
+  //   });
 
   constructor(
     private actions$: Actions,
-    private store: Store<RootReducer.State>,
+    private store: Store<JourneyMapReducer.State>,
     private bpServices: BikePointsService,
   ) { }
 }

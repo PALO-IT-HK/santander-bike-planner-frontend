@@ -18,8 +18,8 @@ import { RootReducer } from './reducers';
 import './operators'; // Observable operators
 
 import { AppControlsModule } from './app-controls/app-controls.module';
-import { JourneyMapModule } from './journey-map/journey-map.module';
 import { AppComponent } from './app.component';
+import { JourneyPlannerModule } from './journey-planner/journey-planner.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,6 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule,
 
     /**
      * Set up ngrx state store
@@ -39,12 +38,6 @@ import { AppComponent } from './app.component';
         metaReducers: RootReducer.metaReducers
       },
     ),
-    /**
-     * Set up DevTools for state store
-     */
-    !environment.production ? StoreDevtoolsModule.instrument({
-      maxAge: 30,
-    }) : [],
 
     /**
      * Set up ngrx effects
@@ -52,10 +45,14 @@ import { AppComponent } from './app.component';
     EffectsModule.forRoot([]),
 
     /**
-     * Application modules
+     * Set up DevTools for state store
      */
-    JourneyMapModule,
+    !environment.production ? StoreDevtoolsModule.instrument({
+      maxAge: 30,
+    }) : [],
+
     AppControlsModule,
+    JourneyPlannerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

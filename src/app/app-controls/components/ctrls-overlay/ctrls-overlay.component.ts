@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { AppState } from '../../../models';
+import { AppState, Journey } from '../../../models';
 
 @Component({
   selector: 'app-ctrls-overlay',
@@ -9,6 +9,7 @@ import { AppState } from '../../../models';
 })
 export class CtrlsOverlayComponent implements OnInit {
   @Input() appState: AppState;
+  @Input() journey: Journey;
 
   constructor() { }
 

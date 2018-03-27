@@ -12,7 +12,7 @@ export class ConfirmJourneyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.duration = 12;
+    this.duration = 0;
   }
 
   confirmJourney($event) {
