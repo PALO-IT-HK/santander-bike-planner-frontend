@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { JourneyMapModule } from './journey-map';
+import { JourneyMapModule } from './journey-map/journey-map.module';
 
 import './operators'; // Observable operators
 import { StoreModule } from '@ngrx/store';

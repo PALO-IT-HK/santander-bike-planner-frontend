@@ -9,7 +9,7 @@ import { RootReducer } from '../reducers';
 import { AppControlReducer } from '../app-controls';
 import { BikePointsService } from '../bikepoints';
 
-import { JourneyMapActions, JourneyMapReducer } from './index';
+import { JourneyMapActions } from './journey-map.action';
 
 @Injectable()
 export class JourneyMapEffects {

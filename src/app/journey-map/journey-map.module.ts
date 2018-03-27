@@ -9,10 +9,9 @@ import { NguiMapModule } from '@ngui/map';
 import { environment } from '../../environments/environment';
 
 import { MaterialModule } from '../material.module';
-import { BikepointsModule } from '../bikepoints';
+import { BikepointsModule } from '../bikepoints/bikepoints.module';
 
-import { JourneyMapReducer } from './journey-map.reducer';
-import { JourneyMapEffects } from './journey-map.effect';
+import { JourneyMapEffects, JourneyMapReducer } from './index';
 
 // Dump Components
 import {

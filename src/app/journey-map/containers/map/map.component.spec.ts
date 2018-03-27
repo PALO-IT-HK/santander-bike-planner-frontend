@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { BikepointsModule } from '../../../bikepoints';
+import { BikepointsModule } from '../../../bikepoints/bikepoints.module';
 
 import { JourneyMapReducer } from '../../journey-map.reducer';
 import { MapComponent } from './map.component';

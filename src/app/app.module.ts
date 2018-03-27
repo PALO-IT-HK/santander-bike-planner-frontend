@@ -17,8 +17,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RootReducer } from './reducers';
 import './operators'; // Observable operators
 
-import { JourneyMapModule } from './journey-map';
-import { AppControlsModule } from './app-controls';
+import { AppControlsModule } from './app-controls/app-controls.module';
+import { JourneyMapModule } from './journey-map/journey-map.module';
 import { AppComponent } from './app.component';
 
 @NgModule({
