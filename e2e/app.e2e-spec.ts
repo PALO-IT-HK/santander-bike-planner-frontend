@@ -9,7 +9,7 @@ describe('santander-bike-planner App', () => {
 
   it('should be able to display map', () => {
     page.navigateTo();
-    expect(page.getMap()).toEqual('app-map');
+    expect(page.getMap()).toEqual('app-journey-map');
   });
 
   // it('should find markers on map', () => {

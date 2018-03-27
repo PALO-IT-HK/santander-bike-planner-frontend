@@ -6,10 +6,10 @@ export class AppPage {
   }
 
   getMap() {
-    return element(by.css('app-root app-map')).getTagName();
+    return element(by.css('app-root app-journey-map')).getTagName();
   }
 
   getMarkers() {
-    return element.all(by.css('app-root app-map ngui-map div.bikepointsMarkers marker'));
+    return element.all(by.css('app-root app-journey-map ngui-map div.bikepointsMarkers marker'));
   }
 }
