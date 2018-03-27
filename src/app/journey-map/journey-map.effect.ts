@@ -4,13 +4,12 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { BikePoint } from '../models';
+import { AppState, BikePoint } from '../models';
 import { RootReducer } from '../reducers';
+import { AppControlReducer } from '../app-controls';
 import { BikePointsService } from '../bikepoints';
-import { AppControlReducer, AppState } from '../app-controls';
 
-import { JourneyMapActions } from './journey-map.action';
-import { JourneyMapReducer } from './journey-map.reducer';
+import { JourneyMapActions, JourneyMapReducer } from './index';
 
 @Injectable()
 export class JourneyMapEffects {

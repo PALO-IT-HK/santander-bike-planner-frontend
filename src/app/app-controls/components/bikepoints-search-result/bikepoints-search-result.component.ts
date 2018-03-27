@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+
 import { BikePoint } from '../../../models';
 
 @Component({
@@ -15,6 +16,7 @@ export class BikepointsSearchResultComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Proxy the click event as component output
   selectBikepoint(bikepoint: BikePoint) {
     this.select.emit(bikepoint);
   }

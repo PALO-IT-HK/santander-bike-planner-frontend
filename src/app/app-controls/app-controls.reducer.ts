@@ -2,9 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { AppControlActions } from './app-controls.action';
 
-import { BikePoint, MapLocation } from '../models';
-
-import { AppState } from './models';
+import { AppState, BikePoint, MapLocation } from '../models';
 
 export namespace AppControlReducer {
   export const name = 'appCtrl';

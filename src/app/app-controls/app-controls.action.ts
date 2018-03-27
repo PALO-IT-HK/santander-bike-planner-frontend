@@ -1,8 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { AppState } from './models';
-
-import { BikePoint, MapLocation } from '../models';
+import { AppState, BikePoint, MapLocation } from '../models';
 
 export namespace AppControlActions {
   export const SET_APP_STATE = '[AppCtrl] Set State';

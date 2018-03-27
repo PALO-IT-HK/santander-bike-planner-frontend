@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
 
-import { AppControlActions, AppState, AppControlReducer } from './app-controls';
 import { RootReducer } from './reducers';
-import { BikePoint } from './models';
+import { AppState, BikePoint } from './models';
+import { AppControlActions, AppControlReducer } from './app-controls';
 
 @Component({
   selector: 'app-root',

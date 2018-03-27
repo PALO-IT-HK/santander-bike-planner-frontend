@@ -21,7 +21,6 @@ describe('MapComponent', () => {
           journeyMap: JourneyMapReducer.reducer,
           appCtrl: AppControlReducer.reducer,
         }),
-        EffectsModule.forRoot([]),
       ],
       declarations: [ MapComponent ],
       schemas: [NO_ERRORS_SCHEMA]

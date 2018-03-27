@@ -1,18 +1,17 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { NguiMapComponent } from '@ngui/map';
 
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 
-import { LatLong, MapLocation, BikePoint } from '../../../models';
-import { AppState, AppControlActions, AppControlReducer } from '../../../app-controls';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
-import { JourneyMapActions } from '../../journey-map.action';
-import { JourneyMapReducer } from '../../journey-map.reducer';
 import { RootReducer } from '../../../reducers';
-import { NguiMapComponent } from '@ngui/map';
+import { AppState, LatLong, MapLocation, BikePoint } from '../../../models';
+import { AppControlActions, AppControlReducer } from '../../../app-controls';
+
+import { JourneyMapActions, JourneyMapReducer } from '../../index';
 
 @Component({
   selector: 'app-map',
@@ -50,7 +49,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<RootReducer.State>,
-    private actions$: Actions,
   ) { }
 
   ngOnInit() {

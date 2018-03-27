@@ -5,15 +5,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { BikePoint, MapLocation } from '../../../models';
+import { AppState, BikePoint, MapLocation } from '../../../models';
 import { RootReducer } from '../../../reducers';
-import { JourneyMapActions } from '../../../journey-map/journey-map.action';
+import { JourneyMapActions } from '../../../journey-map';
 
-
-import { PlaceService } from '../../services';
-import { AppState } from '../../models';
-import { AppControlActions } from '../../app-controls.action';
-import { AppControlReducer } from '../../app-controls.reducer';
+import { AppControlActions, AppControlReducer } from '../../index';
 
 @Component({
   selector: 'app-journey-planner',
@@ -33,7 +29,6 @@ export class JourneyPlannerComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<RootReducer.State>,
-    private placeService: PlaceService,
   ) { }
 
   ngOnInit() {

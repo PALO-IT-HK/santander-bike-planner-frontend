@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { AppState } from '../../models';
+import { AppState } from '../../../models';
 
 @Component({
   selector: 'app-ctrls-overlay',

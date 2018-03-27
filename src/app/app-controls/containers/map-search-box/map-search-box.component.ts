@@ -4,13 +4,12 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
+import { AppState } from '../../../models';
 import { RootReducer } from '../../../reducers';
-import { JourneyMapActions } from '../../../journey-map/journey-map.action';
+import { JourneyMapActions } from '../../../journey-map';
 
-import { AppState } from '../../models';
+import { AppControlActions, AppControlReducer } from '../../index';
 import { PlaceService } from '../../services';
-import { AppControlActions } from '../../app-controls.action';
-import { AppControlReducer } from '../../app-controls.reducer';
 
 @Component({
   selector: 'app-map-search-box',
