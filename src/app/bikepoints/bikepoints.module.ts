@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { BikePointsService } from './services';
+import { BikePointsService, PlaceService } from './services';
 
 /**
  *  Bikepoint module is used for grouping up services required to access
@@ -13,6 +13,7 @@ import { BikePointsService } from './services';
   ],
   providers: [
     BikePointsService,
+    PlaceService,
   ]
 })
 export class BikepointsModule { }

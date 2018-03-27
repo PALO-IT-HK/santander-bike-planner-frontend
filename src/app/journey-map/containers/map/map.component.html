@@ -20,6 +20,10 @@
       <app-bikepoint-marker [bikepoint]="bikepoint"></app-bikepoint-marker>
     </custom-marker>
   </div>
+  <div class="routerMarkers">
+    <marker *ngIf="fromLoc" [position]="fromLoc"></marker>
+    <marker *ngIf="toLoc" [position]="toLoc"></marker>
+  </div>
   <info-window [id]="infoWindowId" [pixelOffset]="infoWindowOffset">
     <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
   </info-window>

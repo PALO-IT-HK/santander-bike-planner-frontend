@@ -10,7 +10,6 @@ import { MaterialModule } from '../material.module';
 import { AppControlReducer } from './app-controls.reducer';
 import { AppControlEffects } from './app-controls.effect';
 
-import { PlaceService } from './services';
 import {
   CtrlsOverlayComponent,
   ConfirmJourneyComponent,
@@ -45,9 +44,7 @@ import {
     ConfirmJourneyComponent,
     PlaceSearchResultComponent
   ],
-  providers: [
-    PlaceService,
-  ],
+  providers: [],
   exports: [
     CtrlsOverlayComponent
   ],

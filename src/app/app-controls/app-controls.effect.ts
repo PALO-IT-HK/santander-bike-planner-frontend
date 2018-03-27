@@ -4,10 +4,9 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { PlaceService } from './services';
 import { AppControlActions } from './app-controls.action';
 import { AppControlReducer } from './app-controls.reducer';
-import { BikePointsService } from '../bikepoints';
+import { BikePointsService, PlaceService } from '../bikepoints';
 import { AppState, BikePoint } from '../models';
 import { JourneyMapActions } from '../journey-map/journey-map.action';
 

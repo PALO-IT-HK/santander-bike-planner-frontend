@@ -9,7 +9,7 @@ import { RootReducer } from '../../../reducers';
 import { JourneyMapActions } from '../../../journey-map';
 
 import { AppControlActions, AppControlReducer } from '../../index';
-import { PlaceService } from '../../services';
+import { PlaceService } from '../../../bikepoints';
 
 @Component({
   selector: 'app-map-search-box',

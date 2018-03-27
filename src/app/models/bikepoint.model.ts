@@ -6,6 +6,10 @@ export interface BikePointOccupancy {
   vacant: number;
 }
 
+export interface BikePointOccupancyHash {
+  [bikepointId: string]: BikePointOccupancy;
+}
+
 export interface BikePoint extends MapLocation {
   id: string;
   occupancy?: BikePointOccupancy;

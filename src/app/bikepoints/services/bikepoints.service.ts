@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { LatLong, BikePoint } from '../../models';
+import { LatLong, BikePoint, BikePointOccupancy, BikePointOccupancyHash } from '../../models';
 
 @Injectable()
 export class BikePointsService {
@@ -37,9 +37,9 @@ export class BikePointsService {
       lat: bp.lat,
       lng: bp.lon,
       occupancy: {
-        total: bp.NbDocks,
-        bike: bp.NbBikes,
-        vacant: bp.NbEmptyDocks,
+        total: Number.parseInt(bp.NbDocks),
+        bike: Number.parseInt(bp.NbBikes),
+        vacant: Number.parseInt(bp.NbEmptyDocks),
       }
     })));
   }
@@ -57,5 +57,26 @@ export class BikePointsService {
       lng: entry.lon,
       // Search endpoint does not return bikepoint occupancy
     })));
+  }
+
+  public fetchOccupancyDetail(bikepointId: string) {
+    const params: HttpParams = new HttpParams()
+      .set('bikepoint', bikepointId);
+
+    return this.http.get(`${environment.apiBase}/bikepoint/search`, {
+      params
+    }).map((result: any[]): BikePointOccupancyHash => result.reduce(
+      (accum: BikePointOccupancyHash, entry): BikePointOccupancyHash => {
+        return {
+          ...accum,
+          [entry.id]: {
+            total: Number.parseInt(entry.totalDocks),
+            bike: Number.parseInt(entry.bikesCount),
+            vacant: Number.parseInt(entry.emptyDocks),
+          },
+        };
+      },
+      {}
+    ));
   }
 }

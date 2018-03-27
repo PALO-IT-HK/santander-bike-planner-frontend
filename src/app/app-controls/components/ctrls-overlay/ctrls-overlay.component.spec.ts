@@ -6,8 +6,8 @@ import { CtrlsOverlayComponent } from './ctrls-overlay.component';
 import { StoreModule } from '@ngrx/store';
 import { RootReducer } from '../../../reducers';
 
-import { PlaceService } from '../../services';
-import { PlaceServiceMock } from '../../services/place.service.mock';
+import { PlaceService } from '../../../bikepoints/services';
+import { PlaceServiceMock } from '../../../bikepoints/services/place.service.mock';
 import { AppControlReducer } from '../../app-controls.reducer';
 
 describe('CtrlsOverlayComponent', () => {
