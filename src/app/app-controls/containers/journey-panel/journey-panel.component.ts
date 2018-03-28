@@ -18,11 +18,14 @@ import { JourneyMapReducer } from '../../../journey-map/journey-map.reducer';
   styleUrls: ['./journey-panel.component.scss']
 })
 export class JourneyPanelComponent implements OnInit, OnDestroy {
+  readonly neighbourhoodZoomLevel = 16;
+
   @Input() appState: AppState;
   @Input() journey: Journey;
   subscriptions: Subscription[] = [];
 
   haveSearchResults$: Observable<boolean> = this.store.select(AppControlReducer.selectors.haveSearchResults);
+  displaySearchResults$: Observable<boolean> = this.store.select(AppControlReducer.selectors.displaySearchResults);
   bikeSearchResults$: Observable<BikePoint[]> = this.store.select(AppControlReducer.selectors.bikepointSearchResults);
   placeSearchResults$: Observable<MapLocation[]> = this.store.select(AppControlReducer.selectors.placeSearchResults);
 
@@ -105,14 +108,40 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
    * When the from-field have focus, make sure the app is in `From_Input` mode
    */
   fromFieldOnFocus() {
-    this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT));
+    Observable.of(true)
+      .delay(200)
+      .switchMap(() => this.journeyStore.select(JourneyMapReducer.selectors.fromLoc))
+      .subscribe((fromLoc: BikePoint) => {
+        if (fromLoc) {
+          this.store.dispatch(new JourneyMapActions.SetMapCenterAction({
+            lat: fromLoc.lat,
+            lng: fromLoc.lng,
+          }));
+          this.store.dispatch(new JourneyMapActions.SetMapZoomAction(this.neighbourhoodZoomLevel));
+        }
+        this.store.dispatch(new AppControlActions.ToggleDisplaySearchResultAction(true));
+        this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT));
+      });
   }
 
   /**
    * When the to-field have focus, make sure the app is in `To_Input` mode
    */
   toFieldOnFocus() {
-    this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));
+    Observable.of(true)
+      .delay(200)
+      .switchMap(() => this.journeyStore.select(JourneyMapReducer.selectors.toLoc))
+      .subscribe((toLoc: BikePoint) => {
+        if (toLoc) {
+          this.store.dispatch(new JourneyMapActions.SetMapCenterAction({
+            lat: toLoc.lat,
+            lng: toLoc.lng,
+          }));
+          this.store.dispatch(new JourneyMapActions.SetMapZoomAction(this.neighbourhoodZoomLevel));
+        }
+        this.store.dispatch(new AppControlActions.ToggleDisplaySearchResultAction(true));
+        this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));
+      });
   }
 
   /**
@@ -120,7 +149,7 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
    * are selected.  Switch to confirm journey and get journey path if so.
    */
   fieldOnBlur() {
-    Observable.of()
+    Observable.of(true)
       .delay(200)
       .switchMap(() => this.journeyStore.select(JourneyMapReducer.selectors.fromLoc))
       .withLatestFrom(this.journeyStore.select(JourneyMapReducer.selectors.toLoc))
@@ -131,8 +160,10 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
       });
   }
 
-  selectPlace() {
-
+  selectPlace(place: MapLocation) {
+    this.store.dispatch(new JourneyMapActions.SetMapCenterAction(place.commonName));
+    this.store.dispatch(new JourneyMapActions.SetMapZoomAction(this.neighbourhoodZoomLevel));
+    this.store.dispatch(new AppControlActions.ToggleDisplaySearchResultAction(false));
   }
 
   selectBikePoint(bikepoint: BikePoint) {

@@ -11,6 +11,7 @@ export namespace JourneyMapReducer {
 
   export interface State {
     mapCenter: string;
+    mapZoom: number;
     mapBoundary?: MapBoundary;
     bikepointInfoWindow: BikePoint | null;
     bikepoints: BikePoint[];
@@ -22,6 +23,7 @@ export namespace JourneyMapReducer {
 
   export const initialState: State = {
     mapCenter: 'Westminster, London',
+    mapZoom: 16,
     bikepointInfoWindow: null,
     bikepoints: [],
     autofetchBikepoints: true,
@@ -34,6 +36,10 @@ export namespace JourneyMapReducer {
     mapCenter: createSelector(
       selectState,
       (state: State) => state.mapCenter,
+    ),
+    mapZoom: createSelector(
+      selectState,
+      (state: State) => state.mapZoom,
     ),
     mapBoundary: createSelector(
       selectState,
@@ -84,6 +90,12 @@ export namespace JourneyMapReducer {
         return {
           ...state,
           mapCenter: action.payload || '',
+        };
+
+      case JourneyMapActions.SET_MAP_ZOOM_ACTION:
+        return {
+          ...state,
+          mapZoom: action.payload || 16,
         };
 
       case JourneyMapActions.UPDATE_MAP_BOUNDARY:

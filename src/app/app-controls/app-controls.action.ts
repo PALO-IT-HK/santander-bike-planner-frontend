@@ -12,6 +12,7 @@ export namespace AppControlActions {
   export const SEARCH_BIKEPOINT = '[AppCtrl] Search Bikepoint';
   export const UPDATE_BIKEPOINT_SEARCH_RESULT = '[AppCtrl] Update Bikepoint Search Result';
   export const QUERY_JOURNEY = '[AppCtrl] Query Journey';
+  export const TOGGLE_DISPLAY_SEARCH_RESULT = '[AppCtrl] Toggle Search Results Display';
 
   export class SetAppStateAction implements Action {
     readonly type = SET_APP_STATE;
@@ -70,6 +71,12 @@ export namespace AppControlActions {
     }) {}
   }
 
+  export class ToggleDisplaySearchResultAction implements Action {
+    readonly type = TOGGLE_DISPLAY_SEARCH_RESULT;
+
+    constructor(public payload: boolean) { }
+  }
+
   export type Actions
     = SetAppStateAction
     | ResetAppStateAction
@@ -80,5 +87,6 @@ export namespace AppControlActions {
     | SearchBikepointAction
     | UpdateBikepointSearchResultAction
     | QueryJourneyAction
+    | ToggleDisplaySearchResultAction
     ;
 }

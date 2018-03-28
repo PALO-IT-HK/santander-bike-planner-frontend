@@ -4,6 +4,7 @@ import { LatLong, BikePoint, MapBoundary, Journey } from '../models';
 export namespace JourneyMapActions {
   export const RESET_MAP_STATE_ACTION = '[JourneyMap] Reset Map State';
   export const SET_MAP_CENTER_ACTION = '[JourneyMap] Set Map Center';
+  export const SET_MAP_ZOOM_ACTION = '[JourneyMap] Set Map Zoom';
   export const UPDATE_MAP_BOUNDARY = '[JourneyMap] Update Map Boundary';
   export const GOTO_CURRENT_LOCATION = '[JourneyMap] Goto current location';
   export const FETCH_BIKEPOINTS = '[JourneyMap] Fetch Bikepoints by boundary';
@@ -23,7 +24,13 @@ export namespace JourneyMapActions {
   export class SetMapCenterAction implements Action {
     readonly type = SET_MAP_CENTER_ACTION;
 
-    constructor(public payload?: string) {}
+    constructor(public payload?: string | LatLong) {}
+  }
+
+  export class SetMapZoomAction implements Action {
+    readonly type = SET_MAP_ZOOM_ACTION;
+
+    constructor(public payload: number) { }
   }
 
   export class UpdateMapBoundaryAction implements Action {
@@ -83,6 +90,7 @@ export namespace JourneyMapActions {
   export type Actions
     = ResetMapStateAction
     | SetMapCenterAction
+    | SetMapZoomAction
     | UpdateMapBoundaryAction
     | GotoCurrentLocationAction
     | FetchBikepointsAction

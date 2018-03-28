@@ -13,6 +13,7 @@ export namespace AppControlReducer {
     appState: AppState;
     fromField: string;
     toField: string;
+    displaySearchResults: boolean;
     placeSearchResults: MapLocation[];
     bikepointSearchResults: BikePoint[];
   }
@@ -21,6 +22,7 @@ export namespace AppControlReducer {
     appState: AppState.NORMAL,
     fromField: '',
     toField: '',
+    displaySearchResults: false,
     placeSearchResults: [],
     bikepointSearchResults: [],
   };
@@ -41,6 +43,10 @@ export namespace AppControlReducer {
     haveSearchResults: createSelector(
       selectState,
       (state: State) => state.placeSearchResults.length > 0 || state.bikepointSearchResults.length > 0
+    ),
+    displaySearchResults: createSelector(
+      selectState,
+      (state: State) => state.displaySearchResults,
     ),
     placeSearchResults: createSelector(
       selectState,
@@ -74,22 +80,27 @@ export namespace AppControlReducer {
       case AppControlActions.SET_FROM_FIELD:
         return {
           ...state,
-          fromField: action.payload,
+          fromField: action.payload || '',
         };
       case AppControlActions.SET_TO_FIELD:
         return {
           ...state,
-          toField: action.payload,
+          toField: action.payload || '',
         };
       case AppControlActions.UPDATE_BIKEPOINT_SEARCH_RESULT:
         return {
           ...state,
-          bikepointSearchResults: action.payload
+          bikepointSearchResults: action.payload || []
         };
       case AppControlActions.UPDATE_PLACE_SEARCH_RESULT:
         return {
           ...state,
-          placeSearchResults: action.payload
+          placeSearchResults: action.payload || []
+        };
+      case AppControlActions.TOGGLE_DISPLAY_SEARCH_RESULT:
+        return {
+          ...state,
+          displaySearchResults: action.payload || false
         };
       default:
         return state;

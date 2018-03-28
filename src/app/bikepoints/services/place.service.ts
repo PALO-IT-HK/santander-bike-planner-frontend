@@ -11,16 +11,15 @@ export class PlaceService {
 
   public getPlaceAutoComplete(input) {
     const params: HttpParams = new HttpParams()
-      .set('query', String(input))
-      .set('types', 'geocode')
-      .set('key', environment.googleMapsAPIKey);
+      .set('input', String(input))
+      .set('types', 'geocode');
 
-    return this.http.get(`https://maps.googleapis.com/maps/api/place/textsearch/json`, {
+    return this.http.get(`${environment.apiBase}/place/autocomplete`, {
       params,
     });
   }
 
-  public getCurrentLocation() {
+  public getCurrentLocationFromGoogle() {
     const params: HttpParams = new HttpParams()
       .set('key', environment.googleGeoLocateAPIKey);
 

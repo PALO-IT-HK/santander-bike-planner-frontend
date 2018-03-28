@@ -1,0 +1,8 @@
+<div class="bikepoint-search-entry-wrapper" (click)="selectThis()"
+  [ngClass]="{'disabled': !occupancy}">
+  <mat-icon class="entry-avatar">place</mat-icon>
+  <div class="entry-text">
+    <span class="bikepoint-name">{{ bikepoint?.commonName }}</span>
+    <span class="occupancy">Occupancy information is unavailable.</span>
+  </div>
+</div>

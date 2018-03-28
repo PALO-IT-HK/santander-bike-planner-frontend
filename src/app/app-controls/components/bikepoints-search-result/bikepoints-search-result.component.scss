@@ -1,32 +1,3 @@
 div.bikepoints-search-result-wrapper {
   background: linear-gradient(rgba(232,232,232,1), rgba(0,0,0,0) 24px);
-
-  div.bikepoint-search-entry {
-    padding: 16px 40px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-
-    mat-icon {
-      color: rgb(64, 64, 64);
-    }
-
-    div.entry-text {
-      padding-left: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-
-      span.bikepoint-name {
-        color: rgb(64, 32, 196);
-        font-weight: 600px;
-      }
-
-      span.occupancy {
-        color: rgb(64, 64, 64);
-        font-size: 14px;
-      }
-    }
-  }
 }

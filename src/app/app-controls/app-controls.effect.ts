@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { AppControlActions } from './app-controls.action';
 import { AppControlReducer } from './app-controls.reducer';
-import { AppState, BikePoint } from '../models';
+import { AppState, BikePoint, MapLocation } from '../models';
 import { JourneyMapActions } from '../journey-map/journey-map.action';
 
 import { PlaceService } from '../bikepoints/services/place.service';
@@ -67,6 +67,23 @@ export class AppControlEffects {
     .switchMap((result: BikePoint[]) => {
       return [
         new AppControlActions.UpdateBikepointSearchResultAction(result)
+      ];
+    });
+
+  @Effect()
+  searchPlace$: Observable<Action> = this.actions$
+    .ofType(AppControlActions.SEARCH_PLACE)
+    .switchMap((action: AppControlActions.SearchPlaceAction) =>
+      this.placeService.getPlaceAutoComplete(action.payload))
+    .switchMap((result: any) => {
+      return [
+        new AppControlActions.UpdatePlaceSearchResultAction(
+          result.predictions.map((prediction): MapLocation => ({
+            commonName: prediction.description,
+            lat: 0,
+            lng: 0,
+          }))
+        )
       ];
     });
 

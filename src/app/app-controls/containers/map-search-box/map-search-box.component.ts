@@ -63,7 +63,7 @@ export class MapSearchBoxComponent implements OnInit, OnDestroy {
   }
 
   gotoCurrentLoc() {
-    const placeSubscription = this.placeService.getCurrentLocation().subscribe((loc: any) => {
+    const placeSubscription = this.placeService.getCurrentLocationFromGoogle().subscribe((loc: any) => {
       this.store.dispatch(new JourneyMapActions.SetMapCenterAction(`${loc.location.lat}, ${loc.location.lng}`));
       placeSubscription.unsubscribe();
     });

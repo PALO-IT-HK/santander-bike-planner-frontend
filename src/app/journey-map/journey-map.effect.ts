@@ -37,14 +37,6 @@ export class JourneyMapEffects {
       return [new JourneyMapActions.PopulateBikepointsAction(result)];
     });
 
-  // @Effect()
-  // resetMapState$: Observable<Action> = this.actions$
-  //   .ofType(JourneyMapActions.RESET_MAP_STATE_ACTION)
-  //   .withLatestFrom(this.store.select(JourneyMapReducer.selectors.mapBoundary))
-  //   .switchMap(([action, mapBoundary]) => {
-  //     return [new JourneyMapActions.FetchBikepointsAction(mapBoundary)];
-  //   });
-
   constructor(
     private actions$: Actions,
     private store: Store<JourneyMapReducer.State>,

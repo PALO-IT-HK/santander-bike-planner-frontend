@@ -16,6 +16,8 @@ import { PlaceSearchResultComponent } from './components/place-search-result/pla
 import { CtrlsOverlayComponent } from './components/ctrls-overlay/ctrls-overlay.component';
 import { JourneyPanelComponent } from './containers/journey-panel/journey-panel.component';
 import { MapSearchBoxComponent } from './containers/map-search-box/map-search-box.component';
+import { BikepointsSearchResultEntryComponent } from './components/bikepoints-search-result-entry/bikepoints-search-result-entry.component';
+import { PlaceSearchResultEntryComponent } from './components/place-search-result-entry/place-search-result-entry.component';
 
 /**
  *  AppControl module is for overall app workflow
@@ -38,6 +40,8 @@ import { MapSearchBoxComponent } from './containers/map-search-box/map-search-bo
     JourneyPanelComponent,
     MapSearchBoxComponent,
     CtrlsOverlayComponent,
+    BikepointsSearchResultEntryComponent,
+    PlaceSearchResultEntryComponent,
   ],
   exports: [
     CtrlsOverlayComponent,

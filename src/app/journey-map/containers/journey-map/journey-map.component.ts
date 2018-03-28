@@ -29,6 +29,7 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
    * Observables for Journey Map
    */
   mapCenter$: Observable<string> = this.store.select(JourneyMapReducer.selectors.mapCenter);
+  mapZoom$: Observable<number> = this.store.select(JourneyMapReducer.selectors.mapZoom);
   bikepointInfoWindow$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.bikepointInfoWindow);
   bikepoints$: Observable<BikePoint[]> = this.store.select(JourneyMapReducer.selectors.bikepoints);
   fromLoc$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.fromLoc);
@@ -56,7 +57,6 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.mapCenter$.subscribe((value) => console.log(value));
     this.subscriptions.push(
       this.mapBoundaryChange.asObservable()
         .debounceTime(500)

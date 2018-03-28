@@ -1,3 +1,5 @@
-<p>
-  place-search-result works!
-</p>
+<div class="place-search-result-wrapper">
+  <app-place-search-result-entry *ngFor="let place of places"
+    [place]="place" (select)="selectPlace($event)">
+  </app-place-search-result-entry>
+</div>

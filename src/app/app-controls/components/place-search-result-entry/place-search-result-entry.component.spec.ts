@@ -1,22 +1,22 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlaceSearchResultComponent } from './place-search-result.component';
+import { PlaceSearchResultEntryComponent } from './place-search-result-entry.component';
 
-describe('PlaceSearchResultComponent', () => {
-  let component: PlaceSearchResultComponent;
-  let fixture: ComponentFixture<PlaceSearchResultComponent>;
+describe('PlaceSearchResultEntryComponent', () => {
+  let component: PlaceSearchResultEntryComponent;
+  let fixture: ComponentFixture<PlaceSearchResultEntryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlaceSearchResultComponent ],
+      declarations: [PlaceSearchResultEntryComponent],
       schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlaceSearchResultComponent);
+    fixture = TestBed.createComponent(PlaceSearchResultEntryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,34 +6,40 @@
       </button>
     </div>
     <div class="from-search search-field-wrapper">
-      <button mat-icon-button class="loc-icon" [disableRipple]="true" [ngClass]="{'active': appState === 'From Input'}">
+      <button mat-icon-button class="loc-icon" [disableRipple]="true"
+        [ngClass]="{'active': appState === 'From Input'}">
         <mat-icon>location_on</mat-icon>
       </button>
       <span class="field-pills-wrapper">
         <mat-form-field class="map-search-box pill-input" floatLabel="never">
-          <input matInput placeholder="Where from?" type="text" [formControl]="fromField" (focus)="fromFieldOnFocus()" (blur)="fieldOnBlur()">
+          <input matInput placeholder="Where from?" type="text" [formControl]="fromField"
+          (focus)="fromFieldOnFocus()" (blur)="fieldOnBlur()">
         </mat-form-field>
       </span>
     </div>
     <mat-icon class="direction-connector">more_vert</mat-icon>
     <div class="to-search search-field-wrapper">
-      <button mat-icon-button class="loc-icon" [disableRipple]="true" [ngClass]="{'active': appState === 'To Input'}">
+      <button mat-icon-button class="loc-icon" [disableRipple]="true"
+        [ngClass]="{'active': appState === 'To Input'}">
         <mat-icon>location_on</mat-icon>
       </button>
       <span class="field-pills-wrapper">
         <mat-form-field class="map-search-box pill-input" floatLabel="never">
-          <input matInput placeholder="Where to?" type="text" [formControl]="toField" (focus)="toFieldOnFocus()" (blur)="fieldOnBlur()">
+          <input matInput placeholder="Where to?" type="text" [formControl]="toField"
+          (focus)="toFieldOnFocus()" (blur)="fieldOnBlur()">
         </mat-form-field>
       </span>
     </div>
   </div>
-  <div class="search-results-wrapper" *ngIf="(haveSearchResults$ | async)">
+  <div class="search-results-wrapper" *ngIf="(haveSearchResults$ | async) && (displaySearchResults$ | async)">
     <!-- Place search result -->
+    <app-place-search-result [places]="placeSearchResults$ | async"
+      *ngIf="(placeSearchResults$ | async)?.length > 0"
+      (select)="selectPlace($event)"></app-place-search-result>
     <!-- Bikepoints search result -->
     <app-bikepoints-search-result [bikepoints]="bikeSearchResults$ | async"
       *ngIf="(bikeSearchResults$ | async)?.length > 0"
-      (select)="selectBikePoint($event)"
-      ></app-bikepoints-search-result>
+      (select)="selectBikePoint($event)"></app-bikepoints-search-result>
   </div>
   <!-- Confirm Journey-->
   <app-confirm-journey *ngIf="appState === 'Confirm Journey'"
