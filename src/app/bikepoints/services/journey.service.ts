@@ -15,7 +15,7 @@ export class JourneyService {
       .set('startpt', `${startLatLng.lat},${startLatLng.lng}`)
       .set('endpt', `${endLatLng.lat},${endLatLng.lng}`);
 
-    return this.http.get(`${environment.journeyApiBase}/bike/journey`, {
+    return this.http.get(`${environment.apiBase}/bike/journey`, {
       params
     }).map((result: any): Journey => {
       return {
