@@ -4,11 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start-dev": "ng serve --ssl true --ssl-key 'local-wildcard.palo-it-hk.com.key' --ssl-cert 'local-wildcard.palo-it-hk.com.pem' --public-host 'bike-planner-demo.local.palo-it-hk.com' --port 443",
-    "build": "ng build --prod",
-    "build-dev": "ng build --aot --prod --environment=dev",
-    "build-prod": "ng build --aot --prod --environment=prod",
+    "config": "ts-node ./bin/set-env.ts",
+    "start": "npm run config -- --environment=dev && ng serve",
+    "start-dev": "npm run config -- --environment=dev && ng serve --ssl true --ssl-key 'local-wildcard.palo-it-hk.com.key' --ssl-cert 'local-wildcard.palo-it-hk.com.pem' --public-host 'bike-rental-demo.local.palo-it-hk.com' --port 443",
+    "build": "npm run config -- --environment=prod && ng build --prod",
+    "build-dev": "npm run config -- --environment=dev && ng build --aot --prod --environment=dev",
+    "build-prod": "npm run config -- --environment=prod && ng build --aot --prod --environment=prod",
     "deploy-dev": "s3-website deploy -f .s3-website-dev.json",
     "deploy-prod": "s3-website deploy -f .s3-website-prod.json",
     "test": "ng test --code-coverage --single-run",
@@ -52,6 +53,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
+    "dotenv": "^5.0.1",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -63,6 +65,7 @@
     "s3-website": "^3.3.0",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "yargs": "^11.0.0"
   }
 }

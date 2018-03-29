@@ -23,7 +23,7 @@ import { JourneyMapComponent } from './containers/journey-map/journey-map.compon
     BikepointsModule,
     JourneyMapComponentsModule,
     NguiMapModule.forRoot({
-      apiUrl: `https://maps.google.com/maps/api/js?libraries=places&key=${environment.googleMapsAPIKey}`
+      apiUrl: `https://maps.google.com/maps/api/js?libraries=places&key=${environment.googleAPIKey}`
     }),
 
     StoreModule.forFeature(JourneyMapReducer.name, JourneyMapReducer.reducer),

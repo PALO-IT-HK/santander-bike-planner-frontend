@@ -21,7 +21,7 @@ export class PlaceService {
 
   public getCurrentLocationFromGoogle() {
     const params: HttpParams = new HttpParams()
-      .set('key', environment.googleGeoLocateAPIKey);
+      .set('key', environment.googleAPIKey);
 
     return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate', {}, {
       params

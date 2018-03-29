@@ -5,8 +5,7 @@
 
 export const environment = {
   production: false,
-  googleMapsAPIKey: 'AIzaSyBGOdkMM4yIbPs_XrvrVvJeIXeWd5omX-s',
-  googleGeoLocateAPIKey: 'AIzaSyBGOdkMM4yIbPs_XrvrVvJeIXeWd5omX-s',
   useMockData: false,
-  apiBase: 'https://api.ci.palo-it-hk.com'
+  googleAPIKey: '__GOOGLE_API_KEY__',
+  apiBase: 'https://api.ci.palo-it-hk.com',
 };

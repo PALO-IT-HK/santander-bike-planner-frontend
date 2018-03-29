@@ -1,26 +1,24 @@
 # SantanderBikePlanner
-
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
 ## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Run `sudo npm run start-dev` for running a dev server on localhost port 443.
+2. Setup hosts file for `127.0.0.1   bike-rental-demo.local.palo-it-hk.com`
+3. Navigate to `https://bike-rental-demo.local.palo-it-hk.com/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+1. Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Running unit tests
+1. Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Running code coverage tests
+1. Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io) and get code coverage.
 
 ## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+1. Run `npm run webdriver-update` to update webdriver
+2. Run `npm run webdriver-start` to start webdriver
+3. Run `npm run e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 

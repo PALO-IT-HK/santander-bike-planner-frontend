@@ -92,28 +92,23 @@ workflows:
             - e2e_test
           filters:
             branches:
-              only:
-                - develop
-                - master
+              ignore: /.*/
             tags:
-              only: /.*/
+              only: /v.*-prod.*/
+
       - deploy_to_production:
           requires:
             - approve_to_production
           filters:
             branches:
-              only:
-                - develop
-                - master
+              ignore: /.*/
             tags:
-              only: /.*/
+              only: /v.*-prod.*/
       - deployment_test_on_production:
           requires:
             - deploy_to_production
           filters:
             branches:
-              only:
-                - develop
-                - master
+              ignore: /.*/
             tags:
-              only: /.*/
+              only: /v.*-prod.*/
