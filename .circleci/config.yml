@@ -14,6 +14,7 @@ jobs:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
+      - run: cat .env-tmpl | sed "s/__GOOGLE_API_KEY__/$GOOGLE_API_KEY/" > .env
       - run: npm install
       - run: npm test
       - save_cache:
@@ -30,6 +31,7 @@ jobs:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
+      - run: cat .env-tmpl | sed "s/__GOOGLE_API_KEY__/$GOOGLE_API_KEY/" > .env
       - deploy:
           command: npm run build-dev && npm run deploy-dev
       - run: npm run webdriver-update
@@ -45,6 +47,7 @@ jobs:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
+      - run: cat .env-tmpl | sed "s/__GOOGLE_API_KEY__/$GOOGLE_API_KEY/" > .env
       - deploy:
           command: npm run build-prod && npm run deploy-prod
 

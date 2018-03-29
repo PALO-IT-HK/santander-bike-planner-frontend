@@ -12,7 +12,7 @@
     "build-prod": "npm run config -- --environment=prod && ng build --aot --prod --environment=prod",
     "deploy-dev": "s3-website deploy -f .s3-website-dev.json",
     "deploy-prod": "s3-website deploy -f .s3-website-prod.json",
-    "test": "ng test --code-coverage --single-run",
+    "test": "npm run config -- --environment=dev && ng test --code-coverage --single-run",
     "lint": "ng lint",
     "webdriver-start": "webdriver-manager start",
     "webdriver-update": "webdriver-manager update",
