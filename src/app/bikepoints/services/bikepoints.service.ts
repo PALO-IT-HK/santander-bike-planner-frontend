@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { LatLong, BikePoint, BikePointOccupancy, BikePointOccupancyHash } from '../../models';
+import { LatLong, BikePoint, BikePointOccupancy, BikePointIdOccupancy } from '../../models';
 
 @Injectable()
 export class BikePointsService {
@@ -63,20 +63,20 @@ export class BikePointsService {
     const params: HttpParams = new HttpParams()
       .set('bikepoint', bikepointId);
 
-    return this.http.get(`${environment.apiBase}/bikepoint/search`, {
+    return this.http.get(`${environment.apiBase}/bikepoint/occupancy`, {
       params
-    }).map((result: any[]): BikePointOccupancyHash => result.reduce(
-      (accum: BikePointOccupancyHash, entry): BikePointOccupancyHash => {
-        return {
-          ...accum,
-          [entry.id]: {
-            total: Number.parseInt(entry.totalDocks),
-            bike: Number.parseInt(entry.bikesCount),
-            vacant: Number.parseInt(entry.emptyDocks),
-          },
-        };
-      },
-      {}
-    ));
+    }).map((results: any[]): BikePointIdOccupancy => {
+      if (results.length === 0) {
+        return undefined;
+      }
+      return {
+        id: results[0].id,
+        occupancy: {
+          total: results[0].totalDocks,
+          bike: results[0].bikesCount,
+          vacant: results[0].emptyDocks,
+        },
+      };
+    });
   }
 }

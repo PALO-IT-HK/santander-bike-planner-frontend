@@ -2,6 +2,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BikepointsSearchResultEntryComponent } from './bikepoints-search-result-entry.component';
+import { StoreModule } from '@ngrx/store';
+import { BikePointsMockService } from '../../../bikepoints/services/bikepoints.service.mock';
+import { BikePointsService } from '../../../bikepoints/services/bikepoints.service';
 
 describe('BikepointsSearchResultEntryComponent', () => {
   let component: BikepointsSearchResultEntryComponent;
@@ -11,6 +14,13 @@ describe('BikepointsSearchResultEntryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ BikepointsSearchResultEntryComponent ],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [{
+        provide: BikePointsService,
+        useClass: BikePointsMockService
+      }],
+      imports: [
+        StoreModule.forRoot({}),
+      ],
     })
     .compileComponents();
   }));

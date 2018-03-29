@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BikePoint, BikePointOccupancy } from '../../../models';
+import { Store } from '@ngrx/store';
+import { RootReducer } from '../../../reducers';
+import { BikepointsOccupancyActions } from '../../../bikepoints/bikepoints.action';
+import { BikePointsService } from '../../../bikepoints/services/bikepoints.service';
 
 @Component({
   selector: 'app-bikepoints-search-result-entry',
@@ -11,9 +15,20 @@ export class BikepointsSearchResultEntryComponent implements OnInit {
   @Input() occupancy: BikePointOccupancy;
   @Output() select: EventEmitter<BikePoint> = new EventEmitter<BikePoint>();
 
-  constructor() { }
+  constructor(
+    private store: Store<RootReducer.State>,
+    private bpServices: BikePointsService,
+  ) { }
 
   ngOnInit() {
+    if (!this.occupancy) {
+      this.bpServices.fetchOccupancyDetail(this.bikepoint.id).subscribe((result) => {
+        this.store.dispatch(new BikepointsOccupancyActions.UpsertBikepointOccupancyAction({
+          id: result.id,
+          changes: result
+        }));
+      });
+    }
   }
 
   // Only response to click when occupancy information is loaded from backend

@@ -19,6 +19,7 @@ describe('MapComponent', () => {
         StoreModule.forRoot({
           journeyMap: JourneyMapReducer.reducer,
         }),
+        EffectsModule.forRoot([]),
       ],
       declarations: [JourneyMapComponent ],
       schemas: [NO_ERRORS_SCHEMA]

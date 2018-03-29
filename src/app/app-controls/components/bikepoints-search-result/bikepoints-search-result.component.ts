@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { BikePoint } from '../../../models';
+import { BikePoint, BikePointIdOccupancy } from '../../../models';
 
 @Component({
   selector: 'app-bikepoints-search-result',
@@ -9,6 +9,7 @@ import { BikePoint } from '../../../models';
 })
 export class BikepointsSearchResultComponent implements OnInit {
   @Input() bikepoints: BikePoint[];
+  @Input() bikepointOccupancies: any;
   @Output() select = new EventEmitter<BikePoint>();
 
   constructor() { }

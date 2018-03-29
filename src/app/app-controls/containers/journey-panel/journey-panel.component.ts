@@ -5,12 +5,13 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { AppState, BikePoint, MapLocation, Journey } from '../../../models';
+import { AppState, BikePoint, MapLocation, Journey, BikePointIdOccupancy } from '../../../models';
 import { RootReducer } from '../../../reducers';
 import { AppControlReducer } from '../../app-controls.reducer';
 import { AppControlActions } from '../../app-controls.action';
 import { JourneyMapActions } from '../../../journey-map/journey-map.action';
 import { JourneyMapReducer } from '../../../journey-map/journey-map.reducer';
+import { BikepointsOccupancyReducer } from '../../../bikepoints/bikepoints.reducer';
 
 @Component({
   selector: 'app-journey-panel',
@@ -28,13 +29,13 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
   displaySearchResults$: Observable<boolean> = this.store.select(AppControlReducer.selectors.displaySearchResults);
   bikeSearchResults$: Observable<BikePoint[]> = this.store.select(AppControlReducer.selectors.bikepointSearchResults);
   placeSearchResults$: Observable<MapLocation[]> = this.store.select(AppControlReducer.selectors.placeSearchResults);
+  bikeOccupanciesResults$ = this.store.select(BikepointsOccupancyReducer.selectors.allOccupancy);
 
   fromField = new FormControl('');
   toField = new FormControl('');
 
   constructor(
-    private store: Store<AppControlReducer.State>,
-    private journeyStore: Store<JourneyMapReducer.State>,
+    private store: Store<RootReducer.State>,
   ) { }
 
   ngOnInit() {
@@ -110,7 +111,7 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
   fromFieldOnFocus() {
     Observable.of(true)
       .delay(200)
-      .switchMap(() => this.journeyStore.select(JourneyMapReducer.selectors.fromLoc))
+      .switchMap(() => this.store.select(JourneyMapReducer.selectors.fromLoc))
       .subscribe((fromLoc: BikePoint) => {
         if (fromLoc) {
           this.store.dispatch(new JourneyMapActions.SetMapCenterAction({
@@ -130,7 +131,7 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
   toFieldOnFocus() {
     Observable.of(true)
       .delay(200)
-      .switchMap(() => this.journeyStore.select(JourneyMapReducer.selectors.toLoc))
+      .switchMap(() => this.store.select(JourneyMapReducer.selectors.toLoc))
       .subscribe((toLoc: BikePoint) => {
         if (toLoc) {
           this.store.dispatch(new JourneyMapActions.SetMapCenterAction({
@@ -151,8 +152,8 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
   fieldOnBlur() {
     Observable.of(true)
       .delay(200)
-      .switchMap(() => this.journeyStore.select(JourneyMapReducer.selectors.fromLoc))
-      .withLatestFrom(this.journeyStore.select(JourneyMapReducer.selectors.toLoc))
+      .switchMap(() => this.store.select(JourneyMapReducer.selectors.fromLoc))
+      .withLatestFrom(this.store.select(JourneyMapReducer.selectors.toLoc))
       .subscribe(([fromLoc, toLoc]) => {
         if (fromLoc && toLoc) {
           this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.CONFIRM_JOURNEY));

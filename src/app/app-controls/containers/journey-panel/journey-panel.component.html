@@ -38,6 +38,7 @@
       (select)="selectPlace($event)"></app-place-search-result>
     <!-- Bikepoints search result -->
     <app-bikepoints-search-result [bikepoints]="bikeSearchResults$ | async"
+      [bikepointOccupancies]="bikeOccupanciesResults$ | async"
       *ngIf="(bikeSearchResults$ | async)?.length > 0"
       (select)="selectBikePoint($event)"></app-bikepoints-search-result>
   </div>
