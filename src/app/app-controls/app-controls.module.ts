@@ -10,6 +10,8 @@ import { MaterialModule } from '../material.module';
 import { AppControlReducer } from './app-controls.reducer';
 import { AppControlEffects } from './app-controls.effect';
 
+import { AuthModule } from '../auth/auth.module';
+
 import { ConfirmJourneyComponent } from './components/confirm-journey/confirm-journey.component';
 import { BikepointsSearchResultComponent } from './components/bikepoints-search-result/bikepoints-search-result.component';
 import { PlaceSearchResultComponent } from './components/place-search-result/place-search-result.component';
@@ -32,6 +34,8 @@ import { PlaceSearchResultEntryComponent } from './components/place-search-resul
     EffectsModule.forFeature([
       AppControlEffects,
     ]),
+
+    AuthModule,
   ],
   declarations: [
     ConfirmJourneyComponent,

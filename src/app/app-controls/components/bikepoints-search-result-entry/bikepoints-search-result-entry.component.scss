@@ -1,5 +1,5 @@
 div.bikepoint-search-entry-wrapper {
-  padding: 16px 40px;
+  padding: 8px 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -9,8 +9,22 @@ div.bikepoint-search-entry-wrapper {
     cursor: auto;
   }
 
-  mat-icon {
-    color: rgb(64, 64, 64);
+  span.occupancy {
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fbfbfb;
+    line-height: 24px;
+    text-align: center;
+    height: 24px;
+    width: 24px;
+
+    &.bike {
+      background-color: #e63329;
+    }
+
+    &.avail {
+      background-color: #1dacbd;
+    }
   }
 
   div.entry-text {
@@ -20,13 +34,8 @@ div.bikepoint-search-entry-wrapper {
     align-items: stretch;
 
     span.bikepoint-name {
-      color: rgb(64, 32, 196);
+      color: #0b0b43;
       font-weight: 600px;
-    }
-
-    span.occupancy {
-      color: rgb(64, 64, 64);
-      font-size: 14px;
     }
   }
 }

@@ -4,7 +4,7 @@ span.journey-planner-container {
   pointer-events: auto;
   vertical-align: middle;
   background-color: rgb(252,252,252);
-  min-width: 420px;
+  min-width: 380px;
 
   @media (max-width: 599px) {
     width: 100vw;
@@ -20,10 +20,14 @@ span.journey-planner-container {
       flex-direction: row;
       align-items: center;
       align-content: center;
-      height: 60px;
+      height: 47px;
+
+      span.filler {
+        width: 306px;
+      }
 
       button.cancel-button {
-        margin-left: 32px;
+        margin-right: 14px;
         font-size: 12px;
         height: 24px;
         line-height: 24px;
@@ -38,6 +42,7 @@ span.journey-planner-container {
       height: 0px;
       margin-left: 40px;
       top: -18px;
+      left: 286px;
     }
 
     div.search-field-wrapper {
@@ -50,32 +55,47 @@ span.journey-planner-container {
       button.loc-icon {
         position: relative;
         top: -2px;
-        color: rgb(64,64,64);
-
-        &.active {
-          color: rgb(64, 32, 196);
-        }
       }
 
       span.field-pills-wrapper {
-        margin-left: 16px;
-        background-color: rgb(240, 248, 255);
+        margin-left: 15px;
+        margin-right: 15px;
+        border: 1px solid rgb(241, 244, 247);
+        background-color: rgb(241, 244, 247);
         padding: 0px 6px 0px 24px;
         border-radius: 36px;
 
         mat-form-field.map-search-box {
-          width: 240px;
+          width: 224px;
+        }
+      }
+
+      &.from-search {
+        span.field-pills-wrapper.active {
+          border: 1px solid #e63329;
+        }
+
+        button.loc-icon {
+          color: #e63329;
         }
       }
 
       &.to-search {
         margin-bottom: 32px;
+
+        span.field-pills-wrapper.active {
+          border: 1px solid #1dacbd;
+        }
+
+        button.loc-icon {
+          color: #1dacbd;
+        }
       }
     }
   }
 
   div.search-results-wrapper {
-    max-height: calc(100vh - 194px);
+    max-height: calc(100vh - 186px);
     overflow-y: scroll;
   }
 

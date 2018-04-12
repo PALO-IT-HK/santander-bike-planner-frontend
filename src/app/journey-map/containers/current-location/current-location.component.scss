@@ -1,0 +1,11 @@
+:host {
+  position: absolute;
+  bottom: 24px;
+  right: 16px;
+  z-index: 1;
+
+  button.my-location {
+    background-color: rgb(37,87,245);
+    color: rgba(252,252,252,5);
+  }
+}

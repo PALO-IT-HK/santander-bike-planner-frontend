@@ -1,7 +1,8 @@
 <div class="bikepoint-info">
   <div class="name">{{ info?.commonName }}</div>
-  <div *ngIf="info?.occupancy">
-    Bike: {{ info?.occupancy?.bike }} | Slot: {{ info?.occupancy?.vacant }}
+  <div class="desc">Current Stat</div>
+  <div class="occupancy" *ngIf="info?.occupancy">
+    <span class="bikes">{{ info?.occupancy?.bike }} Bikes For Rent</span> | <span class="vacant">{{ info?.occupancy?.vacant }} Spaces</span>
   </div>
   <div *ngIf="!info?.occupancy">Loading occupancy data</div>
 </div>

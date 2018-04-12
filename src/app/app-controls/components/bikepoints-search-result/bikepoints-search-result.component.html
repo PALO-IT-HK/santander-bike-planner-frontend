@@ -1,6 +1,7 @@
 <div class="bikepoints-search-result-wrapper">
   <app-bikepoints-search-result-entry *ngFor="let bikepoint of bikepoints"
     [bikepoint]="bikepoint" [occupancy]="bikepointOccupancies[bikepoint?.id]?.occupancy"
+    [appState]="appState"
     (select)="selectBikepoint($event)">
   </app-bikepoints-search-result-entry>
 </div>

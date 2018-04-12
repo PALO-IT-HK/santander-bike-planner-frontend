@@ -4,14 +4,18 @@ import {
   MatButtonModule,
   MatIconModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatProgressBarModule,
 } from '@angular/material';
 
 const MODULES = [
   MatButtonModule,
   MatIconModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatProgressBarModule,
 ];
 
 @NgModule({

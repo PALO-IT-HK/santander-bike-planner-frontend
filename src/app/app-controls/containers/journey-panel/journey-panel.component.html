@@ -1,34 +1,35 @@
 <span class="journey-planner-container" [ngClass]="{'confirm-state': appState === 'Confirm Journey'}">
   <div class="planner-wrapper">
     <div class="header">
+      <span class="filler"></span>
       <button mat-button class="cancel-button" (click)="closePanel()">
         Cancel
       </button>
     </div>
     <div class="from-search search-field-wrapper">
-      <button mat-icon-button class="loc-icon" [disableRipple]="true"
-        [ngClass]="{'active': appState === 'From Input'}">
-        <mat-icon>location_on</mat-icon>
-      </button>
-      <span class="field-pills-wrapper">
+      <span class="field-pills-wrapper" [ngClass]="{'active': appState === 'From Input'}">
         <mat-form-field class="map-search-box pill-input" floatLabel="never">
           <input matInput placeholder="Where from?" type="text" [formControl]="fromField"
           (focus)="fromFieldOnFocus()" (blur)="fieldOnBlur()">
         </mat-form-field>
       </span>
+      <button mat-icon-button class="loc-icon" [disableRipple]="true"
+        [ngClass]="{'from-active': appState === 'From Input'}">
+        <mat-icon>place</mat-icon>
+      </button>
     </div>
     <mat-icon class="direction-connector">more_vert</mat-icon>
     <div class="to-search search-field-wrapper">
-      <button mat-icon-button class="loc-icon" [disableRipple]="true"
-        [ngClass]="{'active': appState === 'To Input'}">
-        <mat-icon>location_on</mat-icon>
-      </button>
-      <span class="field-pills-wrapper">
+      <span class="field-pills-wrapper" [ngClass]="{'active': appState === 'To Input'}">
         <mat-form-field class="map-search-box pill-input" floatLabel="never">
           <input matInput placeholder="Where to?" type="text" [formControl]="toField"
           (focus)="toFieldOnFocus()" (blur)="fieldOnBlur()">
         </mat-form-field>
       </span>
+      <button mat-icon-button class="loc-icon" [disableRipple]="true"
+        [ngClass]="{'to-active': appState === 'To Input'}">
+        <mat-icon>place</mat-icon>
+      </button>
     </div>
   </div>
   <div class="search-results-wrapper" *ngIf="(haveSearchResults$ | async) && (displaySearchResults$ | async)">
@@ -39,6 +40,7 @@
     <!-- Bikepoints search result -->
     <app-bikepoints-search-result [bikepoints]="bikeSearchResults$ | async"
       [bikepointOccupancies]="bikeOccupanciesResults$ | async"
+      [appState]="appState"
       *ngIf="(bikeSearchResults$ | async)?.length > 0"
       (select)="selectBikePoint($event)"></app-bikepoints-search-result>
   </div>

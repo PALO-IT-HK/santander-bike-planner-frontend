@@ -1,22 +1,26 @@
-<ngui-map [center]="mapCenter$ | async"
-  [zoom]="mapZoom$ | async"
-  [mapTypeControl]="false"
-  [fullscreenControl]="false"
-  [streetViewControl]="false"
-  geoFallbackCenter="51.476892649684764, 0"
-  (bounds_changed)="onBoundsChanged($event)">
-  <custom-marker *ngFor="let bikepoint of (bikepoints$ | async); let i = index"
-    [position]="[bikepoint.lat, bikepoint.lng]"
-    (initialized$)="onBikepointMarkerInit($event, i)"
-    (mouseenter)="onBikepointCustomMarkerOver(bikepoint, i)"
-    (click)="onBikepointMarkerClick($event, bikepoint)">
-    <app-bikepoint-marker [bikepoint]="bikepoint"></app-bikepoint-marker>
-  </custom-marker>
-  <marker *ngIf="fromLoc$ | async; let fromLoc" [position]="fromLoc$ | async"></marker>
-  <marker *ngIf="toLoc$ | async; let toLoc" [position]="toLoc"></marker>
-  <polyline *ngIf="journey$ | async; let journey" [path]="journey?.path" [geodesic]="true" [editable]="false"
-    [strokeColor]="'#FF0000'" [strokeOpacity]="1" [strokeWeight]="2"></polyline>
-  <info-window [id]="infoWindowId" [pixelOffset]="infoWindowOffset">
-    <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
-  </info-window>
-</ngui-map>
+<div>
+  <app-current-location></app-current-location>
+  <ngui-map [center]="mapCenter$ | async"
+    [zoom]="mapZoom$ | async"
+    [zoomControlOptions]="{position: 'RIGHT_CENTER'}"
+    [mapTypeControl]="false"
+    [fullscreenControl]="false"
+    [streetViewControl]="false"
+    geoFallbackCenter="51.476892649684764, 0"
+    (bounds_changed)="onBoundsChanged($event)">
+    <custom-marker *ngFor="let bikepoint of (bikepoints$ | async); let i = index"
+      [position]="[bikepoint.lat, bikepoint.lng]"
+      (initialized$)="onBikepointMarkerInit($event, i)"
+      (mouseenter)="onBikepointCustomMarkerOver(bikepoint, i)"
+      (click)="onBikepointMarkerClick($event, bikepoint)">
+      <app-bikepoint-marker [bikepoint]="bikepoint"></app-bikepoint-marker>
+    </custom-marker>
+    <marker *ngIf="fromLoc$ | async; let fromLoc" [position]="fromLoc$ | async"></marker>
+    <marker *ngIf="toLoc$ | async; let toLoc" [position]="toLoc"></marker>
+    <polyline *ngIf="journey$ | async; let journey" [path]="journey?.path" [geodesic]="true" [editable]="false"
+      [strokeColor]="'#FF0000'" [strokeOpacity]="1" [strokeWeight]="2"></polyline>
+    <info-window [id]="infoWindowId" [pixelOffset]="infoWindowOffset">
+      <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
+    </info-window>
+  </ngui-map>
+</div>

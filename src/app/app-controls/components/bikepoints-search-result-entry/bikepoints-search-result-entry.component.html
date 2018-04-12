@@ -1,9 +1,9 @@
 <div class="bikepoint-search-entry-wrapper" (click)="selectThis()"
   [ngClass]="{'disabled': !occupancy}">
-  <mat-icon class="entry-avatar">place</mat-icon>
+  <span class="occupancy bike" *ngIf="occupancy && appState === 'From Input'">{{occupancy?.bike}}</span>
+  <span class="occupancy avail" *ngIf="occupancy && appState === 'To Input'">{{occupancy?.vacant}}</span>
+  <mat-spinner diameter="24" color="primary" *ngIf="!occupancy"></mat-spinner>
   <div class="entry-text">
     <span class="bikepoint-name">{{ bikepoint?.commonName }}</span>
-    <span class="occupancy" *ngIf="occupancy">{{ occupancy | json }}</span>
-    <span class="occupancy" *ngIf="!occupancy">Occupancy information is unavailable.</span>
   </div>
 </div>

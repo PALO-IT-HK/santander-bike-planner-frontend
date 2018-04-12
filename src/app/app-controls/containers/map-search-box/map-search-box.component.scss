@@ -5,6 +5,10 @@ span.search-container {
   vertical-align: middle;
   padding-top: 60px;
 
+  @media (max-width: 599px) {
+    padding-top: 32px;
+  }
+
   div.search-field-wrapper {
     margin-left: 32px;
     margin-bottom: 12px;
@@ -12,10 +16,8 @@ span.search-container {
     flex-direction: row;
     align-items: center;
 
-    button.my-location {
-      position: relative;
-      top: -2px;
-      color: rgb(240,240,240);
+    @media (max-width: 599px) {
+      margin-left: 16px;
     }
 
     span.field-pills-wrapper {
@@ -25,7 +27,8 @@ span.search-container {
       border-radius: 36px;
 
       mat-form-field.map-search-box {
-        width: 200px;
+        width: 240px;
+        max-width: 45vw;
       }
 
       button.plan-journey {

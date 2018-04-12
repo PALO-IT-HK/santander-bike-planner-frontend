@@ -22,8 +22,7 @@ export class MapSearchBoxComponent implements OnInit, OnDestroy {
   searchField = new FormControl('');
 
   constructor(
-    private store: Store<AppControlReducer.State>,
-    private placeService: PlaceService,
+    private store: Store<AppControlReducer.State>
   ) { }
 
   ngOnInit() {
@@ -60,13 +59,6 @@ export class MapSearchBoxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
-  }
-
-  gotoCurrentLoc() {
-    const placeSubscription = this.placeService.getCurrentLocationFromGoogle().subscribe((loc: any) => {
-      this.store.dispatch(new JourneyMapActions.SetMapCenterAction(`${loc.location.lat}, ${loc.location.lng}`));
-      placeSubscription.unsubscribe();
-    });
   }
 
   planJourney() {

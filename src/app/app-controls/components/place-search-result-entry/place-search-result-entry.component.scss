@@ -1,5 +1,5 @@
 div.place-search-entry-wrapper {
-  padding: 16px 40px;
+  padding: 8px 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -16,7 +16,7 @@ div.place-search-entry-wrapper {
     align-items: stretch;
 
     span.bikepoint-name {
-      color: rgb(64, 32, 196);
+      color:#0b0b43;
       font-weight: 600px;
     }
   }

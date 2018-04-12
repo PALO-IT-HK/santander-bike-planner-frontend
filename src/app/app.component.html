@@ -1,1 +1,6 @@
-<app-journey-planner></app-journey-planner>
+<app-journey-planner *ngIf="user$ | async; else login"></app-journey-planner>
+<ng-template #login>
+  <app-login-splash-screen></app-login-splash-screen>
+</ng-template>
+
+<!-- <app-journey-planner></app-journey-planner> -->

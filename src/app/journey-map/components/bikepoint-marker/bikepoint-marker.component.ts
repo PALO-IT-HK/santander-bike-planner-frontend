@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { BikePoint } from '../../../models';
+import { BikePoint, AppState } from '../../../models';
 
 @Component({
   selector: 'app-bikepoint-marker',

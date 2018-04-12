@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
-import { MapLocation } from '../../../models';
+import { MapLocation, AppState } from '../../../models';
 
 @Component({
   selector: 'app-place-search-result',

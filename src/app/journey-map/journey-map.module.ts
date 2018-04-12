@@ -16,10 +16,13 @@ import { JourneyMapReducer } from './journey-map.reducer';
 
 import { JourneyMapComponentsModule } from './components/components.module';
 import { JourneyMapComponent } from './containers/journey-map/journey-map.component';
+import { CurrentLocationComponent } from './containers/current-location/current-location.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    MaterialModule,
+
     BikepointsModule,
     JourneyMapComponentsModule,
     NguiMapModule.forRoot({
@@ -33,6 +36,7 @@ import { JourneyMapComponent } from './containers/journey-map/journey-map.compon
   ],
   declarations: [
     JourneyMapComponent,
+    CurrentLocationComponent,
   ],
   exports: [
     JourneyMapComponent,

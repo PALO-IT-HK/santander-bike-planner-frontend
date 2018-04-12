@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BikePoint, BikePointOccupancy } from '../../../models';
+import { BikePoint, BikePointOccupancy, AppState } from '../../../models';
 import { Store } from '@ngrx/store';
 import { RootReducer } from '../../../reducers';
 import { BikepointsOccupancyActions } from '../../../bikepoints/bikepoints.action';
@@ -11,6 +11,7 @@ import { BikePointsService } from '../../../bikepoints/services/bikepoints.servi
   styleUrls: ['./bikepoints-search-result-entry.component.scss']
 })
 export class BikepointsSearchResultEntryComponent implements OnInit {
+  @Input() appState: AppState;
   @Input() bikepoint: BikePoint;
   @Input() occupancy: BikePointOccupancy;
   @Output() select: EventEmitter<BikePoint> = new EventEmitter<BikePoint>();

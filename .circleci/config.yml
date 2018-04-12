@@ -25,8 +25,7 @@ jobs:
   e2e_test:
     <<: *defaults
     environment:
-      E2E_BASE_URL: https://d17cs6igjofk6p.cloudfront.net
-      # E2E_BASE_URL: https://bike-rental-demo.ci.palo-it-hk.com
+      E2E_BASE_URL: https://bike-rental-demo.ci.palo-it-hk.com
     steps:
       - checkout
       - restore_cache:
@@ -54,8 +53,7 @@ jobs:
   deployment_test_on_production:
     <<: *defaults
     environment:
-      E2E_BASE_URL: https://d3m464urvtvslr.cloudfront.net
-      # E2E_BASE_URL: https://bike-rental-demo.palo-it-hk.com
+      E2E_BASE_URL: https://bike-rental-demo.palo-it-hk.com
     steps:
       - checkout
       - restore_cache:

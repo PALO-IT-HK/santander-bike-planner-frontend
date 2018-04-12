@@ -17,9 +17,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RootReducer } from './reducers';
 import './operators'; // Observable operators
 
+import { AuthModule } from './auth/auth.module';
 import { AppControlsModule } from './app-controls/app-controls.module';
-import { AppComponent } from './app.component';
 import { JourneyPlannerModule } from './journey-planner/journey-planner.module';
+
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import { JourneyPlannerModule } from './journey-planner/journey-planner.module';
       maxAge: 30,
     }) : [],
 
+    AuthModule,
     AppControlsModule,
     JourneyPlannerModule,
   ],
