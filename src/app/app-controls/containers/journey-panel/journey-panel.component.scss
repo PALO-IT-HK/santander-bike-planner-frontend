@@ -8,6 +8,7 @@ span.journey-planner-container {
 
   @media (max-width: 599px) {
     width: 100vw;
+    max-width: 100vw;
   }
 
   div.planner-wrapper {
@@ -39,10 +40,9 @@ span.journey-planner-container {
     mat-icon.direction-connector {
       color: rgb(64,64,64);
       position: relative;
-      height: 0px;
-      margin-left: 40px;
-      top: -18px;
-      left: 286px;
+      height: 24px;
+      left: -32px;
+      top: 28px;
     }
 
     div.search-field-wrapper {

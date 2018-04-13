@@ -1,6 +1,7 @@
 <div class="journey-planner-wrapper">
   <app-journey-map [appState]="appState$ | async"></app-journey-map>
   <app-ctrls-overlay [ngClass]="{'invert-gradient': (appState$ | async) === 'Confirm Journey' }"
+    [loading]="loading$ | async"
     [journey]="journey$ | async"
     [appState]="appState$ | async"></app-ctrls-overlay>
 </div>

@@ -7,8 +7,9 @@ import { Actions } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import { MatSnackBar } from '@angular/material';
 
-import { AppState, LatLong, MapLocation, BikePoint, Journey } from '../../../models';
+import { AppState, LatLong, MapLocation, BikePoint, Journey, BikePointOccupancy } from '../../../models';
 
 import { JourneyMapActions } from '../../journey-map.action';
 import { JourneyMapReducer } from '../../journey-map.reducer';
@@ -32,9 +33,9 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
   mapZoom$: Observable<number> = this.store.select(JourneyMapReducer.selectors.mapZoom);
   bikepointInfoWindow$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.bikepointInfoWindow);
   bikepoints$: Observable<BikePoint[]> = this.store.select(JourneyMapReducer.selectors.bikepoints);
-  fromLoc$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.fromLoc);
-  toLoc$: Observable<BikePoint> = this.store.select(JourneyMapReducer.selectors.toLoc);
   journey$: Observable<Journey> = this.store.select(JourneyMapReducer.selectors.journey);
+  fromLoc: BikePoint[];
+  toLoc: BikePoint[];
 
   /**
    * Work around for custom map marker with info window
@@ -45,15 +46,22 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
     [index: string]: any,
   } = {};
   infoWindowOffset = {
-    height: -54,
+    height: -36,
     width: 0,
   };
 
   // ID for Google Map Info Window
   infoWindowId = 'bikepoint-info';
 
+  iconInfo = {
+    anchor: [15, 40],
+    size: [30, 40],
+    scaledSize: [30, 40],
+  };
+
   constructor(
     private store: Store<JourneyMapReducer.State>,
+    private snackbar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -73,6 +81,12 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
             }
           }));
         }),
+      this.store.select(JourneyMapReducer.selectors.fromLoc).subscribe((fromLocs) => {
+        this.fromLoc = fromLocs;
+      }),
+      this.store.select(JourneyMapReducer.selectors.toLoc).subscribe((toLocs) => {
+        this.toLoc = toLocs;
+      }),
     );
   }
 
@@ -122,15 +136,49 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
        */
       case AppState.NORMAL:
       case AppState.FROM_INPUT:
-        this.store.dispatch(new JourneyMapActions.SelectFromBikepointAction(bikepoint));
-        break;
+        if (bikepoint.occupancy.bike === 0) {
+          this.snackbar.open(`${bikepoint.commonName} is empty!`, '', {
+            duration: 5000,
+            panelClass: 'error-snack',
+            verticalPosition: 'top',
+          });
+          break;
+        } else {
+          if (this.toLoc.length > 0 && this.toLoc[0].id === bikepoint.id) {
+            this.snackbar.open(`From and To location cannot be the same.`, '', {
+              duration: 5000,
+              panelClass: 'error-snack',
+              verticalPosition: 'top',
+            });
+          } else {
+            this.store.dispatch(new JourneyMapActions.SelectFromBikepointAction(bikepoint));
+          }
+          break;
+        }
       /**
        * If we are at `to input` state, clicking on bikepoint marker would means
        * that we are going to use that as `To` point
        */
       case AppState.TO_INPUT:
-        this.store.dispatch(new JourneyMapActions.SelectToBikepointAction(bikepoint));
-        break;
+        if (bikepoint.occupancy.vacant === 0) {
+          this.snackbar.open(`${bikepoint.commonName} is full!`, '', {
+            duration: 5000,
+            panelClass: 'error-snack',
+            verticalPosition: 'top',
+          });
+          break;
+        } else {
+          if (this.fromLoc.length > 0 && this.fromLoc[0].id === bikepoint.id) {
+            this.snackbar.open(`From and To location cannot be the same.`, '', {
+              duration: 5000,
+              panelClass: 'error-snack',
+              verticalPosition: 'top',
+            });
+          } else {
+            this.store.dispatch(new JourneyMapActions.SelectToBikepointAction(bikepoint));
+          }
+          break;
+        }
       /**
        * Bikepoint marker should not even visible or available for selection if
        * we are confirming a journey or in a journey.

@@ -28,7 +28,7 @@ span.search-container {
 
       mat-form-field.map-search-box {
         width: 240px;
-        max-width: 45vw;
+        max-width: calc(100vw - 136px);
       }
 
       button.plan-journey {

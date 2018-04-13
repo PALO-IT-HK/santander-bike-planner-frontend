@@ -1,5 +1,7 @@
-<div class="bike-marker" [ngClass]="{'for-hire': (bikepoint.occupancy.bike >= bikepoint.occupancy.vacant),
-  'for-park': (bikepoint.occupancy.bike < bikepoint.occupancy.vacant)}">
-  <div class="marker-row"><mat-icon>directions_bike</mat-icon><span class="occupancy">{{ bikepoint?.occupancy?.bike }}</span></div>
-  <div class="marker-row"><mat-icon>local_parking</mat-icon><span class="occupancy">{{ bikepoint?.occupancy?.vacant }}</span></div>
+<div class="bike-marker" [ngClass]="{'empty': (bikepoint.occupancy.bike === 0),
+  'full': (bikepoint.occupancy.vacant === 0),
+  'half': (bikepoint.occupancy.bike / bikepoint.occupancy.total) >= 0.75,
+  'little': (bikepoint.occupancy.bike / bikepoint.occupancy.total) <= 0.25,
+  'medium': (bikepoint.occupancy.bike / bikepoint.occupancy.total) < 0.75 &&
+    (bikepoint.occupancy.bike / bikepoint.occupancy.total) > 0.25}">
 </div>

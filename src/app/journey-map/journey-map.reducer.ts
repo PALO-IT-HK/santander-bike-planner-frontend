@@ -13,22 +13,24 @@ export namespace JourneyMapReducer {
     mapCenter: string;
     mapZoom: number;
     mapBoundary?: MapBoundary;
+    mapLoading: boolean;
     bikepointInfoWindow: BikePoint | null;
     bikepoints: BikePoint[];
     autofetchBikepoints: boolean;
-    fromLoc: BikePoint | null;
-    toLoc: BikePoint | null;
+    fromLoc: BikePoint[];
+    toLoc: BikePoint[];
     journey: Journey | null;
   }
 
   export const initialState: State = {
     mapCenter: 'Westminster, London',
     mapZoom: 16,
+    mapLoading: false,
     bikepointInfoWindow: null,
     bikepoints: [],
     autofetchBikepoints: true,
-    fromLoc: null,
-    toLoc: null,
+    fromLoc: [],
+    toLoc: [],
     journey: null,
   };
 
@@ -44,6 +46,10 @@ export namespace JourneyMapReducer {
     mapBoundary: createSelector(
       selectState,
       (state: State) => state.mapBoundary,
+    ),
+    mapLoading: createSelector(
+      selectState,
+      (state: State) => state.mapLoading,
     ),
     bikepointInfoWindow: createSelector(
       selectState,
@@ -80,9 +86,10 @@ export namespace JourneyMapReducer {
         return {
           ...state,
           bikepointInfoWindow: null,
+          bikepoints: [],
           autofetchBikepoints: true,
-          fromLoc: null,
-          toLoc: null,
+          fromLoc: [],
+          toLoc: [],
           journey: null,
         };
 
@@ -125,19 +132,25 @@ export namespace JourneyMapReducer {
       case JourneyMapActions.SELECT_FROM_BIKEPOINT:
         return {
           ...state,
-          fromLoc: action.payload || null,
+          fromLoc: action.payload ? [action.payload] : [],
         };
 
       case JourneyMapActions.SELECT_TO_BIKEPOINT:
         return {
           ...state,
-          toLoc: action.payload || null,
+          toLoc: action.payload ? [action.payload] : [],
         };
 
       case JourneyMapActions.UPDATE_JOURNEY:
         return {
           ...state,
           journey: action.payload || null
+        };
+
+      case JourneyMapActions.SET_MAP_LOADING:
+        return {
+          ...state,
+          mapLoading: action.payload,
         };
 
       default:

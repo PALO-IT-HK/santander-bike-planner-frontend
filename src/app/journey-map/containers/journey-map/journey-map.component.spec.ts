@@ -7,6 +7,7 @@ import { BikepointsModule } from '../../../bikepoints/bikepoints.module';
 
 import { JourneyMapReducer } from '../../journey-map.reducer';
 import { JourneyMapComponent } from './journey-map.component';
+import { MaterialModule } from '../../../material.module';
 
 describe('MapComponent', () => {
   let component: JourneyMapComponent;
@@ -15,6 +16,7 @@ describe('MapComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        MaterialModule,
         BikepointsModule,
         StoreModule.forRoot({
           journeyMap: JourneyMapReducer.reducer,

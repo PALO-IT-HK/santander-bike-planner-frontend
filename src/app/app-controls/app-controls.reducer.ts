@@ -72,8 +72,6 @@ export namespace AppControlReducer {
         return {
           ...state,
           appState: AppState.NORMAL,
-          fromLoc: null,
-          toLoc: null,
           fromField: '',
           toField: '',
         };

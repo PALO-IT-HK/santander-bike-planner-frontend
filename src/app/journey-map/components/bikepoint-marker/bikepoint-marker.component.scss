@@ -1,49 +1,28 @@
 :host {
   div.bike-marker {
-    display: flex;
-    flex-direction: column;
+    width: 30px;
+    height: 40px;
     position: relative;
-    top: -27px;
-    border-radius: 4px;
-    color: rgb(252,252,252);
-    width: 60px;
-    border: solid 1px rgba(32, 32, 32, 0.3);
+    top: -20px;
 
-    &.for-hire {
-      background-color: rgb(230, 51, 41);
+    &.empty {
+      background-image: url('/assets/park.svg') !important;
     }
 
-    &.for-park {
-      background-color: rgb(245, 124, 35);
+    &.little {
+      background-image: url('/assets/little.svg');
     }
 
-    div.marker-row {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      margin: 2px 8px;
+    &.medium {
+      background-image: url('/assets/medium.svg');
+    }
 
-      &:first-child {
-        margin-top: 6px;
-      }
+    &.half {
+      background-image: url('/assets/half.svg');
+    }
 
-      &:last-child {
-        margin-bottom: 6px;
-      }
-
-      mat-icon {
-        font-size: 18px;
-        line-height: 18px;
-        height: 18px;
-        width: 18px;
-        color: rgba(252,252,252,0.7);
-      }
-      span.occupancy {
-        color: rgb(255,255,255);
-        font-size: 14px;
-        font-weight: 600;
-      }
+    &.full {
+      background-image: url('/assets/full.svg') !important;
     }
   }
 }

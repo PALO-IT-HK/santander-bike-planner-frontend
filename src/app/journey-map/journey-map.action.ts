@@ -14,6 +14,7 @@ export namespace JourneyMapActions {
   export const SELECT_TO_BIKEPOINT = '[JourneyMap] To Bikepoint';
   export const TOGGLE_AUTO_FETCH_BIKEPOINT = '[JourneyMap] Toggle Bikepoint Auto Fetch';
   export const UPDATE_JOURNEY = '[JourneyMap] Update Journey';
+  export const SET_MAP_LOADING = '[JourneyMap] Set Loading State';
 
   export class ResetMapStateAction implements Action {
     readonly type = RESET_MAP_STATE_ACTION;
@@ -87,6 +88,12 @@ export namespace JourneyMapActions {
     constructor(public payload: Journey | null) { }
   }
 
+  export class SetMapLoadingAction implements Action {
+    readonly type = SET_MAP_LOADING;
+
+    constructor(public payload: boolean) { }
+  }
+
   export type Actions
     = ResetMapStateAction
     | SetMapCenterAction
@@ -100,5 +107,6 @@ export namespace JourneyMapActions {
     | SelectToBikepointAction
     | SetJourneyAction
     | ToggleAutoFetchBikePointAction
+    | SetMapLoadingAction
     ;
 }

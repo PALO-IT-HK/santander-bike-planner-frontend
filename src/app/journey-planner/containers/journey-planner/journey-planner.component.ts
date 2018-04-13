@@ -12,6 +12,7 @@ import { JourneyMapReducer } from '../../../journey-map/journey-map.reducer';
 export class JourneyPlannerComponent implements OnInit {
   appState$ = this.store.select(AppControlReducer.selectors.appState);
   journey$ = this.journeyStore.select(JourneyMapReducer.selectors.journey);
+  loading$ = this.journeyStore.select(JourneyMapReducer.selectors.mapLoading);
 
   constructor(
     private store: Store<AppControlReducer.State>,

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
+import { Ng2Webstorage } from 'ngx-webstorage';
 
 // Material UI Module
 import { MaterialModule } from '../material.module';
@@ -20,6 +21,7 @@ import { LoginSplashScreenComponent } from './containers/login-splash-screen/log
   imports: [
     CommonModule,
     MaterialModule,
+    Ng2Webstorage,
 
     StoreModule.forFeature(AuthReducer.name, AuthReducer.reducer),
   ],

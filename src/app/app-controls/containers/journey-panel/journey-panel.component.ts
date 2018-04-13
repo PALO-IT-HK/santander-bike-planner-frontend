@@ -109,19 +109,20 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
    * When the from-field have focus, make sure the app is in `From_Input` mode
    */
   fromFieldOnFocus() {
-    Observable.of(true)
+    const fromSubs = Observable.of(true)
       .delay(200)
       .switchMap(() => this.store.select(JourneyMapReducer.selectors.fromLoc))
-      .subscribe((fromLoc: BikePoint) => {
-        if (fromLoc) {
+      .subscribe((fromLoc: BikePoint[]) => {
+        if (fromLoc[0]) {
           this.store.dispatch(new JourneyMapActions.SetMapCenterAction({
-            lat: fromLoc.lat,
-            lng: fromLoc.lng,
+            lat: fromLoc[0].lat,
+            lng: fromLoc[0].lng,
           }));
           this.store.dispatch(new JourneyMapActions.SetMapZoomAction(this.neighbourhoodZoomLevel));
         }
         this.store.dispatch(new AppControlActions.ToggleDisplaySearchResultAction(true));
         this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.FROM_INPUT));
+        fromSubs.unsubscribe();
       });
   }
 
@@ -129,19 +130,20 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
    * When the to-field have focus, make sure the app is in `To_Input` mode
    */
   toFieldOnFocus() {
-    Observable.of(true)
+    const toSubs = Observable.of(true)
       .delay(200)
       .switchMap(() => this.store.select(JourneyMapReducer.selectors.toLoc))
-      .subscribe((toLoc: BikePoint) => {
-        if (toLoc) {
+      .subscribe((toLoc: BikePoint[]) => {
+        if (toLoc[0]) {
           this.store.dispatch(new JourneyMapActions.SetMapCenterAction({
-            lat: toLoc.lat,
-            lng: toLoc.lng,
+            lat: toLoc[0].lat,
+            lng: toLoc[0].lng,
           }));
           this.store.dispatch(new JourneyMapActions.SetMapZoomAction(this.neighbourhoodZoomLevel));
         }
         this.store.dispatch(new AppControlActions.ToggleDisplaySearchResultAction(true));
         this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.TO_INPUT));
+        toSubs.unsubscribe();
       });
   }
 
@@ -150,14 +152,15 @@ export class JourneyPanelComponent implements OnInit, OnDestroy {
    * are selected.  Switch to confirm journey and get journey path if so.
    */
   fieldOnBlur() {
-    Observable.of(true)
+    const onBlur = Observable.of(true)
       .delay(200)
       .switchMap(() => this.store.select(JourneyMapReducer.selectors.fromLoc))
       .withLatestFrom(this.store.select(JourneyMapReducer.selectors.toLoc))
       .subscribe(([fromLoc, toLoc]) => {
-        if (fromLoc && toLoc) {
+        if (fromLoc.length > 0 && toLoc.length > 0) {
           this.store.dispatch(new AppControlActions.SetAppStateAction(AppState.CONFIRM_JOURNEY));
         }
+        onBlur.unsubscribe();
       });
   }
 

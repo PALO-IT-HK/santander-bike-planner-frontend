@@ -8,6 +8,9 @@
     [streetViewControl]="false"
     geoFallbackCenter="51.476892649684764, 0"
     (bounds_changed)="onBoundsChanged($event)">
+    <!-- <marker *ngFor="let bikepoint of (bikepoints$ | async)" [position]="[bikepoint.lat, bikepoint.lng]"
+      (mouseover)="onBikepointMarkerOver($event, bikepoint)"
+      (click)="onBikepointMarkerClick($event, bikepoint)"></marker> -->
     <custom-marker *ngFor="let bikepoint of (bikepoints$ | async); let i = index"
       [position]="[bikepoint.lat, bikepoint.lng]"
       (initialized$)="onBikepointMarkerInit($event, i)"
@@ -15,10 +18,15 @@
       (click)="onBikepointMarkerClick($event, bikepoint)">
       <app-bikepoint-marker [bikepoint]="bikepoint"></app-bikepoint-marker>
     </custom-marker>
-    <marker *ngIf="fromLoc$ | async; let fromLoc" [position]="fromLoc$ | async"></marker>
-    <marker *ngIf="toLoc$ | async; let toLoc" [position]="toLoc"></marker>
-    <polyline *ngIf="journey$ | async; let journey" [path]="journey?.path" [geodesic]="true" [editable]="false"
-      [strokeColor]="'#FF0000'" [strokeOpacity]="1" [strokeWeight]="2"></polyline>
+    <!-- There seems to be bug in the map component which marker with *ngIf will not render properly -->
+    <marker *ngFor="let fromLocation of fromLoc" [position]="fromLocation"
+      [icon]="{ 'anchor': [15, 40], 'size': [30, 40], 'scaledSize': [30, 40] , 'url': '/assets/full.svg'}"></marker>
+    <marker *ngFor="let toLocation of toLoc" [position]="toLocation"
+      [icon]="{ 'anchor': [15, 40], 'size': [30, 40], 'scaledSize': [30, 40] , 'url': '/assets/park.svg'}"></marker>
+    <div *ngIf="appState === 'Confirm Journey' || appState === 'In Journey'">
+      <polyline *ngIf="journey$ | async; let journey" [path]="journey?.path" [geodesic]="true" [editable]="false"
+      [strokeColor]="'#FF0000'" [strokeOpacity]="1" [strokeWeight]="4"></polyline>
+    </div>
     <info-window [id]="infoWindowId" [pixelOffset]="infoWindowOffset">
       <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
     </info-window>

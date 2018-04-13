@@ -48,12 +48,15 @@ export class AppControlEffects {
       this.journeyStore.select(JourneyMapReducer.selectors.fromLoc),
       this.journeyStore.select(JourneyMapReducer.selectors.toLoc),
     )
-    .switchMap(([action, fromLoc, toLoc]) => [
-      new AppControlActions.QueryJourneyAction({
-        start: fromLoc,
-        end: toLoc,
-      }),
-    ]);
+    .switchMap(([action, fromLoc, toLoc]) => {
+      if (fromLoc.length === 0 || toLoc.length === 0) {
+        return [];
+      }
+      return [new AppControlActions.QueryJourneyAction({
+        start: fromLoc[0],
+        end: toLoc[0],
+      })];
+    });
 
   /**
    * When SEARCH_BIKEPOINT action is dispatched, do appropriate searching and
@@ -97,8 +100,9 @@ export class AppControlEffects {
     .withLatestFrom(this.journeyStore.select(JourneyMapReducer.selectors.toLoc))
     .switchMap(([action, toLoc]: [
       JourneyMapActions.SelectFromBikepointAction,
-      BikePoint | null
+      BikePoint[]
     ]) => {
+      console.log({ toLoc });
       return [
         // Update `From` field text
         new AppControlActions.SetFromFieldAction(action.payload.commonName),
@@ -111,7 +115,7 @@ export class AppControlEffects {
          *  If not, proceed to `to input`
          */
         new AppControlActions.SetAppStateAction(
-          toLoc ? AppState.CONFIRM_JOURNEY : AppState.TO_INPUT
+          toLoc[0] ? AppState.CONFIRM_JOURNEY : AppState.TO_INPUT
         ),
       ];
     });
@@ -126,8 +130,9 @@ export class AppControlEffects {
     .withLatestFrom(this.journeyStore.select(JourneyMapReducer.selectors.fromLoc))
     .switchMap(([action, fromLoc]: [
       JourneyMapActions.SelectToBikepointAction,
-      BikePoint | null
+      BikePoint[]
     ]) => {
+      console.log({fromLoc});
       return [
         // Update `To` field text
         new AppControlActions.SetToFieldAction(action.payload.commonName),
@@ -140,7 +145,7 @@ export class AppControlEffects {
          *  If not, proceed to `from input`
          */
         new AppControlActions.SetAppStateAction(
-          fromLoc ? AppState.CONFIRM_JOURNEY : AppState.FROM_INPUT
+          fromLoc[0] ? AppState.CONFIRM_JOURNEY : AppState.FROM_INPUT
         ),
       ];
     });
@@ -151,12 +156,14 @@ export class AppControlEffects {
   @Effect()
   obtainJourney$: Observable<Action> = this.actions$
     .ofType(AppControlActions.QUERY_JOURNEY)
+    .do(() => this.journeyStore.dispatch(new JourneyMapActions.SetMapLoadingAction(true)))
     .switchMap((action: AppControlActions.QueryJourneyAction) => this.journeyService.getJourney(
       action.payload.start,
       action.payload.end,
     ))
     .switchMap((result) => {
       return [
+        new JourneyMapActions.SetMapLoadingAction(false),
         new JourneyMapActions.SetJourneyAction(result)
       ];
     });

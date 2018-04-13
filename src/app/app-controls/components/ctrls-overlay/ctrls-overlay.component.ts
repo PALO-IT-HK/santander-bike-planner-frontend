@@ -10,6 +10,7 @@ import { AppState, Journey } from '../../../models';
 export class CtrlsOverlayComponent implements OnInit {
   @Input() appState: AppState;
   @Input() journey: Journey;
+  @Input() loading: boolean;
 
   constructor() { }
 

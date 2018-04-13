@@ -14,4 +14,9 @@
       background: linear-gradient(to top, rgba(18, 5, 58, 1), rgba(0,0,0,0) 200px);
     }
   }
+
+  mat-progress-bar.progress-bar {
+    position: absolute;
+    z-index: 15;
+  }
 }
