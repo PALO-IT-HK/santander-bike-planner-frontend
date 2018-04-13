@@ -9,7 +9,7 @@ describe('santander-bike-planner App', () => {
 
   it('should be able to display login splashscreen', () => {
     page.navigateTo();
-    expect(page.getMap()).toEqual('app-login-splash-screen');
+    expect(page.getLoginSplashscreen()).toEqual('app-login-splash-screen');
   });
 
   // it('should find markers on map', () => {

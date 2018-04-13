@@ -5,8 +5,8 @@ export class AppPage {
     return browser.get('/');
   }
 
-  getMap() {
-    return element(by.css('app-root app-journey-map')).getTagName();
+  getLoginSplashscreen() {
+    return element(by.css('app-root app-login-splash-screen')).getTagName();
   }
 
   getMarkers() {
