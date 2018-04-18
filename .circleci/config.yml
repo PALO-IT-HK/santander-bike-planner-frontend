@@ -14,8 +14,8 @@ jobs:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
-      - run: cat .env-tmpl | sed "s/__GOOGLE_API_KEY__/$GOOGLE_API_KEY/" > .env
       - run: npm install
+      - run: npm run gen-env
       - run: npm test
       - save_cache:
           key: node-module-cache-{{ checksum "package.json" }}
