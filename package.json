@@ -15,8 +15,8 @@
     "deploy-prod": "s3-website deploy -f .s3-website-prod.json",
     "test": "npm run config -- --environment=dev && ng test --code-coverage --single-run",
     "lint": "ng lint",
-    "webdriver-start": "webdriver-manager start",
-    "webdriver-update": "webdriver-manager update",
+    "webdriver-start": "webdriver-manager start --versions.chrome=2.37",
+    "webdriver-update": "webdriver-manager update --versions.chrome=2.37",
     "e2e": "protractor ./protractor.conf.js",
     "smoke-test": "protractor ./protractor-smoketest.conf.js"
   },
