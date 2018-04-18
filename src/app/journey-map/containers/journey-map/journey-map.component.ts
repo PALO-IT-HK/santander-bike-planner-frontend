@@ -13,6 +13,8 @@ import { AppState, LatLong, MapLocation, BikePoint, Journey, BikePointOccupancy 
 
 import { JourneyMapActions } from '../../journey-map.action';
 import { JourneyMapReducer } from '../../journey-map.reducer';
+import { JourneyPlannerReducer } from '../../../journey-planner/journey-planner.reducer';
+import { JourneyPlannerActions } from '../../../journey-planner/journey-planner.action';
 
 @Component({
   selector: 'app-journey-map',
@@ -36,6 +38,10 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
   journey$: Observable<Journey> = this.store.select(JourneyMapReducer.selectors.journey);
   fromLoc: BikePoint[];
   toLoc: BikePoint[];
+
+  homePoint$: Observable<string> = this.store.select(JourneyPlannerReducer.selectors.homePoint);
+  workPoint$: Observable<string> = this.store.select(JourneyPlannerReducer.selectors.workPoint);
+  favPoints$: Observable<string[]> = this.store.select(JourneyPlannerReducer.selectors.favPoints);
 
   /**
    * Work around for custom map marker with info window
@@ -187,6 +193,22 @@ export class JourneyMapComponent implements OnInit, OnDestroy {
       case AppState.IN_JOURNEY:
       default:
         return;
+    }
+  }
+
+  toggleHome(event) {
+    this.store.dispatch(new JourneyPlannerActions.SetHomePointAction(event));
+  }
+
+  toggleWork(event) {
+    this.store.dispatch(new JourneyPlannerActions.SetWorkPointAction(event));
+  }
+
+  toggleFav(event) {
+    if (event.status) {
+      this.store.dispatch(new JourneyPlannerActions.SetFavPointAction(event.id));
+    } else {
+      this.store.dispatch(new JourneyPlannerActions.UnsetFavPointAction(event.id));
     }
   }
 }

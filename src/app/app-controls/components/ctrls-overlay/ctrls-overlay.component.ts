@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { AppState, Journey } from '../../../models';
+import { GoogleUserInfo } from '../../../auth/models/google-user';
 
 @Component({
   selector: 'app-ctrls-overlay',

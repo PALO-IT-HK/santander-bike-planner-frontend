@@ -25,12 +25,13 @@ jobs:
   e2e_test:
     <<: *defaults
     environment:
+      APP_API_BASE: https://api.ci.palo-it-hk.com
       E2E_BASE_URL: https://bike-rental-demo.ci.palo-it-hk.com
     steps:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
-      - run: cat .env-tmpl | sed "s/__GOOGLE_API_KEY__/$GOOGLE_API_KEY/" > .env
+      - run: npm run gen-env
       - deploy:
           command: npm run build-dev && npm run deploy-dev
       - run: npm run webdriver-update
@@ -42,11 +43,13 @@ jobs:
 
   deploy_to_production:
     <<: *defaults
+    environment:
+      APP_API_BASE: https://api.ci.palo-it-hk.com
     steps:
       - checkout
       - restore_cache:
           key: node-module-cache-{{ checksum "package.json" }}
-      - run: cat .env-tmpl | sed "s/__GOOGLE_API_KEY__/$GOOGLE_API_KEY/" > .env
+      - run: npm run gen-env
       - deploy:
           command: npm run build-prod && npm run deploy-prod
 

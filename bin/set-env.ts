@@ -17,7 +17,8 @@ export const environment = {
   production: ${isProd},
   useMockData: false,
   googleAPIKey: '${process.env.GOOGLE_API_KEY}',
-  apiBase: 'https://api.ci.palo-it-hk.com'
+  googleClientId: '${process.env.GOOGLE_AUTH_CLIENTID}',
+  apiBase: '${process.env.APP_API_BASE}'
 };
 `;
 

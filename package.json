@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "gen-env": "bash ./bin/gen-dotenv.sh",
     "config": "ts-node ./bin/set-env.ts",
     "start": "npm run config -- --environment=dev && ng serve",
     "start-dev": "npm run config -- --environment=dev && ng serve --ssl true --ssl-key 'local-wildcard.palo-it-hk.com.key' --ssl-cert 'local-wildcard.palo-it-hk.com.pem' --public-host 'bike-rental-demo.local.palo-it-hk.com' --port 443",
@@ -39,6 +40,7 @@
     "@ngrx/store-devtools": "^5.2.0",
     "@ngui/map": "^0.20.2",
     "amazon-cognito-identity-js": "^2.0.3",
+    "amazon-cognito-js": "^1.1.0",
     "aws-sdk": "^2.224.1",
     "core-js": "^2.4.1",
     "jsonwebtoken": "^8.2.0",

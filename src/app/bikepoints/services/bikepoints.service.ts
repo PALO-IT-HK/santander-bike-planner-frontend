@@ -33,7 +33,7 @@ export class BikePointsService {
       params
     }).map((result: any[]): BikePoint[] => result.map((bp): BikePoint => ({
       commonName: bp.commonName,
-      id: bp.TerminalName,
+      id: bp.id,
       lat: bp.lat,
       lng: bp.lon,
       occupancy: {

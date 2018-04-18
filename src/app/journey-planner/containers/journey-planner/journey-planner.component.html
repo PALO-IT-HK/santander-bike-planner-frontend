@@ -4,4 +4,5 @@
     [loading]="loading$ | async"
     [journey]="journey$ | async"
     [appState]="appState$ | async"></app-ctrls-overlay>
+  <app-avatar [avatarIcon]="(user$ | async)?.avatar"></app-avatar>
 </div>

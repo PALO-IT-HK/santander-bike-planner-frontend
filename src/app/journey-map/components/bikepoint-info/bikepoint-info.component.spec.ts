@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BikepointInfoComponent } from './bikepoint-info.component';
+import { MaterialModule } from '../../../material.module';
 
 describe('BikepointInfoComponent', () => {
   let component: BikepointInfoComponent;
@@ -8,6 +9,7 @@ describe('BikepointInfoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [ BikepointInfoComponent ]
     })
     .compileComponents();

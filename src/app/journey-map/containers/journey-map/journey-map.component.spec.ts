@@ -8,6 +8,7 @@ import { BikepointsModule } from '../../../bikepoints/bikepoints.module';
 import { JourneyMapReducer } from '../../journey-map.reducer';
 import { JourneyMapComponent } from './journey-map.component';
 import { MaterialModule } from '../../../material.module';
+import { JourneyPlannerReducer } from '../../../journey-planner/journey-planner.reducer';
 
 describe('MapComponent', () => {
   let component: JourneyMapComponent;
@@ -19,7 +20,8 @@ describe('MapComponent', () => {
         MaterialModule,
         BikepointsModule,
         StoreModule.forRoot({
-          journeyMap: JourneyMapReducer.reducer,
+          [JourneyMapReducer.name]: JourneyMapReducer.reducer,
+          [JourneyPlannerReducer.name]: JourneyPlannerReducer.reducer,
         }),
         EffectsModule.forRoot([]),
       ],

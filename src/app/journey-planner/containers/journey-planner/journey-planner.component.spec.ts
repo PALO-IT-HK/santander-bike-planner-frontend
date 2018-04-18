@@ -5,6 +5,7 @@ import { JourneyPlannerComponent } from './journey-planner.component';
 import { StoreModule } from '@ngrx/store';
 import { AppControlReducer } from '../../../app-controls/app-controls.reducer';
 import { JourneyMapReducer } from '../../../journey-map/journey-map.reducer';
+import { AuthReducer } from '../../../auth/auth.reducer';
 
 describe('JourneyPlannerComponent', () => {
   let component: JourneyPlannerComponent;
@@ -14,6 +15,7 @@ describe('JourneyPlannerComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
+          [AuthReducer.name]: AuthReducer.reducer,
           [AppControlReducer.name]: AppControlReducer.reducer,
           [JourneyMapReducer.name]: JourneyMapReducer.reducer,
         }),

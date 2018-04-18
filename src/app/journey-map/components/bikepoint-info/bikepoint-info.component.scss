@@ -27,4 +27,14 @@ div.bikepoint-info {
       color: #1dacbd;
     }
   }
+
+  div.fav-buttons {
+    button.mat-icon-button {
+      color: #354052;
+
+      &.active {
+        color: #1dacbd;
+      }
+    }
+  }
 }

@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   useMockData: false,
   googleAPIKey: '__GOOGLE_API_KEY__',
-  apiBase: 'https://api.ci.palo-it-hk.com',
+  googleClientId: '__GOOGLE_AUTH_CLIENTID__',
+  apiBase: '__APP_API_BASE__',
 };

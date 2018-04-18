@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { Ng2Webstorage } from 'ngx-webstorage';
 
 // Material UI Module
@@ -11,6 +12,7 @@ import { GoogleService } from './services/google.service';
 import { LoginButtonComponent } from './components/login-button/login-button.component';
 
 import { AuthReducer } from './auth.reducer';
+import { AuthEffects } from './auth.effect';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { LoginSplashScreenComponent } from './containers/login-splash-screen/login-splash-screen.component';
 
@@ -24,6 +26,9 @@ import { LoginSplashScreenComponent } from './containers/login-splash-screen/log
     Ng2Webstorage,
 
     StoreModule.forFeature(AuthReducer.name, AuthReducer.reducer),
+    EffectsModule.forFeature([
+      AuthEffects,
+    ]),
   ],
   declarations: [
     LoginButtonComponent,

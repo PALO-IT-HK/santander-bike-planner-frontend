@@ -28,7 +28,10 @@
       [strokeColor]="'#FF0000'" [strokeOpacity]="1" [strokeWeight]="4"></polyline>
     </div>
     <info-window [id]="infoWindowId" [pixelOffset]="infoWindowOffset">
-      <app-bikepoint-info [info]="bikepointInfoWindow$ | async"></app-bikepoint-info>
+      <app-bikepoint-info [info]="bikepointInfoWindow$ | async"
+        [homePoint]="homePoint$ | async" [workPoint]="workPoint$ | async"
+        [favPoints]="favPoints$ | async" (toggleHome)="toggleHome($event)"
+        (toggleWork)="toggleWork($event)" (toggleFav)="toggleFav($event)"></app-bikepoint-info>
     </info-window>
   </ngui-map>
 </div>

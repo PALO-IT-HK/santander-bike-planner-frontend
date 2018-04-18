@@ -5,6 +5,7 @@ import { SessionStorageService, SessionStorage } from 'ngx-webstorage';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as AWS from 'aws-sdk';
+import 'amazon-cognito-js';
 
 import { AuthReducer } from '../auth.reducer';
 import { AuthActions } from '../auth.action';
@@ -17,10 +18,13 @@ export interface Callback {
 
 @Injectable()
 export class AWSService {
-  token: any;
-
+  readonly cognitoDataSet = 'CLPJourneyPlanner';
   identityPool = 'ap-southeast-1:7eaf61c0-5fb3-4fca-affb-59015720b561'; // CognitoIdentityPool
   region = 'ap-southeast-1'; // AWS Region
+
+  token: any;
+  private AWSSync: any;
+  private syncManager: any;
 
   constructor(
     private http: HttpClient,
@@ -37,49 +41,133 @@ export class AWSService {
     const idToken: string = this.sessionStore.retrieve('idToken');
     const profile: GoogleUserInfo = this.sessionStore.retrieve('profile');
 
+    // console.log({idToken, profile});
     if (idToken && profile) {
       this.loadCredentials(idToken, profile);
     }
   }
 
-  loadCredentials(id_token, profile) {
+  loadCredentials(idToken, profile) {
+    console.log({
+      msg: 'loading credentials',
+      idToken,
+      profile,
+    });
     // Add the Google access token to the Cognito credentials login map.
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       IdentityPoolId: this.identityPool,
       Logins: {
-        'accounts.google.com': id_token,
+        'accounts.google.com': idToken,
       }
     });
 
     // Obtain AWS credentials
     AWS.config.getCredentials((err) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
         this.store.dispatch(new AuthActions.SetUserAction(null));
         this.sessionStore.clear();
         return;
       } else {
         const userProfile: GoogleUserInfo = {
-          firstName: profile.ofa,
-          lastName: profile.wea,
-          email: profile.U3,
-          avatar: profile.Paa,
-          displayName: profile.ig,
+          firstName: profile.firstName || profile.getGivenName(),
+          lastName: profile.lastName || profile.getFamilyName(),
+          email: profile.email || profile.getEmail(),
+          avatar: profile.avatar || profile.getImageUrl(),
+          displayName: profile.displayName || profile.getName(),
         };
         // Upon login to Cognito and Obtained STS token, store the google profile locally
         this.store.dispatch(new AuthActions.SetUserAction(userProfile));
 
-        // TODO: we should also persist the profile into user data via Cognito Sync
-        console.log(AWS.config.credentials);
+        this.AWSSync = AWS;
+        this.syncManager = new this.AWSSync.CognitoSyncManager();
 
-        this.sessionStore.store('idToken', id_token);
+        this.sessionStore.store('idToken', idToken);
         this.sessionStore.store('profile', userProfile);
+        this.store.dispatch(new AuthActions.ObtainCognitoDataAction());
       }
     });
   }
 
   authenticateGoogle(authResult, region, profile) {
-    console.log(authResult);
+    // console.log(authResult);
     this.loadCredentials(authResult['id_token'], profile);
+  }
+
+  obtainCognitoUserData(key) {
+    return this.openOrCreateDataset(this.cognitoDataSet)
+      .then((dataset) => this.synchronizeDataset(dataset)) // Synchronize dataset from Cognito to get latest data
+      .then((dataset) => new Promise<any>((resolve, reject) => {
+        dataset.get(key, (err, value) => {
+          // console.log({ err, value });
+          if (err) {
+            return reject(err);
+          }
+          if (value) {
+            return resolve(JSON.parse(value));
+          } else {
+            return resolve();
+          }
+        });
+      }));
+  }
+
+  updateCognitoUserData(key, data) {
+    return this.openOrCreateDataset(this.cognitoDataSet)
+      .then((dataset) => this.synchronizeDataset(dataset)) // Synchronize dataset from Cognito to get latest data
+      .then((dataset) => new Promise<any>((resolve, reject) => {
+        dataset.put(key, JSON.stringify(data), (err, record) => {
+          // console.log({ err, record });
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(dataset);
+        });
+      }))
+      .then((dataset) => this.synchronizeDataset(dataset)); // Synchronize dataset to Cognito to save the updated data
+  }
+
+  private openOrCreateDataset(datasetName) {
+    return new Promise<any>((resolve, reject) => {
+      this.syncManager.openOrCreateDataset(datasetName, (err, dataset) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(dataset);
+      });
+    });
+  }
+
+  private synchronizeDataset(dataset) {
+    return new Promise<any>((resolve, reject) => {
+      dataset.synchronize({
+        onSuccess: (data, newRecords) => {
+          // console.log({ data, newRecords });
+          return resolve(data);
+        },
+
+        onFailure: (err) => {
+          // console.log({ err });
+          return reject(err);
+        },
+
+        onConflict: (data, conflicts, callback) => {
+          console.log({ msg: 'conflict occurred', data, conflicts });
+          const resolved = conflicts.reduce((res, conflict) => [...res, conflict.resolveWithRemoteRecord()], []);
+          data.resolve(resolved, () => callback(true));
+        },
+
+        onDatasetDeleted: (data, datasetName, callback) => {
+          console.log({ msg: 'dataset deleted', data, datasetName });
+          return callback(true);
+        },
+
+        onDatasetsMerged: (data, datasetNames, callback) => {
+          console.log({ msg: 'dataset merged', data, datasetNames });
+          return callback(true);
+        }
+      });
+    });
   }
 }

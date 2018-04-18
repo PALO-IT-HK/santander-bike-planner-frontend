@@ -1,0 +1,18 @@
+:host {
+  margin: 0px;
+  position: absolute;
+  top: 0px;
+  right: 32px;
+  z-index: 20;
+  padding-top: 60px;
+
+  @media (max-width: 599px) {
+    padding-top: 32px;
+  }
+
+  img.avatar {
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+  }
+}
