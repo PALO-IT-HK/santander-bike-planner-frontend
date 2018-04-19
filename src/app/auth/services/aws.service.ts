@@ -43,55 +43,65 @@ export class AWSService {
 
     // console.log({idToken, profile});
     if (idToken && profile) {
-      this.loadCredentials(idToken, profile);
+      this.loadCredentials(idToken, profile).then(() => {}, () => {});
     }
   }
 
   loadCredentials(idToken, profile) {
-    console.log({
-      msg: 'loading credentials',
-      idToken,
-      profile,
-    });
-    // Add the Google access token to the Cognito credentials login map.
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: this.identityPool,
-      Logins: {
-        'accounts.google.com': idToken,
-      }
-    });
+    return new Promise((resolve, reject) => {
+      console.log({
+        msg: 'loading credentials',
+        idToken,
+        profile,
+      });
+      // Add the Google access token to the Cognito credentials login map.
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: this.identityPool,
+        Logins: {
+          'accounts.google.com': idToken,
+        }
+      });
 
-    // Obtain AWS credentials
-    AWS.config.getCredentials((err) => {
-      if (err) {
-        // console.log(err);
-        this.store.dispatch(new AuthActions.SetUserAction(null));
-        this.sessionStore.clear();
-        return;
-      } else {
-        const userProfile: GoogleUserInfo = {
-          firstName: profile.firstName || profile.getGivenName(),
-          lastName: profile.lastName || profile.getFamilyName(),
-          email: profile.email || profile.getEmail(),
-          avatar: profile.avatar || profile.getImageUrl(),
-          displayName: profile.displayName || profile.getName(),
-        };
-        // Upon login to Cognito and Obtained STS token, store the google profile locally
-        this.store.dispatch(new AuthActions.SetUserAction(userProfile));
+      // Obtain AWS credentials
+      AWS.config.getCredentials((err) => {
+        if (err) {
+          // console.log(err);
+          this.store.dispatch(new AuthActions.SetUserAction(null));
+          this.sessionStore.clear();
+          reject(err);
+        } else {
+          const userProfile: GoogleUserInfo = {
+            firstName: profile.firstName || profile.getGivenName(),
+            lastName: profile.lastName || profile.getFamilyName(),
+            email: profile.email || profile.getEmail(),
+            avatar: profile.avatar || profile.getImageUrl(),
+            displayName: profile.displayName || profile.getName(),
+          };
+          // Upon login to Cognito and Obtained STS token, store the google profile locally
+          this.sessionStore.store('idToken', idToken);
+          this.sessionStore.store('profile', userProfile);
+          this.store.dispatch(new AuthActions.SetUserAction(userProfile));
 
-        this.AWSSync = AWS;
-        this.syncManager = new this.AWSSync.CognitoSyncManager();
+          this.AWSSync = AWS;
+          this.syncManager = new this.AWSSync.CognitoSyncManager();
+          this.store.dispatch(new AuthActions.ObtainCognitoDataAction());
 
-        this.sessionStore.store('idToken', idToken);
-        this.sessionStore.store('profile', userProfile);
-        this.store.dispatch(new AuthActions.ObtainCognitoDataAction());
-      }
+          resolve(true);
+        }
+      });
     });
   }
 
   authenticateGoogle(authResult, region, profile) {
     // console.log(authResult);
-    this.loadCredentials(authResult['id_token'], profile);
+    return this.loadCredentials(authResult['id_token'], profile)
+      .then(() => {
+        // There is an issue with user without Redux DevTools that could not get action properly dispatched
+        //   when the action is issued by the google oauth authentication flow
+        //
+        // As a workaround, we need to reload the page once we have a fresh login
+        window.location.reload(true);
+      });
   }
 
   obtainCognitoUserData(key) {
