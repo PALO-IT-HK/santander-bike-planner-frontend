@@ -12,6 +12,7 @@ export class CtrlsOverlayComponent implements OnInit {
   @Input() appState: AppState;
   @Input() journey: Journey;
   @Input() loading: boolean;
+  @Input() userInfo: GoogleUserInfo;
 
   constructor() { }
 

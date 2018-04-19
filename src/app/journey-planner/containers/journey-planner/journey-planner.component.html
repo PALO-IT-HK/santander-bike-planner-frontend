@@ -3,6 +3,6 @@
   <app-ctrls-overlay [ngClass]="{'invert-gradient': (appState$ | async) === 'Confirm Journey' }"
     [loading]="loading$ | async"
     [journey]="journey$ | async"
+    [userInfo]="user$ | async"
     [appState]="appState$ | async"></app-ctrls-overlay>
-  <app-avatar [avatarIcon]="(user$ | async)?.avatar"></app-avatar>
 </div>

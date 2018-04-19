@@ -6,4 +6,5 @@
   <app-journey-panel *ngSwitchDefault
     [journey]="journey"
     [appState]="appState"></app-journey-panel>
+  <app-avatar [avatarIcon]="userInfo?.avatar" *ngSwitchCase="'Normal'"></app-avatar>
 </section>
