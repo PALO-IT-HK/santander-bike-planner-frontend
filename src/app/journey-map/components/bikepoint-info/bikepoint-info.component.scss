@@ -1,39 +1,44 @@
-div.bikepoint-info {
-  div.name {
-    margin-bottom: 4px;
-    color: #354052;
-    font-size: 14px;
-    font-weight: 500;
-  }
+:host {
+  overflow-x: visible;
 
-  div.desc {
-    font-size: 8px;
-    color: #94a6bb;
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-  }
-
-  div.occupancy {
-    font-size: 10px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-
-    span.bikes {
-      color: #e63329;
-    }
-
-    span.vacant {
-      color: #1dacbd;
-    }
-  }
-
-  div.fav-buttons {
-    button.mat-icon-button {
+  div.bikepoint-info {
+    overflow-x: visible;
+    div.name {
+      margin-bottom: 4px;
       color: #354052;
+      font-size: 14px;
+      font-weight: 500;
+    }
 
-      &.active {
+    div.desc {
+      font-size: 8px;
+      color: #94a6bb;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    div.occupancy {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+
+      span.bikes {
+        color: #e63329;
+      }
+
+      span.vacant {
         color: #1dacbd;
+      }
+    }
+
+    div.fav-buttons {
+      button.mat-icon-button {
+        color: #354052;
+
+        &.active {
+          color: #1dacbd;
+        }
       }
     }
   }
